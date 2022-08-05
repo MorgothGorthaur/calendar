@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class Day {
 	  
 	  @Column(name = "day_name")
 	  private String name;
-	  @OneToMany(mappedBy = "dayId", cascade = CascadeType.ALL, orphanRemoval = true)
+	  @OneToMany(mappedBy = "dayId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	  //@JoinColumn(name = "day_id")
 	  //https://www.baeldung.com/jpa-joincolumn-vs-mappedby - вспомнить
 	  private List<Event> events=new ArrayList<>();

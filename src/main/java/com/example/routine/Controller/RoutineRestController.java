@@ -2,6 +2,7 @@ package com.example.routine.Controller;
 
 
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -41,24 +42,24 @@ public class RoutineRestController {
 	Mapper mapper;
 	
 	@GetMapping
-	public ResponseEntity<Object> findAll(){
+	public ResponseEntity<List<DayDto>> findAll(){
 		return ResponseEntity.ok(dayService.findAll().stream().map(mapper::toDto).collect(Collectors.toList()));
 	}
 	@PostMapping
-	public ResponseEntity<Object> addDay(@Valid @RequestBody  DayDto dayDto){
+	public ResponseEntity<Long> addDay(@Valid @RequestBody  DayDto dayDto){
 		Day day = mapper.DtoToDay(dayDto);
 		
 		return ResponseEntity.ok(dayService.save(day));
 	}
 	
 	@GetMapping("/{dayId}")
-	public ResponseEntity<Object> getDayWithEvents(@PathVariable Long dayId) throws DayNotFoundException{
+	public ResponseEntity<Day> getDayWithEvents(@PathVariable Long dayId) throws DayNotFoundException{
 		Day day = dayService.findById(dayId);
 		return ResponseEntity.ok(day);
 	}
 	
 	@PatchMapping()
-	public ResponseEntity<Object>  changeDay(@Valid @RequestBody DayDto dayDto) throws DayNotFoundException{
+	public ResponseEntity<Long>  changeDay(@Valid @RequestBody DayDto dayDto) throws DayNotFoundException{
 		Day day = mapper.DtoToDay(dayDto);
 		day.setId(dayDto.getId());
 		dayService.updateDay(day);
@@ -66,19 +67,19 @@ public class RoutineRestController {
 	}
 	
 	@DeleteMapping("/{dayId}")
-	public ResponseEntity<Object> daleteDay(@PathVariable Long dayId) throws DayNotFoundException{
+	public ResponseEntity<String> daleteDay(@PathVariable Long dayId) throws DayNotFoundException{
 			dayService.daleteById(dayId);
 			return ResponseEntity.ok("deleted!");	
 	}
 	
 	@PostMapping("/events")
-	public ResponseEntity<Object> addEvent( @Valid @RequestBody Event event) throws DayNotFoundException{
+	public ResponseEntity<String> addEvent( @Valid @RequestBody Event event) throws DayNotFoundException{
 		dayService.addEvent(event);
 		return ResponseEntity.ok("added!");
 	}
 	
 	@DeleteMapping("/events/{eventId}")
-	public ResponseEntity<Object> deleteEvent(@PathVariable Long eventId) throws EventNotFoundException{
+	public ResponseEntity<String> deleteEvent(@PathVariable Long eventId) throws EventNotFoundException{
 		eventService.deleteById(eventId);
 		return ResponseEntity.ok("deleted!");
 	}
