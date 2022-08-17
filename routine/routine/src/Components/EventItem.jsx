@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button,  Card} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import EventForm from './EventForm';
 import Modal from '../UI/Modal/Modal';
 const EventItem = ({event,remove, change,dayId}) => {

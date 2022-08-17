@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Card, Button} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import Modal from '../UI/Modal/Modal';
 import DayForm from './DayForm';
 import EventForm from './EventForm';
@@ -27,24 +27,6 @@ const FullDay = ({day, events, update,setEvents}) =>{
   }
   return (
     <div className = "day_item">
-    {/*<div>
-      <Card  className = "dayItem" >
-      <Card.Body>
-        <Card.Title  style = {{textAlign: 'center'}}>{day.name}</Card.Title>
-        <Card.Title  style = {{textAlign: 'right'}}>{day.date}</Card.Title>
-        <Card.Text>
-          <Button onClick = { () => setModal(true)}> change day </Button>
-          <EventsList events = {events}  remove = {removeEvent} change = {changeEvent} add = {addNewEvent} dayId = {day.id}/>
-          <Button onClick = {() => setEventView(true) } > add Event </Button>
-          <hr/>
-        </Card.Text>
-       </Card.Body>
-      </Card>
-      <Modal visible = {modal} setVisible = {setModal}> <DayForm createOrUpdate = {updateDay} day = {day}/> </Modal>
-      <Modal visible = {eventView} setVisible = {setEventView}> <EventForm createOrUpdate = {addNewEvent} dayId = {day.id}/> </Modal>
-
-
-    </div>*/}
       <h1  style = {{textAlign: 'center'}}>{day.name} </h1>
       <h3  style = {{textAlign: 'right'}}> {day.date} </h3>
       <hr/>

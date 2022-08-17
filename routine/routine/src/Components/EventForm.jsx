@@ -33,7 +33,7 @@ const EventForm = ({createOrUpdate,event, dayId}) => {
       setDescription(event.description)
       setId(event.id)
     }
-  },[])
+  },[event])
   return (
     <Form onSubmit = {addNewEvent}>
       <Input type = "text" placeholder= "description" value = {description} onChange = { e => setDescription(e.target.value)}/>

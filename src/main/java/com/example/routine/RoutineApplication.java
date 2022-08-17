@@ -9,8 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class RoutineApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RoutineApplication.class, args);
-		/* 1 - unit тесты
-		 * 2 - контейнеры - постараться успеть и это
-		 */
+		
 	}
 }

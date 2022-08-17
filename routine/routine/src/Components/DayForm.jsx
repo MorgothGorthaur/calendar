@@ -7,7 +7,6 @@ const DayForm = ({createOrUpdate,day}) => {
   const [name, setName] = useState("");
   const [date, setDate] = useState();
   const [id, setId] = useState(0);
-  const [response, setResponse] = useState();
   const validation = (data) => {
     if (data.errors){
       alert(data.errors)
@@ -39,7 +38,7 @@ const DayForm = ({createOrUpdate,day}) => {
       setDate(day.date)
       setId(day.id)
     }
-  },[])
+  },[day])
   return (
 
       <Form onSubmit = {addNewDay}>

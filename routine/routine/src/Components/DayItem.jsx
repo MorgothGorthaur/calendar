@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Card, Button, Modal} from 'react-bootstrap';
+import { Button, Modal} from 'react-bootstrap';
 
 //import Modal from '../UI/Modal/Modal';
 import FullDay from './FullDay'

@@ -2,7 +2,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
-import ReactDOM from 'react-dom';
 import {Button, Navbar, Container} from 'react-bootstrap';
 import DaysList from './Components/DaysList';
 import DayForm from './Components/DayForm';

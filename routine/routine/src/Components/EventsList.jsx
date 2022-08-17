@@ -1,18 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import {Card, Button} from 'react-bootstrap';
 import EventItem from './EventItem';
-import EventService from '../API/EventService';
-import Modal from '../UI/Modal/Modal';
-import EventForm from './EventForm';
 const EventsList = ({events, remove, change, dayId}) =>{
- const [modal, setModal] = useState(false)
-
-
- const openEventForm = (event) => {
-   setModal(true);
-
- }
- if (! events.length) {
+if (! events.length) {
    return (
      <h1> events not found! </h1>
    )
