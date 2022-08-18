@@ -36,7 +36,7 @@ public class RoutineRestControllerTest {
 	
 	/*@Autowired 
 	private TestRestTemplate restTemplate;*/
-	@Autowired
+	/*@Autowired
 	private DayService dayService;
 	@Autowired
 	private DayRepository dayRepository;
@@ -177,7 +177,7 @@ public class RoutineRestControllerTest {
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 		assertEquals(response.getBody(), "changed!");
 		assertEquals(eventService.findById(eventId).getDescription(), changedEvent.getDescription());
-	}
+	}*/
 	/*@Test
 	public void findAllTest () {
 		dayRepository.deleteAll();

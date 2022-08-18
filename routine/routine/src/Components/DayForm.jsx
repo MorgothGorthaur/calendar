@@ -11,7 +11,7 @@ const DayForm = ({createOrUpdate,day}) => {
     if (data.errors){
       alert(data.errors)
     } else {
-      const newDay = {id: data, name, date};
+      const newDay = {id: data.id, name, date};
       createOrUpdate(newDay);
     }
   }

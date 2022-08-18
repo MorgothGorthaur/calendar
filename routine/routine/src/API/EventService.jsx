@@ -22,6 +22,9 @@ export default class EventService {
     return data;
   }
   static async changeEvent(id, time, description,dayId) {
+    if (time){
+      time = time+":00"
+    }
     const requestOptions = {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },

@@ -26,8 +26,7 @@ import com.example.routine.Model.Day;
 import com.example.routine.Model.Event;
 import com.example.routine.Service.DayService;
 import com.example.routine.Service.EventService;
-import com.example.routine.exception.DayNotFoundException;
-import com.example.routine.exception.EventNotFoundException;
+
 
 @RestController
 @RequestMapping("/routine")
@@ -46,49 +45,48 @@ public class RoutineRestController {
 		return ResponseEntity.ok(dayService.findAll().stream().map(mapper::toDto).collect(Collectors.toList()));
 	}
 	@PostMapping
-	public ResponseEntity<Long> addDay(@Valid @RequestBody  DayDto dayDto){
+	public ResponseEntity<Day> addDay(@Valid @RequestBody  DayDto dayDto){
 		Day day = mapper.DtoToDay(dayDto);
-		
 		return ResponseEntity.ok(dayService.save(day));
 	}
 	
 	@GetMapping("/{dayId}")
-	public ResponseEntity<Day> getDayWithEvents(@PathVariable Long dayId) throws DayNotFoundException{
+	public ResponseEntity<Day> getDayWithEvents(@PathVariable Long dayId){
 		Day day = dayService.findById(dayId);
 		return ResponseEntity.ok(day);
 	}
 	
 	@PatchMapping()
-	public ResponseEntity<Long>  changeDay(@Valid @RequestBody DayDto dayDto) throws DayNotFoundException{
+	public ResponseEntity<DayDto>  changeDay(@Valid @RequestBody DayDto dayDto){
 		Day day = mapper.DtoToDay(dayDto);
 		day.setId(dayDto.getId());
 		dayService.updateDay(day);
-		return ResponseEntity.ok(day.getId());				
+		return ResponseEntity.ok(mapper.toDto(day));				
 	}
 	
 	@DeleteMapping("/{dayId}")
-	public ResponseEntity<String> daleteDay(@PathVariable Long dayId) throws DayNotFoundException{
+	public ResponseEntity<String> daleteDay(@PathVariable Long dayId){
 			dayService.daleteById(dayId);
 			return ResponseEntity.ok("deleted!");	
 	}
 	
 	@PostMapping("/events")
-	public ResponseEntity<String> addEvent( @Valid @RequestBody Event event) throws DayNotFoundException{
-		dayService.addEvent(event);
-		return ResponseEntity.ok("added!");
+	public ResponseEntity<Event> addEvent( @Valid @RequestBody Event event){
+		
+		return ResponseEntity.ok(dayService.addEvent(event));
 	}
 	
 	@DeleteMapping("/events/{eventId}")
-	public ResponseEntity<String> deleteEvent(@PathVariable Long eventId) throws EventNotFoundException{
+	public ResponseEntity<String> deleteEvent(@PathVariable Long eventId){
 		eventService.deleteById(eventId);
 		return ResponseEntity.ok("deleted!");
 	}
 	
 	@PatchMapping("/events")
-	public ResponseEntity<String> changeEvent(@Valid @RequestBody Event event) throws EventNotFoundException {
+	public ResponseEntity<@Valid Event> changeEvent(@Valid @RequestBody Event event){
 		System.out.println(event.getId());
 		eventService.updateEvent(event);
-		return ResponseEntity.ok("changed!");		
+		return ResponseEntity.ok(event);		
 	}
 	
 }

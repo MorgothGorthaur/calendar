@@ -10,7 +10,9 @@ const EventForm = ({createOrUpdate,event, dayId}) => {
     if (data.errors){
       alert(data.errors);
     } else {
-      const newEvent = {id, time, description};
+      const id = data.id;
+      const dayId = data.dayId;
+      const newEvent = {id, time, description, dayId};
       createOrUpdate(newEvent);
     }
   }

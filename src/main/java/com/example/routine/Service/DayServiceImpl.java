@@ -32,7 +32,7 @@ public class DayServiceImpl implements DayService {
 		return dayRepository.findById(id).orElseThrow(() -> new DayNotFoundException(id));
 	}
 
-	@Override
+	/*@Override
 	public Long save(Day day) {
 		dayRepository.save(day);
 		Long id = new Long(0);
@@ -42,13 +42,15 @@ public class DayServiceImpl implements DayService {
 			}
 		}
 		return id;
-	}
+	}*/
 
 	@Override
 	public void daleteById(Long id) {
-	
-		dayRepository.delete(findById(id));
-		
+		try {
+			dayRepository.delete(findById(id));
+		} catch ( Exception ex) {
+			throw new DayNotFoundException(id);
+		}
 	}
 
 	@Override
@@ -60,14 +62,14 @@ public class DayServiceImpl implements DayService {
 		
 	}
 
-	@Override
+	/*@Override
 	public void addEvent(Event event) {
 		Day day = findById(event.getDayId());
 		day.addEvent(event);
 		save(day);
 		
 	}
-
+*/
 	@Override
 	public DayActuality checkActuality(Date date) {
 		Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -131,6 +133,20 @@ public class DayServiceImpl implements DayService {
 		} catch ( Exception ex) {
 			System.out.println(ex.getMessage());
 		}
+	}
+
+	@Override
+	public Day save(Day day) {
+		dayRepository.save(day);
+		return findAll().get(findAll().size() -1);
+	}
+
+	@Override
+	public Event addEvent(Event event) {
+		Day day = findById(event.getDayId());
+		day.addEvent(event);
+		return save(day).getEvents().get(save(day).getEvents().size() -1);
+	
 	}
 	
 }
