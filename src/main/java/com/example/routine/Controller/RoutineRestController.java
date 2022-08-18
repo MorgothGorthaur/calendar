@@ -84,7 +84,6 @@ public class RoutineRestController {
 	
 	@PatchMapping("/events")
 	public ResponseEntity<@Valid Event> changeEvent(@Valid @RequestBody Event event){
-		System.out.println(event.getId());
 		eventService.updateEvent(event);
 		return ResponseEntity.ok(event);		
 	}

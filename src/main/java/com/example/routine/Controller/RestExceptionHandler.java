@@ -32,15 +32,9 @@ public class RestExceptionHandler {
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> handleInvalidArgument(MethodArgumentNotValidException ex) {
-		/*List <String> errors = ex.getBindingResult().getFieldErrors().stream()
-				.map(error -> error.getDefaultMessage()).collect(Collectors.toList());*/
+
 		List <String> errors = ex.getBindingResult().getAllErrors().stream()
 				.map(error -> error.getDefaultMessage().toString()).collect(Collectors.toList());
-		
-		 /*System.out.println(ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
-		 for (String er : errors) {
-			 System.out.println(er);
-		 }*/
 		 ApiError apiError = new ApiError("validation error",ex.getMessage(), errors); 
 		 return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
 	}

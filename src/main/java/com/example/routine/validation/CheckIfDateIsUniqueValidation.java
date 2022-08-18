@@ -8,8 +8,8 @@ import javax.validation.Payload;
 import java.lang.annotation.RetentionPolicy;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = CheckIfTheDateIsUniqueValidationImpl.class)
-public @interface CheckIfTheDateIsUniqueValidation {
+@Constraint(validatedBy = CheckIfDateIsUniqueValidationImpl.class)
+public @interface CheckIfDateIsUniqueValidation {
 	 String message() default "date error! A day has already been set for this date!";
 	 Class<?>[] groups() default {};
 	 Class<? extends Payload>[] payload() default {};

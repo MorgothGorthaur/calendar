@@ -14,7 +14,7 @@ import com.example.routine.Service.DayService;
 /*
  * prevent non-actual events from being set for today
  */
-public class CheckIfTheTimeIsActualValidationImpl implements ConstraintValidator <CheckIfTheTimeIsActualValidation, Event>{
+public class CheckIfTimeIsActualValidationImpl implements ConstraintValidator <CheckIfTimeIsActualValidation, Event>{
 	@Autowired
 	DayService dayService;
 	@Override

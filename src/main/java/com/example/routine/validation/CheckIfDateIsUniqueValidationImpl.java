@@ -1,7 +1,5 @@
 package com.example.routine.validation;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.ConstraintValidator;
@@ -13,7 +11,7 @@ import com.example.routine.DTO.DayDto;
 import com.example.routine.Model.Day;
 import com.example.routine.Service.DayService;
 
-public class CheckIfTheDateIsUniqueValidationImpl implements ConstraintValidator <CheckIfTheDateIsUniqueValidation, DayDto>{
+public class CheckIfDateIsUniqueValidationImpl implements ConstraintValidator <CheckIfDateIsUniqueValidation, DayDto>{
 	@Autowired
 	DayService dayService;
 	@Override

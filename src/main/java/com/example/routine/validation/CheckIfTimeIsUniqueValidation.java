@@ -13,10 +13,10 @@ import javax.validation.Payload;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = CheckIfTheTimeIsUniqueValidationImpl.class)
+@Constraint(validatedBy = CheckIfTimeIsUniqueValidationImpl.class)
 @Documented
 
-public @interface CheckIfTheTimeIsUniqueValidation {
+public @interface CheckIfTimeIsUniqueValidation {
 	 String message() default "an Event has already been set for this day/time";
 	 Class<?>[] groups() default {};
 	 Class<? extends Payload>[] payload() default {};

@@ -13,9 +13,9 @@ import javax.validation.Payload;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = CheckIfTheTimeIsActualValidationImpl.class)
+@Constraint(validatedBy = CheckIfTimeIsActualValidationImpl.class)
 @Documented
-public @interface CheckIfTheTimeIsActualValidation {
+public @interface CheckIfTimeIsActualValidation {
 	 String message() default "Time must be actual!";
 	 Class<?>[] groups() default {};
 	 Class<? extends Payload>[] payload() default {};

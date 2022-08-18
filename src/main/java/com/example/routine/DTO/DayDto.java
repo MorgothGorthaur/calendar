@@ -7,13 +7,12 @@ import javax.validation.constraints.Size;
 
 import com.example.routine.Model.DayActuality;
 import com.example.routine.validation.CheckIfDateIsActualValidation;
-import com.example.routine.validation.CheckIfDateIsActualValidationImpl;
-import com.example.routine.validation.CheckIfTheDateIsUniqueValidation;
+import com.example.routine.validation.CheckIfDateIsUniqueValidation;
 
 /*
  *  Day class without list of events
  */
-@CheckIfTheDateIsUniqueValidation
+@CheckIfDateIsUniqueValidation
 public class DayDto {
 	@NotNull(message = "name must be no null")
 	@Size(min=2, max=30, message = "name must have size between 2 and 30 literals")

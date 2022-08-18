@@ -12,8 +12,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.example.routine.validation.CheckIfTheTimeIsActualValidation;
-import com.example.routine.validation.CheckIfTheTimeIsUniqueValidation;
+import com.example.routine.validation.CheckIfTimeIsActualValidation;
+import com.example.routine.validation.CheckIfTimeIsUniqueValidation;
 
 
 
@@ -21,8 +21,8 @@ import com.example.routine.validation.CheckIfTheTimeIsUniqueValidation;
 
 @Entity
 @Table(name = "events")
-@CheckIfTheTimeIsUniqueValidation 
-@CheckIfTheTimeIsActualValidation
+@CheckIfTimeIsUniqueValidation 
+@CheckIfTimeIsActualValidation
 public class Event {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,7 +14,7 @@ import com.example.routine.Service.EventService;
  * check if event time is unick for this day
  */
 @Component
-public class CheckIfTheTimeIsUniqueValidationImpl implements ConstraintValidator <CheckIfTheTimeIsUniqueValidation , Event>{
+public class CheckIfTimeIsUniqueValidationImpl implements ConstraintValidator <CheckIfTimeIsUniqueValidation , Event>{
 	@Autowired
 	DayService dayService;
 	@Autowired
