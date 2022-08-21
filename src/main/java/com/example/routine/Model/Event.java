@@ -2,6 +2,7 @@ package com.example.routine.Model;
 
 
 import java.sql.Time;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,5 +61,22 @@ public class Event {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(dayId, description, id, time);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Event other = (Event) obj;
+		return Objects.equals(dayId, other.dayId) && Objects.equals(description, other.description)
+				&& Objects.equals(id, other.id) && Objects.equals(time, other.time);
+	}
+	
 	
 }

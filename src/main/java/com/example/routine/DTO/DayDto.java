@@ -1,6 +1,7 @@
 package com.example.routine.DTO;
 
 import java.sql.Date;
+import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -50,4 +51,21 @@ public class DayDto {
 	public void setDayActuality(DayActuality dayActuality) {
 		this.dayActuality = dayActuality;
 	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(date, dayActuality, id, name);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DayDto other = (DayDto) obj;
+		return Objects.equals(date, other.date) && dayActuality == other.dayActuality && Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name);
+	}
+	
 }
