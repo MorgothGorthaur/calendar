@@ -16,7 +16,7 @@ import com.example.routine.Service.DayService;
  */
 public class CheckIfTimeIsActualValidationImpl implements ConstraintValidator <CheckIfTimeIsActualValidation, Event>{
 	@Autowired
-	DayService dayService;
+	private DayService dayService;
 	@Override
 	public boolean isValid(Event event, ConstraintValidatorContext context) {
 		try {

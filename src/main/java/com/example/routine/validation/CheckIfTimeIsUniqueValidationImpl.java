@@ -16,9 +16,8 @@ import com.example.routine.Service.EventService;
 @Component
 public class CheckIfTimeIsUniqueValidationImpl implements ConstraintValidator <CheckIfTimeIsUniqueValidation , Event>{
 	@Autowired
-	DayService dayService;
-	@Autowired
-	EventService eventService;
+	private DayService dayService;
+	
 
 	@Override
 	public boolean isValid(Event event, ConstraintValidatorContext context) {

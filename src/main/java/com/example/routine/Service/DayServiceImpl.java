@@ -20,7 +20,7 @@ import com.example.routine.exception.DayNotFoundException;
 @Service
 public class DayServiceImpl implements DayService {
 	@Autowired
-	DayRepository dayRepository;
+	private DayRepository dayRepository;
 
 	@Override
 	public List<Day> findAll() {

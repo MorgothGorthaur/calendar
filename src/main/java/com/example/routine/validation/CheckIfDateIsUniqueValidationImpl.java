@@ -13,7 +13,7 @@ import com.example.routine.Service.DayService;
 
 public class CheckIfDateIsUniqueValidationImpl implements ConstraintValidator <CheckIfDateIsUniqueValidation, DayDto>{
 	@Autowired
-	DayService dayService;
+	private DayService dayService;
 	@Override
 	public boolean isValid(DayDto dayDto, ConstraintValidatorContext context) {
 		try {

@@ -12,7 +12,7 @@ import com.example.routine.exception.EventNotFoundException;
 @Service
 public class EventServiceImpl implements EventService{
 	@Autowired
-	EventRepository eventRepository;
+	private EventRepository eventRepository;
 	
 	@Override
 	public void deleteById(Long id) {

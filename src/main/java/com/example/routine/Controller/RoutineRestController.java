@@ -34,11 +34,11 @@ import com.example.routine.Service.EventService;
 public class RoutineRestController {
 	
 	@Autowired
-	DayService dayService;
+	private DayService dayService;
 	@Autowired
-	EventService eventService;
+	private EventService eventService;
 	@Autowired
-	Mapper mapper;
+	private Mapper mapper;
 	
 	@GetMapping
 	public ResponseEntity<List<DayDto>> findAll(){
