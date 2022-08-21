@@ -1,9 +1,10 @@
 package com.example.routine.sevice;
 
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
-
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +30,8 @@ import com.example.routine.Model.DayActuality;
 import com.example.routine.Model.Event;
 import com.example.routine.Repository.DayRepository;
 import com.example.routine.Service.DayServiceImpl;
+import com.example.routine.exception.DayNotFoundException;
+import com.example.routine.exception.EventNotFoundException;
 
 
 
@@ -77,34 +80,21 @@ public class DayServiceTest {
 	public void deleteByIdTest() {
 		//given
 		Long id = (long) 1;
-		Day day = new Day();
-		day.setDate(today);
-		day.setDayActuality(DayActuality.TODAY);
-		day.setName("day");
-		day.setId(id);
 		
-		when(dayRepository.findById(id)).thenReturn(Optional.of(day));
-		doNothing().when(dayRepository).delete(day);
+		
+		
+		doNothing().when(dayRepository).deleteById(id);
 		//when
-		underTest.daleteById(id);
-		verify(dayRepository).delete(day);
+		underTest.deleteById(id);
+		verify(dayRepository).deleteById(id);
 	}
-	/*@Test
+	@Test
 	public void deleteByIdWithExceptionTest() {
 		//given
 		Long id = (long) 1;
-		Day day = new Day();
-		day.setDate(today);
-		day.setDayActuality(DayActuality.TODAY);
-		day.setName("day");
-		day.setId(id);
-		
-		when(dayRepository.findById(id)).thenThrow(new DayNotFoundException(id));
-		doNothing().when(dayRepository).delete(day);
-		//when
-		underTest.daleteById(id);
-		assertThatThrownBy(() -> underTest.daleteById(id)).isInstanceOf(DayNotFoundException.class).hasMessageContaining("Day is not found, id=" + id);
-	}*/
+		doThrow(new DayNotFoundException(id)).when(dayRepository).deleteById(id);
+		assertThatThrownBy(() -> underTest.deleteById(id)).isInstanceOf(DayNotFoundException.class).hasMessageContaining("Day is not found, id=" + id);
+	}
 	@Test
 	public void updateDayTest() {
 		Long id = (long) 1;

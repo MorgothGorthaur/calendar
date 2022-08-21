@@ -14,10 +14,14 @@ public class EventServiceImpl implements EventService{
 	@Autowired
 	private EventRepository eventRepository;
 	
+	public EventServiceImpl(EventRepository eventRepository) {
+		this.eventRepository = eventRepository;
+	}
 	@Override
 	public void deleteById(Long id) {
 		try {
-			eventRepository.delete(findById(id));
+			//eventRepository.delete(findById(id));
+			eventRepository.deleteById(id);
 		//eventRepository.deleteById(id);
 		} catch (Exception ex) {
 			throw new EventNotFoundException(id);

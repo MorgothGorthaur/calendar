@@ -66,7 +66,7 @@ public class RoutineRestController {
 	
 	@DeleteMapping("/{dayId}")
 	public ResponseEntity<String> daleteDay(@PathVariable Long dayId){
-			dayService.daleteById(dayId);
+			dayService.deleteById(dayId);
 			return ResponseEntity.ok("deleted!");	
 	}
 	

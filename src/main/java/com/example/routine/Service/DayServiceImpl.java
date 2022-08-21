@@ -49,9 +49,10 @@ public class DayServiceImpl implements DayService {
 	}*/
 
 	@Override
-	public void daleteById(Long id) {
+	public void deleteById(Long id) {
 		try {
-			dayRepository.delete(findById(id));
+			//dayRepository.delete(findById(id));
+			dayRepository.deleteById(id);
 		} catch ( Exception ex) {
 			throw new DayNotFoundException(id);
 		}

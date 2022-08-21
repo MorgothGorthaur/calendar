@@ -158,7 +158,7 @@ public class RoutineRestControllerTest {
 	}
 	@Test
 	public void deleteDayById() throws Exception {
-		doNothing().when(dayService).daleteById((long) 1);
+		doNothing().when(dayService).deleteById((long) 1);
 		MvcResult res = this.mockMvc.perform(delete("/routine/1"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.valueOf("text/plain;charset=UTF-8")))

@@ -12,7 +12,7 @@ public interface DayService  {
 	public Day findById(Long id);
 	//public Long save(Day day);
 	public Day save(Day day);
-	public void daleteById(Long id);
+	public void deleteById(Long id);
 	public void updateDay(Day day);
 	//public void addEvent(Event event);
 	public Event addEvent(Event event);
