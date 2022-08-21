@@ -9,10 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.sql.Date;
-import java.sql.Time;
+
 import java.util.Calendar;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +40,7 @@ public class RestExceptionHandlerTest {
 	@MockBean
 	private Mapper mapper;
 	private Date today = new Date(Calendar.getInstance().getTime().getTime());
-	private Date tomorow = new Date(Calendar.getInstance().getTime().getTime()+24*60*60*1000);
-	private Time nextHour = new Time(Calendar.getInstance().getTime().getTime() + 60*60);
-	private Time nextTwoHour = new Time(Calendar.getInstance().getTime().getTime() + 2*60*60);
+
 	@Test
 	public void  handleEntityNotFoundExTest() throws Exception {
 		Mockito.when(dayService.findById((long)1)).thenThrow(new DayNotFoundException((long)1));

@@ -1,9 +1,9 @@
 package com.example.routine.sevice;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
+
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -29,7 +29,7 @@ import com.example.routine.Model.DayActuality;
 import com.example.routine.Model.Event;
 import com.example.routine.Repository.DayRepository;
 import com.example.routine.Service.DayServiceImpl;
-import com.example.routine.exception.DayNotFoundException;
+
 
 
 
@@ -41,7 +41,7 @@ public class DayServiceTest {
 	private Date today = new Date(Calendar.getInstance().getTime().getTime());
 	private Date tomorow = new Date(Calendar.getInstance().getTime().getTime()+24*60*60*1000);
 	private Time nextHour = new Time(Calendar.getInstance().getTime().getTime() + 60*60);
-	private Time nextTwoHour = new Time(Calendar.getInstance().getTime().getTime() + 2*60*60);
+	
 	@BeforeEach
 	void setUp() {
 		autoCloseable = MockitoAnnotations.openMocks(this);
@@ -129,7 +129,7 @@ public class DayServiceTest {
 		assertEquals(dayActuality, DayActuality.FUTURE);
 	}
 	
-	/*@Test
+	@Test
 	public void saveTest() {
 		Long id = (long) 1;
 		Day day = new Day();
@@ -138,11 +138,11 @@ public class DayServiceTest {
 		day.setName("day");
 		day.setId(id);
 		
-		when(dayRepository.findAll()).thenReturn(Arrays.asList(day,day));
+		when(dayRepository.findAll()).thenReturn(Arrays.asList(day));
 		underTest.save(day);
 		verify(dayRepository).save(day);
-	}*/
-	/*@Test
+	}
+	@Test
 	public void addEventTest() {
 		Long id = (long) 1;
 		Day day = new Day();
@@ -157,5 +157,5 @@ public class DayServiceTest {
 		day.addEvent(event);
 		when(dayRepository.findById(id)).thenReturn(Optional.of(day));
 		underTest.addEvent(event);
-	}*/
+	}
 }

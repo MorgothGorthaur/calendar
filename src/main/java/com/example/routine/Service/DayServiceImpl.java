@@ -142,15 +142,19 @@ public class DayServiceImpl implements DayService {
 	@Override
 	public Day save(Day day) {
 		dayRepository.save(day);
-		return findAll().get(findAll().size() -1);
+		//return findAll().get(findAll().size() -1);
+		return dayRepository.findById(day.getId()).orElse(dayRepository.findAll().get(dayRepository.findAll().size()-1));
 	}
 
 	@Override
 	public Event addEvent(Event event) {
 		Day day = findById(event.getDayId());
 		day.addEvent(event);
-		return save(day).getEvents().get(save(day).getEvents().size() -1);
-	
+		//save(day);
+		dayRepository.save(day);
+		System.out.println(day.getEvents().size()-1);
+		//return save(day).getEvents().get(save(day).getEvents().size() -1);
+		return day.getEvents().get(day.getEvents().size()-1);
 	}
 	
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.routine.Model.Event;
 import com.example.routine.Service.DayService;
-import com.example.routine.Service.EventService;
+
 /*
  * check if event time is unick for this day
  */
