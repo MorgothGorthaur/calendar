@@ -22,6 +22,10 @@ public class DayServiceImpl implements DayService {
 	@Autowired
 	private DayRepository dayRepository;
 
+	public DayServiceImpl(DayRepository dayRepository) {
+		this.dayRepository = dayRepository;
+	}
+
 	@Override
 	public List<Day> findAll() {
 		return dayRepository.findAll();
