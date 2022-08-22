@@ -1,14 +1,28 @@
 import React, {useState, useEffect} from 'react';
 import DayItem from './DayItem';
-const DaysList = ({days, remove, update}) => {
-  const [sortedDays, setSortedDays] = useState([])
+import {Button} from 'react-bootstrap';
+import Loader from '../UI/Loader/Loader';
+import DayForm from './DayForm';
+import Modal from '../UI/Modal/Modal';
+import DaysService from '../API/DaysService';
+const DaysList = (/*{days, remove, update}*/) => {
+  const [sortedDays, setSortedDays] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [days, setDays] =  useState([]);
+  const [daysLoading, setDaysLoading] = useState(false);
   useEffect ( () => {
       setSortedDays ([...days].sort( (a,b) => new Date(a.date).getTime() - new Date(b.date).getTime() ))
-  },[days])
-  const sortDays = (sort) => {
-    //setDays ([...days].sort( (a,b) => a[sort].localeToCompare(b[sort])))
-    
+  },[days]);
+  useEffect ( () => {
+    setDaysLoading(true);
+    setTimeout ( () => {
+      fetchDays();
+      setDaysLoading(false);
+    }, 1000);
 
+
+  },[]);
+  const sortDays = (sort) => {
     if(sort === "date"){
       setSortedDays ([...days].sort( (a,b) => new Date(a.date).getTime() - new Date(b.date).getTime() ))
     }
@@ -18,35 +32,64 @@ const DaysList = ({days, remove, update}) => {
     if (sort === "next"){
       setSortedDays([...days.filter(d => d.dayActuality === "FUTURE")])
     }
+  };
+
+  const removeDay = (day) =>{
+    DaysService.removeDay(day.id);
+    setDays(days.filter(d => d.id !== day.id ))
+  };
+  const createDay = (newDay) =>  {
+        setDays([...days, newDay])
+        setModal(false)
+  };
+  const updateDay = (newDay) => {
+    setDays([...days.filter(d => d.id !== newDay.id ), newDay])
+    setModal(false)
   }
 
+  async function fetchDays() {
+    const response = await DaysService.getAll();
+    setDays(response);
+  }
   return (
 
-
-    <div className = "day_list">
-      <div>
-        <select onChange = {(e) => sortDays(e.target.value)}>
-          <option value = "date"> all </option>
-          <option value = "today"> today </option>
-          <option value = "next"> next </option>
-        </select>
-      </div>
-
-      {sortedDays.length ? (
+    <div>
+      <div className = "day_list">
         <div>
-        <h1 style = {{textAlign: 'center'}}>
-          "days"
-        </h1>
+          <select onChange = {(e) => sortDays(e.target.value)}>
+            <option value = "date"> all </option>
+            <option value = "today"> today </option>
+            <option value = "next"> next </option>
+          </select>
+        </div>
+        {daysLoading ?(
+          <div style = {{display: 'flex', justifyContent: 'center'}}>
+            <Loader />
+          </div>
+        ):(
 
-        {sortedDays.map( day =>
           <div>
-          <DayItem day = {day} remove = {remove} update = {update} key = {day.id} />
+            {sortedDays.length ? (
+              <div>
+                <h1 style = {{textAlign: 'center'}}>
+                  "days"
+                </h1>
+
+                {sortedDays.map( day =>
+                  <div>
+                    <DayItem day = {day} remove = {removeDay} update = {updateDay} key = {day.id} />
+                  </div>
+                )}
+              </div>
+            ): ( <h1 className = "day_list"> Days not found! </h1>) }
           </div>
         )}
-        </div>
-      ): ( <h1 className = "day_list"> Days not found! </h1>) }
+      </div>
+      <div className = "day_item">
+        <Modal visible = {modal} setVisible = {setModal}> <DayForm createOrUpdate = {createDay}/> </Modal>
+        <Button onClick = { () => setModal(true)}> add new day </Button>
+      </div>
     </div>
-
   )
 };
 export default DaysList;

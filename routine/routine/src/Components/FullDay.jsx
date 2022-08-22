@@ -8,23 +8,23 @@ import EventService from '../API/EventService';
 const FullDay = ({day, events, update,setEvents}) =>{
 
   const [modal, setModal] = useState(false);
-  const [eventView, setEventView] = useState(false)
+  const [eventView, setEventView] = useState(false);
   const updateDay = (newDay) =>{
     setModal(false)
     update(newDay);
-  }
+  };
 
   const removeEvent = (event) => {
     EventService.removeEvent(event.id);
     setEvents(events.filter(d => d.id !== event.id ))
-  }
+  };
   const changeEvent = (event) => {
     setEvents([...events.filter(d => d.id !== event.id ), event])
-  }
+  };
   const addNewEvent = (event) => {
     setEvents([...events,event])
     setEventView(false)
-  }
+  };
   return (
     <div className = "day_item">
       <h1  style = {{textAlign: 'center'}}>{day.name} </h1>

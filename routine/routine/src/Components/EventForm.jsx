@@ -40,7 +40,6 @@ const EventForm = ({createOrUpdate,event, dayId}) => {
     <Form onSubmit = {addNewEvent}>
       <Input type = "text" placeholder= "description" value = {description} onChange = { e => setDescription(e.target.value)}/>
       <Input type = "time" placeholed = "time" value = {time} onChange = {e => setTime(e.target.value)}/>
-
       <Button type = "submit"> {event ?  "update" : "create"} </Button>
     </Form>
   )

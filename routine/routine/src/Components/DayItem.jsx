@@ -1,29 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import { Button, Modal} from 'react-bootstrap';
-
-//import Modal from '../UI/Modal/Modal';
 import FullDay from './FullDay'
-
 import EventService from '../API/EventService';
 const DayItem = ({day, remove, update} ) => {
+  const [fullDayView, setFullDayView] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [sortedEvents, setSortedEvents] = useState([]);
+  useEffect (()=>{
+    setSortedEvents([...events].sort( (a,b) => new Date('1/1/1999 ' + a.date) - new Date('1/1/1999 ' + b.date)))
 
-
-
-const [fullDayView, setFullDayView] = useState(false);
-const [events, setEvents] = useState([]);
-const [sortedEvents, setSortedEvents] = useState([])
-useEffect (()=>{
-  setSortedEvents([...events].sort( (a,b) => new Date('1/1/1999 ' + a.date) - new Date('1/1/1999 ' + b.date)))
-
-},[events])
-async function fetchEvents() {
- const response = await EventService.getAll(day.id);
- setEvents(response.events)
- setFullDayView(true);
-}
-
-
-
+  },[events]);
+  async function fetchEvents() {
+   const response = await EventService.getAll(day.id);
+   setEvents(response.events)
+   setFullDayView(true);
+ };
   return (
 
     <div className = "day_item">

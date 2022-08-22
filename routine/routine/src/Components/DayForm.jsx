@@ -14,37 +14,31 @@ const DayForm = ({createOrUpdate,day}) => {
       const newDay = {id: data.id, name, date};
       createOrUpdate(newDay);
     }
-  }
+  };
   const addNewDay = (e) =>{
       e.preventDefault();
       if(!day){
         DaysService.addDay(name, date).then(data => {
           validation(data)
-        }
-      )
-    } else {
-      DaysService.changeDay(id, name, date).then(data => {
+        })
+      } else {
+        DaysService.changeDay(id, name, date).then(data => {
         validation(data)
+        })
       }
-    )
-    }
-
-
-  }
-
+  };
   useEffect( () =>{
     if (day){
       setName(day.name)
       setDate(day.date)
       setId(day.id)
     }
-  },[day])
+  },[day]);
   return (
 
       <Form onSubmit = {addNewDay}>
         <Input type = "text" placeholder= "day Name" value = {name} onChange = { e => setName(e.target.value)}/>
         <Input type = "date" placeholed = "day date" value = {date} onChange = {e => setDate(e.target.value)}/>
-
         <Button type = "submit"> {day ?  "update" : "create"} </Button>
       </Form>
     )
