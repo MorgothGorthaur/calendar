@@ -7,8 +7,8 @@ const DaysList = ({days, remove, update}) => {
   },[days])
   const sortDays = (sort) => {
     //setDays ([...days].sort( (a,b) => a[sort].localeToCompare(b[sort])))
-    const current = new Date();
-    const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
+    
+
     if(sort === "date"){
       setSortedDays ([...days].sort( (a,b) => new Date(a.date).getTime() - new Date(b.date).getTime() ))
     }
