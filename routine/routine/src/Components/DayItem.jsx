@@ -48,6 +48,7 @@ async function fetchEvents() {
     <Modal  show = {fullDayView} onHide = {setFullDayView}> <FullDay day = {day} events = {events} update = {update} setEvents = {setEvents} / ></Modal>
   </Card>
     </div> */}
+    
       <h1 style = {{textAlign: 'center'}}> {day.name} </h1>
       <h3 style = {{textAlign: 'right'}} > {day.date} </h3>
       <hr/>

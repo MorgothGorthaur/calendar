@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import DayItem from './DayItem';
 const DaysList = ({days, remove, update}) => {
-  const [sortedDays, setSortedDays] = useState('')
+  const [sortedDays, setSortedDays] = useState([])
   useEffect ( () => {
       setSortedDays ([...days].sort( (a,b) => new Date(a.date).getTime() - new Date(b.date).getTime() ))
   },[days])
@@ -13,11 +13,10 @@ const DaysList = ({days, remove, update}) => {
       setSortedDays ([...days].sort( (a,b) => new Date(a.date).getTime() - new Date(b.date).getTime() ))
     }
     if (sort ==="today"){
-
-      setSortedDays([...days.filter(d => new Date(d.date).getTime() === new Date(date).getTime())])
+      setSortedDays([...days.filter(d => d.dayActuality === "TODAY")])
     }
     if (sort === "next"){
-        setSortedDays([...days.filter(d => new Date(d.date).getTime() !== new Date(date).getTime())])
+      setSortedDays([...days.filter(d => d.dayActuality === "FUTURE")])
     }
   }
 
