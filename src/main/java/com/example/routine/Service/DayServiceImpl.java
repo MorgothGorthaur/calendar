@@ -120,23 +120,20 @@ public class DayServiceImpl implements DayService {
 			Time currentTime = new Time(Calendar.getInstance().getTime().getTime());		
 			List <Day> days = dayRepository.findAll();
 			for(Day day : days) {
-				if (day.getDayActuality() == DayActuality.TODAY) {
-					System.out.println(day.getId());
+				// trigered the ConcurrentModificationException
+				/*if (day.getDayActuality() == DayActuality.TODAY) {
 					for (Event event : day.getEvents()) {
 						if (currentTime.toLocalTime().compareTo(event.getTime().toLocalTime()) >= 1) {
-							System.out.println(event.getId());
 							day.removeEvent(event);
-							System.out.println(currentTime.toLocalTime());
-							
-							
 						}
 						
 					}
-				}
+				}*/
+				day.getEvents().removeIf(event -> event.getTime().toLocalTime().compareTo(currentTime.toLocalTime()) <= 1);
 				
 			}
 		} catch ( Exception ex) {
-			System.out.println(ex.getMessage());
+			System.out.println(ex.toString());
 		}
 	}
 
@@ -153,7 +150,6 @@ public class DayServiceImpl implements DayService {
 		day.addEvent(event);
 		//save(day);
 		dayRepository.save(day);
-		System.out.println(day.getEvents().size()-1);
 		//return save(day).getEvents().get(save(day).getEvents().size() -1);
 		return day.getEvents().get(day.getEvents().size()-1);
 	}

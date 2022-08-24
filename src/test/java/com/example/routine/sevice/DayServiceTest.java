@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -38,13 +39,15 @@ import com.example.routine.exception.EventNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class DayServiceTest {
-	@Mock private DayRepository dayRepository;
+	@Mock
+	private DayRepository dayRepository;
 	private AutoCloseable autoCloseable;
 	private DayServiceImpl underTest;
+	private Date yesterday = new Date(Calendar.getInstance().getTime().getTime() - 24*60*60*1000);
 	private Date today = new Date(Calendar.getInstance().getTime().getTime());
 	private Date tomorow = new Date(Calendar.getInstance().getTime().getTime()+24*60*60*1000);
-	private Time nextHour = new Time(Calendar.getInstance().getTime().getTime() + 60*60);
-	
+	private Time nextHour = new Time(Calendar.getInstance().getTime().getTime() + 1000 * 60*60);
+	private Time lastHour = new Time(Calendar.getInstance().getTime().getTime() - 1000* 60*60);
 	@BeforeEach
 	void setUp() {
 		autoCloseable = MockitoAnnotations.openMocks(this);
@@ -147,5 +150,60 @@ public class DayServiceTest {
 		day.addEvent(event);
 		when(dayRepository.findById(id)).thenReturn(Optional.of(day));
 		underTest.addEvent(event);
+	}
+	
+	@Test
+	public void updateDayActualityTestFutureToToday() {
+		Day day = new Day();
+		day.setDate(today);
+		day.setDayActuality(DayActuality.FUTURE);
+		day.setName("day");
+		day.setId((long) 1);
+		when(dayRepository.findAll()).thenReturn(Arrays.asList(day));
+		underTest.updateDayActuality();
+		assertEquals(day.getDayActuality(), DayActuality.TODAY);
+	}
+	@Test
+	public void updateDayActualityTestFutureToFuture() {
+		Day day = new Day();
+		day.setDate(tomorow);
+		day.setDayActuality(DayActuality.FUTURE);
+		day.setName("day");
+		day.setId((long) 1);
+		when(dayRepository.findAll()).thenReturn(Arrays.asList(day));
+		underTest.updateDayActuality();
+		assertEquals(day.getDayActuality(), DayActuality.FUTURE);
+	}
+	@Test
+	public void updateDayActualityTestRemoveLast() {
+		Day day = new Day();
+		day.setDate(yesterday);
+		day.setDayActuality(DayActuality.LAST);
+		day.setName("day");
+		day.setId((long) 1);
+		when(dayRepository.findAll()).thenReturn(Arrays.asList(day));
+		doNothing().when(dayRepository).deleteById((long) 1);
+		underTest.updateDayActuality();
+		verify(dayRepository).deleteById((long) 1);
+	}
+	
+	@Test
+	public void updateTimeActualityTest() {
+		Long dayId = (long) 1;
+		Long eventId = (long) 1;
+		Day day = new Day();
+		day.setDate(today);
+		day.setDayActuality(DayActuality.TODAY);
+		day.setName("day");
+		day.setId(dayId);
+		Event event = new Event();
+		event.setId(eventId);
+		event.setDate(lastHour);
+		event.setDayId(dayId);
+		event.setDescription("description");
+		day.addEvent(event);
+		when(dayRepository.findAll()).thenReturn(Arrays.asList(day));
+		underTest.updateTimeActuality();
+		assertEquals(day.getEvents().size(), 0);
 	}
 }
