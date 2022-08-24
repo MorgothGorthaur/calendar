@@ -14,7 +14,7 @@ const DayItem = ({day, remove, update} ) => {
       <div style = {{textAlign: 'right'}}>
         <Button onClick = { () => /*fetchEvents()*/ setFullDayView(true)}> open </Button>
         <Button onClick = { () => {remove(day)}} variant="danger"> remove </Button>
-        <Modal visible = {fullDayView} setVisible = {setFullDayView} show = {fullDayView} onHide = {setFullDayView}> <FullDay day = {day} /*events = {sortedEvents}*/ update = {update} /*setEvents = {setEvents}*/ / ></Modal>
+        <Modal className = "modal" show = {fullDayView} onHide = {setFullDayView}> <FullDay day = {day} /*events = {sortedEvents}*/ update = {update} /*setEvents = {setEvents}*/ / ></Modal>
       </div>
     </div>
   )

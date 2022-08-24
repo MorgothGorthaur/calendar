@@ -11,7 +11,7 @@ const DayForm = ({createOrUpdate,day}) => {
     if (data.errors){
       alert(data.errors)
     } else {
-      const newDay = {id: data.id, name, date};
+      const newDay = {id: data.id, name, dayActuality: data.dayActuality, date};
       createOrUpdate(newDay);
     }
   };
@@ -36,7 +36,7 @@ const DayForm = ({createOrUpdate,day}) => {
   },[day]);
   return (
 
-      <Form onSubmit = {addNewDay}>
+      <Form className= "form" onSubmit = {addNewDay}>
         <Input type = "text" placeholder= "day Name" value = {name} onChange = { e => setName(e.target.value)}/>
         <Input type = "date" placeholed = "day date" value = {date} onChange = {e => setDate(e.target.value)}/>
         <Button type = "submit"> {day ?  "update" : "create"} </Button>

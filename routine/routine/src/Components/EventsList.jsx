@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import EventItem from './EventItem';
-import Modal from '../UI/Modal/Modal';
+//import Modal from '../UI/Modal/Modal';
 import EventForm from './EventForm';
-import {Button} from 'react-bootstrap';
+import {Button, Modal} from 'react-bootstrap';
 
 import Loader from '../UI/Loader/Loader';
 import EventService from '../API/EventService';
-
+import {CSSTransition,TransitionGroup} from 'react-transition-group';
 const EventsList = ({/*events, remove, change,*/ dayId}) =>{
   const [modal, setModal] = useState(false);
   const [events, setEvents] = useState([]);
@@ -62,12 +62,13 @@ const EventsList = ({/*events, remove, change,*/ dayId}) =>{
                   <h3  style = {{textAlign: 'center'}}>
                     "events"
                   </h3>
-
+                  <TransitionGroup>
                   {sortedEvents.map( event =>
-                      <div>
-                      <EventItem event = {event} remove = {removeEvent} change = {changeEvent} dayId = {dayId} key = {event.id} />
-                      </div>
+                      <CSSTransition key = {event.id} timeout = {1000} classNames = "element" >
+                      <EventItem event = {event} remove = {removeEvent} change = {changeEvent} dayId = {dayId} />
+                      </CSSTransition>
                   )}
+                  </TransitionGroup>
                 </div>
 
               ):(
@@ -76,7 +77,7 @@ const EventsList = ({/*events, remove, change,*/ dayId}) =>{
             </div>
             <div>
               <Button onClick = {() => setModal(true) } > add Event </Button>
-              <Modal visible = {modal} setVisible = {setModal}> <EventForm createOrUpdate = {addNewEvent} dayId = {dayId}/> </Modal>
+              <Modal /*visible = {modal} setVisible = {setModal}*/ className="subModal" show = {modal} onHide = {setModal}> <EventForm createOrUpdate = {addNewEvent} dayId = {dayId}/> </Modal>
             </div>
           </div>
         )}

@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import DayItem from './DayItem';
-import {Button} from 'react-bootstrap';
+import {Button, Modal} from 'react-bootstrap';
 import Loader from '../UI/Loader/Loader';
 import DayForm from './DayForm';
-import Modal from '../UI/Modal/Modal';
+//import Modal from '../UI/Modal/Modal';
+import {CSSTransition,TransitionGroup} from 'react-transition-group';
 import DaysService from '../API/DaysService';
 const DaysList = (/*{days, remove, update}*/) => {
   const [sortedDays, setSortedDays] = useState([]);
@@ -74,19 +75,20 @@ const DaysList = (/*{days, remove, update}*/) => {
                 <h1 style = {{textAlign: 'center'}}>
                   "days"
                 </h1>
-
+                <TransitionGroup>
                 {sortedDays.map( day =>
-                  <div>
-                    <DayItem day = {day} remove = {removeDay} update = {updateDay} key = {day.id} />
-                  </div>
+                  <CSSTransition key = {day.id} timeout = {1000} classNames = "element" >
+                    <DayItem day = {day} remove = {removeDay} update = {updateDay} />
+                  </CSSTransition>
                 )}
+                </TransitionGroup>
               </div>
             ): ( <h1 className = "day_list"> Days not found! </h1>) }
           </div>
         )}
       </div>
       <div className = "day_item">
-        <Modal visible = {modal} setVisible = {setModal}> <DayForm createOrUpdate = {createDay}/> </Modal>
+        <Modal /*visible = {modal} setVisible = {setModal}*/ show = {modal} onHide = {setModal}> <DayForm createOrUpdate = {createDay}/> </Modal>
         <Button onClick = { () => setModal(true)}> add new day </Button>
       </div>
     </div>
