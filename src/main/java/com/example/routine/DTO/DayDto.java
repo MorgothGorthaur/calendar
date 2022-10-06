@@ -1,6 +1,8 @@
 package com.example.routine.DTO;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
@@ -26,7 +28,7 @@ public class DayDto {
 	@NotNull(message = "date must be seted!")
 	@CheckIfDateIsActualValidation
 
-	private Date date;
+	private LocalDate date;
 	private Long id;
 	private DayActuality dayActuality;
 

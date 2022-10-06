@@ -2,6 +2,7 @@ package com.example.routine.Model;
 
 
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ public class Event {
 
     @Column(name = "events_time")
     @NotNull(message = "time must be setted!")
-    private Time time;
+    private LocalTime time;
     private Long dayId;
     @Column(name = "description")
     @NotNull(message = "description must be no null")

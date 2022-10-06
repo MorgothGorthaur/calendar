@@ -2,6 +2,8 @@ package com.example.routine.Service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
@@ -55,9 +57,9 @@ public class DayServiceImpl implements DayService {
 	}
 
 	@Override
-	public DayActuality checkActuality(Date date) {
+	public DayActuality checkActuality(LocalDate date) {
 		Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-		if(currentDate.toLocalDate().compareTo(date.toLocalDate()) == 0) {
+		if(currentDate.toLocalDate().compareTo(date) == 0) {
 			return DayActuality.TODAY;
 		} else {
 			return DayActuality.FUTURE;
@@ -72,9 +74,9 @@ public class DayServiceImpl implements DayService {
 			Date currentDate = new Date(Calendar.getInstance().getTime().getTime());
 			List <Day> days = dayRepository.findAll();
 			for(Day day : days) {
-				if(currentDate.toLocalDate().compareTo(day.getDate().toLocalDate()) == 1) {
+				if(currentDate.toLocalDate().compareTo(day.getDate()) == 1) {
 					dayRepository.deleteById(day.getId());
-				} else if (currentDate.toLocalDate().compareTo(day.getDate().toLocalDate()) == -1) {
+				} else if (currentDate.toLocalDate().compareTo(day.getDate()) == -1) {
 					day.setDayActuality(DayActuality.FUTURE);
 					dayRepository.save(day);
 				} else {
@@ -99,7 +101,7 @@ public class DayServiceImpl implements DayService {
 			Time currentTime = new Time(Calendar.getInstance().getTime().getTime());		
 			List <Day> days = dayRepository.findAll();
 			for(Day day : days) {
-				day.getEvents().removeIf(event -> event.getTime().toLocalTime().compareTo(currentTime.toLocalTime()) <= 1);
+				day.getEvents().removeIf(event -> event.getTime().compareTo(currentTime.toLocalTime()) <= 1);
 			}
 		} catch ( Exception ex) {
 			System.out.println(ex.toString());

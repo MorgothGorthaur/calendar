@@ -1,22 +1,18 @@
 package com.example.routine.validation;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Calendar;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class CheckIfDateIsActualValidationImpl implements ConstraintValidator < CheckIfDateIsActualValidation, Date> {
+public class CheckIfDateIsActualValidationImpl implements ConstraintValidator < CheckIfDateIsActualValidation, LocalDate> {
 
 	@Override
-	public boolean isValid(Date date, ConstraintValidatorContext context) {
+	public boolean isValid(LocalDate date, ConstraintValidatorContext context) {
 		try {
-			Date currentDate = new Date(Calendar.getInstance().getTime().getTime());
-			if(currentDate.toLocalDate().compareTo(date.toLocalDate()) >= 1) {
-				return false;
-			} else {
-				return true;
-			}
+			return date.equals(LocalDate.now()) || date.isAfter(LocalDate.now());
 		} catch (Exception ex) {		
 			return false;
 		}

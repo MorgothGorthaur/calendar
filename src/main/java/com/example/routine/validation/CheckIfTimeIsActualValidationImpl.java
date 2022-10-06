@@ -20,18 +20,11 @@ public class CheckIfTimeIsActualValidationImpl implements ConstraintValidator <C
 	@Override
 	public boolean isValid(Event event, ConstraintValidatorContext context) {
 		try {
-			if ( dayService.findById(event.getDayId()).getDayActuality() == DayActuality.TODAY) {
-				Time currentTime = Time.valueOf(LocalTime.now());
-				//System.out.println(currentTime.compareTo(event.getTime()));
-				if (currentTime.compareTo(event.getTime()) >= 1) {
-					return false;
-				}
-			}
+			return event.getTime().equals(LocalTime.now()) || event.getTime().isAfter(LocalTime.now());
 		} catch ( Exception ex) {
 			System.out.println(ex.getMessage());
 			return false;
 		}
-		return true;
 	}
 
 }

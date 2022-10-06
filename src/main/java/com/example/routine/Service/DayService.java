@@ -1,6 +1,8 @@
 package com.example.routine.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.routine.Model.Day;
@@ -15,5 +17,5 @@ public interface DayService  {
 	public void updateDay(Day day);
 	//public void addEvent(Event event);
 	public Event addEvent(Event event);
-	public DayActuality checkActuality(Date date);
+	public DayActuality checkActuality(LocalDate date);
 }

@@ -46,6 +46,7 @@ public class RoutineRestController {
 	}
 	@PostMapping
 	public ResponseEntity<Day> addDay(@Valid @RequestBody  DayDto dayDto){
+		System.out.println(dayDto.getName());
 		Day day = mapper.DtoToDay(dayDto);
 		return ResponseEntity.ok(dayService.save(day));
 	}

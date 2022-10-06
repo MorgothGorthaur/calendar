@@ -4,6 +4,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -30,7 +32,7 @@ public class Day {
     private Long id;
 
     @Column(name = "day_date")
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "day_name")
     private String name;
