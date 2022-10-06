@@ -36,22 +36,9 @@ public class DayServiceImpl implements DayService {
 		return dayRepository.findById(id).orElseThrow(() -> new DayNotFoundException(id));
 	}
 
-	/*@Override
-	public Long save(Day day) {
-		dayRepository.save(day);
-		Long id = new Long(0);
-		for (Day d : dayRepository.findAll()) {
-			if (d.getId() > id) {
-				id = d.getId();
-			}
-		}
-		return id;
-	}*/
-
 	@Override
 	public void deleteById(Long id) {
 		try {
-			//dayRepository.delete(findById(id));
 			dayRepository.deleteById(id);
 		} catch ( Exception ex) {
 			throw new DayNotFoundException(id);
@@ -67,14 +54,6 @@ public class DayServiceImpl implements DayService {
 		
 	}
 
-	/*@Override
-	public void addEvent(Event event) {
-		Day day = findById(event.getDayId());
-		day.addEvent(event);
-		save(day);
-		
-	}
-*/
 	@Override
 	public DayActuality checkActuality(Date date) {
 		Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -120,17 +99,7 @@ public class DayServiceImpl implements DayService {
 			Time currentTime = new Time(Calendar.getInstance().getTime().getTime());		
 			List <Day> days = dayRepository.findAll();
 			for(Day day : days) {
-				// trigered the ConcurrentModificationException
-				/*if (day.getDayActuality() == DayActuality.TODAY) {
-					for (Event event : day.getEvents()) {
-						if (currentTime.toLocalTime().compareTo(event.getTime().toLocalTime()) >= 1) {
-							day.removeEvent(event);
-						}
-						
-					}
-				}*/
 				day.getEvents().removeIf(event -> event.getTime().toLocalTime().compareTo(currentTime.toLocalTime()) <= 1);
-				
 			}
 		} catch ( Exception ex) {
 			System.out.println(ex.toString());
@@ -140,7 +109,6 @@ public class DayServiceImpl implements DayService {
 	@Override
 	public Day save(Day day) {
 		dayRepository.save(day);
-		//return findAll().get(findAll().size() -1);
 		return dayRepository.findById(day.getId()).orElse(dayRepository.findAll().get(dayRepository.findAll().size()-1));
 	}
 
@@ -148,9 +116,7 @@ public class DayServiceImpl implements DayService {
 	public Event addEvent(Event event) {
 		Day day = findById(event.getDayId());
 		day.addEvent(event);
-		//save(day);
 		dayRepository.save(day);
-		//return save(day).getEvents().get(save(day).getEvents().size() -1);
 		return day.getEvents().get(day.getEvents().size()-1);
 	}
 	

@@ -19,52 +19,43 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
-
 @Entity
 @Table(name = "days")
 @Getter
 @Setter
 @EqualsAndHashCode
 public class Day {
-	  @Id
-	  @GeneratedValue(strategy = GenerationType.IDENTITY)
-	  private Long id;
-	  
-	  //@Temporal(TemporalType.DATE)
-	  @Column(name = "day_date")
-	  private Date date;
-	  
-	  @Column(name = "day_name")
-	  private String name;
-	  @OneToMany(mappedBy = "dayId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	  //@JoinColumn(name = "day_id")
-	  //https://www.baeldung.com/jpa-joincolumn-vs-mappedby - вспомнить
-	  private List<Event> events=new ArrayList<>();
-	  @Column(name = "day_actuality")
-	  private DayActuality dayActuality;
-	  
-	  
-	  public DayActuality getDayActuality() {
-		return dayActuality;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public void setDayActuality(DayActuality dayActuality) {
-		this.dayActuality = dayActuality;
-	}
+    @Column(name = "day_date")
+    private Date date;
 
-	public List<Event> getEvents() {
-	  return events;
-	  }
+    @Column(name = "day_name")
+    private String name;
+    @OneToMany(mappedBy = "dayId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Event> events = new ArrayList<>();
+    @Column(name = "day_actuality")
+    private DayActuality dayActuality;
 
-	  public void addEvent(Event event) {
-		  events.add(event);
-		  //event.setDay(this);
-		  event.setDayId(id);
-	  }
-	  public void removeEvent(Event event) {
-		  events.remove(event);
-		  event.setDayId(null);
-		  event.setDescription("g");
-	  }
+    public DayActuality getDayActuality() {
+        return dayActuality;
+    }
+
+    public void setDayActuality(DayActuality dayActuality) {
+        this.dayActuality = dayActuality;
+    }
+
+
+    public void addEvent(Event event) {
+        events.add(event);
+        event.setDayId(id);
+    }
+
+    public void removeEvent(Event event) {
+        events.remove(event);
+        event.setDayId(null);
+    }
 
 }

@@ -10,7 +10,6 @@ import com.example.routine.Model.Event;
 public interface DayService  {
 	public List <Day> findAll();
 	public Day findById(Long id);
-	//public Long save(Day day);
 	public Day save(Day day);
 	public void deleteById(Long id);
 	public void updateDay(Day day);

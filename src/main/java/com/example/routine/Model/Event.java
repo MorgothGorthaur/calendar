@@ -22,22 +22,23 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "events")
-@CheckIfTimeIsUniqueValidation 
+@CheckIfTimeIsUniqueValidation
 @CheckIfTimeIsActualValidation
-@Getter @Setter
+@Getter
+@Setter
 @EqualsAndHashCode
 public class Event {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	  
-	@Column(name = "events_time")
-	@NotNull(message = "time must be setted!")
-	private Time time;
-	private Long dayId;
-	@Column(name = "description")
-	@NotNull(message = "description must be no null")
-	@Size(min=2, max=30, message = "description must have size between 2 and 30 literals")
-	public String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "events_time")
+    @NotNull(message = "time must be setted!")
+    private Time time;
+    private Long dayId;
+    @Column(name = "description")
+    @NotNull(message = "description must be no null")
+    @Size(min = 2, max = 30, message = "description must have size between 2 and 30 literals")
+    public String description;
 
 }
