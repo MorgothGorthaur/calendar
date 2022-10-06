@@ -144,7 +144,7 @@ public class DayServiceTest {
 		day.setName("day");
 		day.setId(id);
 		Event event = new Event();
-		event.setDate(nextHour);
+		event.setTime(nextHour);
 		event.setDayId(id);
 		event.setDescription("description");
 		day.addEvent(event);
@@ -198,7 +198,7 @@ public class DayServiceTest {
 		day.setId(dayId);
 		Event event = new Event();
 		event.setId(eventId);
-		event.setDate(lastHour);
+		event.setTime(lastHour);
 		event.setDayId(dayId);
 		event.setDescription("description");
 		day.addEvent(event);

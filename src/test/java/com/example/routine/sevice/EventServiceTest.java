@@ -65,7 +65,7 @@ public class EventServiceTest {
 		Event event = new Event();
 		event.setId((long)1);
 		event.setDescription("description");
-		event.setDate(nextHour);
+		event.setTime(nextHour);
 		when(eventRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(event));
 		Event findedEvent = underTest.findById(event.getId());
 		assertEquals(event, findedEvent);
@@ -75,7 +75,7 @@ public class EventServiceTest {
 		Event event = new Event();
 		event.setId((long)1);
 		event.setDescription("description");
-		event.setDate(nextHour);
+		event.setTime(nextHour);
 		when(eventRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(event));
 		underTest.updateEvent(event);
 		verify(eventRepository).save(event);

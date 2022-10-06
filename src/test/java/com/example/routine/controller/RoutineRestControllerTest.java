@@ -108,7 +108,7 @@ public class RoutineRestControllerTest {
 	@Test
 	public void getDayById() throws Exception {
 		Event event = new Event();
-		event.setDate(nextHour);
+		event.setTime(nextHour);
 		event.setDescription("description");
 		event.setDayId((long)1);
 		Day day = new Day();
@@ -170,7 +170,7 @@ public class RoutineRestControllerTest {
 	public void addEventTest() throws Exception {
 		Event event = new Event();
 		event.setId((long)1);
-		event.setDate(nextTwoHour);
+		event.setTime(nextTwoHour);
 		event.setDescription("description");
 		event.setDayId((long) 1);
 		Mockito.when(dayService.addEvent(ArgumentMatchers.any())).thenReturn(event);
@@ -196,7 +196,7 @@ public class RoutineRestControllerTest {
 	@Test
 	public void changeEvent() throws Exception {
 		Event event = new Event();
-		event.setDate(nextTwoHour);
+		event.setTime(nextTwoHour);
 		event.setDescription("new description");
 		event.setId((long)1);
 		event.setDayId((long)1);

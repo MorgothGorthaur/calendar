@@ -1,9 +1,12 @@
 package com.example.routine.Model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +22,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "days")
+@Getter
+@Setter
+@EqualsAndHashCode
 public class Day {
 	  @Id
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,55 +62,9 @@ public class Day {
 		  event.setDayId(id);
 	  }
 	  public void removeEvent(Event event) {
-		  System.out.println(events.size());
 		  events.remove(event);
-		  System.out.println(events.size());
-		  //event.setDay(null);
 		  event.setDayId(null);
 		  event.setDescription("g");
 	  }
-		public Long getId() {
-			return id;
-		}
-	
-		public void setId(Long id) {
-			this.id = id;
-		}
-	
-		public Date getDate() {
-			return date;
-		}
-	
-		public void setDate(Date date) {
-			this.date = date;
-		}
-	
-		public String getName() {
-			return name;
-		}
-	
-		public void setName(String name) {
-			this.name = name;
-		}
 
-		@Override
-		public int hashCode() {
-			return Objects.hash(date, dayActuality, events, id, name);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Day other = (Day) obj;
-			return Objects.equals(date, other.date) && dayActuality == other.dayActuality
-					&& Objects.equals(events, other.events) && Objects.equals(id, other.id)
-					&& Objects.equals(name, other.name);
-		}
-	
-	  
 }

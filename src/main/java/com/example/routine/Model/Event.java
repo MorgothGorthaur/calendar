@@ -15,15 +15,17 @@ import javax.validation.constraints.Size;
 
 import com.example.routine.validation.CheckIfTimeIsActualValidation;
 import com.example.routine.validation.CheckIfTimeIsUniqueValidation;
-
-
-
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Entity
 @Table(name = "events")
 @CheckIfTimeIsUniqueValidation 
 @CheckIfTimeIsActualValidation
+@Getter @Setter
+@EqualsAndHashCode
 public class Event {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,46 +39,5 @@ public class Event {
 	@NotNull(message = "description must be no null")
 	@Size(min=2, max=30, message = "description must have size between 2 and 30 literals")
 	public String description;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Time getTime() {
-		return time;
-	}
-	public void setDate(Time time) {
-		this.time = time;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public Long getDayId() {
-		return dayId;
-	}
-	public void setDayId(Long dayId) {
-		this.dayId = dayId;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(dayId, description, id, time);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Event other = (Event) obj;
-		return Objects.equals(dayId, other.dayId) && Objects.equals(description, other.description)
-				&& Objects.equals(id, other.id) && Objects.equals(time, other.time);
-	}
-	
-	
+
 }

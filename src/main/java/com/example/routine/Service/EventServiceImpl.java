@@ -37,7 +37,7 @@ public class EventServiceImpl implements EventService{
 	public void updateEvent(Event event) {
 		Event updatedEvent = findById(event.getId());
 		updatedEvent.setDescription(event.getDescription());
-		updatedEvent.setDate(event.getTime());
+		updatedEvent.setTime(event.getTime());
 		eventRepository.save(updatedEvent);
 		
 	}

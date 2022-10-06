@@ -70,7 +70,7 @@ public class RoutineApplicationTest {
 		day.setDayActuality(DayActuality.TODAY);
 		day.setName("day");
 		Event event = new Event();
-		event.setDate( nextHour);
+		event.setTime( nextHour);
 		event.setDescription("description");
 		dayRepository.save(day);
 		event.setDayId(dayRepository.findAll().get(0).getId());
@@ -148,7 +148,7 @@ public class RoutineApplicationTest {
 	public void addEventTest() throws Exception {
 		Long dayId = dayRepository.findAll().get(0).getId();
 		Event event = new Event();
-		event.setDate(nextTwoHour);
+		event.setTime(nextTwoHour);
 		event.setDescription("description");
 		event.setDayId(dayId);
 		this.mockMvc.perform(post("/routine/events")
@@ -172,7 +172,7 @@ public class RoutineApplicationTest {
 		Long id = eventRepository.findAll().get(0).getId();
 		Long dayId = dayRepository.findAll().get(0).getId();
 		Event event = new Event();
-		event.setDate(nextTwoHour);
+		event.setTime(nextTwoHour);
 		event.setDescription("new description");
 		event.setId(id);
 		event.setDayId(dayId);
