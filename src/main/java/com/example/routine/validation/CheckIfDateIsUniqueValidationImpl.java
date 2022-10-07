@@ -17,7 +17,8 @@ public class CheckIfDateIsUniqueValidationImpl implements ConstraintValidator <C
 	@Override
 	public boolean isValid(DayDto dayDto, ConstraintValidatorContext context) {
 		try {
-			return dayRepository.findDayByDate(dayDto.getDate()).isEmpty();
+			var day = dayRepository.findDayByDate(dayDto.getDate());
+			return day.isEmpty() || day.get().getId().equals(dayDto.getId());
 		} catch ( Exception ex) {
 			return false;
 		}

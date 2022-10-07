@@ -35,8 +35,6 @@ import com.example.routine.DTO.Mapper;
 import com.example.routine.Model.Day;
 import com.example.routine.Model.DayActuality;
 import com.example.routine.Model.Event;
-import com.example.routine.Service.DayService;
-import com.example.routine.Service.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(RoutineRestController.class)
 public class RoutineRestControllerTest {
@@ -47,8 +45,7 @@ public class RoutineRestControllerTest {
 	private MockMvc mockMvc;
 	@MockBean
 	private DayService dayService;
-	@MockBean
-	private EventService eventService;
+
 	@MockBean
 	private Mapper mapper;
 	@MockBean

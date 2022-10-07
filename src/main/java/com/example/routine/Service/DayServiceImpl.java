@@ -22,51 +22,11 @@ import com.example.routine.Repository.DayRepository;
 import com.example.routine.exception.DayNotFoundException;
 
 @Service
-public class DayServiceImpl implements DayService {
+public class DayServiceImpl{
 	@Autowired
 	private DayRepository dayRepository;
 
-	public DayServiceImpl(DayRepository dayRepository) {
-		this.dayRepository = dayRepository;
-	}
 
-	@Override
-	public List<Day> findAll() {
-		return dayRepository.findAll();
-	}
-
-	@Override
-	public Day findById(Long id) {
-		return dayRepository.findById(id).orElseThrow(() -> new DayNotFoundException(id));
-	}
-
-	@Override
-	public void deleteById(Long id) {
-		try {
-			dayRepository.deleteById(id);
-		} catch ( Exception ex) {
-			throw new DayNotFoundException(id);
-		}
-	}
-
-	@Override
-	public void updateDay( Day day) {
-		var updatedDay = findById(day.getId());
-		updatedDay.setDate(day.getDate());
-		updatedDay.setName(day.getName());
-		dayRepository.save(updatedDay);
-		
-	}
-
-	@Override
-	public DayActuality checkActuality(LocalDate date) {
-		Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-		if(currentDate.toLocalDate().compareTo(date) == 0) {
-			return DayActuality.TODAY;
-		} else {
-			return DayActuality.FUTURE;
-		}
-	}
 	/*
 	 * every day sets day`s actuality status, and remove passed days 
 	 */
@@ -102,18 +62,6 @@ public class DayServiceImpl implements DayService {
 		}
 	}
 
-	@Override
-	public Day save(Day day) {
-		dayRepository.save(day);
-		return dayRepository.findById(day.getId()).orElse(dayRepository.findAll().get(dayRepository.findAll().size()-1));
-	}
 
-	@Override
-	public Event addEvent(Event event) {
-		var day = findById(event.getDayId());
-		day.addEvent(event);
-		dayRepository.save(day);
-		return day.getEvents().get(day.getEvents().size()-1);
-	}
 	
 }

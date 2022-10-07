@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.routine.Model.Event;
-import com.example.routine.Service.DayService;
 
 /*
  * check if event time is unick for this day
@@ -26,12 +25,10 @@ public class CheckIfTimeIsUniqueValidationImpl implements ConstraintValidator <C
 		//System.out.println(event.getId());
 		try {
 			var day = dayRepository.findById(event.getDayId()).orElseThrow(() -> new DayNotFoundException(event.getDayId()));
-			return day.getEvents().contains(event);
+			return !day.getEvents().contains(event);
 
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-			System.out.println("error");
-			return false;
+			throw ex;
 		}
 	}
 	
