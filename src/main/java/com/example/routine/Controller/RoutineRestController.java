@@ -58,10 +58,14 @@ public class RoutineRestController {
 
     @PatchMapping()
     public ResponseEntity<DayDto> changeDay(@Valid @RequestBody DayDto dayDto) {
-        Day day = mapper.DtoToDay(dayDto);
-        day.setId(dayDto.getId());
-        dayRepository.save(day);
-        return ResponseEntity.ok(mapper.toDto(day));
+        var old = dayRepository.findById(dayDto.getId()).orElseThrow(() -> new DayNotFoundException(dayDto.getId()));
+        var day = mapper.DtoToDay(dayDto);
+        old.setDayActuality(day.getDayActuality());
+        old.setName(day.getName());
+        old.setDate(day.getDate());
+        old.setDayActuality(day.getDayActuality());
+        dayRepository.save(old);
+        return ResponseEntity.ok(dayDto);
     }
 
     @DeleteMapping("/{dayId}")
