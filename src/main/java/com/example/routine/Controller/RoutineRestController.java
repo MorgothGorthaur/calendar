@@ -73,7 +73,6 @@ public class RoutineRestController {
 	
 	@PostMapping("/events")
 	public ResponseEntity<Event> addEvent( @Valid @RequestBody Event event){
-		
 		return ResponseEntity.ok(dayService.addEvent(event));
 	}
 	

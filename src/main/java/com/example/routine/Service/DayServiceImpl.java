@@ -4,11 +4,13 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -49,7 +51,7 @@ public class DayServiceImpl implements DayService {
 
 	@Override
 	public void updateDay( Day day) {
-		Day updatedDay = findById(day.getId());
+		var updatedDay = findById(day.getId());
 		updatedDay.setDate(day.getDate());
 		updatedDay.setName(day.getName());
 		dayRepository.save(updatedDay);
@@ -71,40 +73,32 @@ public class DayServiceImpl implements DayService {
 	@Scheduled(cron = "0 0 0 * * *")
 	public void updateDayActuality() {
 		try {
-			Date currentDate = new Date(Calendar.getInstance().getTime().getTime());
-			List <Day> days = dayRepository.findAll();
-			for(Day day : days) {
-				if(currentDate.toLocalDate().compareTo(day.getDate()) == 1) {
-					dayRepository.deleteById(day.getId());
-				} else if (currentDate.toLocalDate().compareTo(day.getDate()) == -1) {
-					day.setDayActuality(DayActuality.FUTURE);
-					dayRepository.save(day);
-				} else {
+
+			var actualDate = LocalDate.now();
+			for (var day : dayRepository.findAll()){
+				if(day.getDate().isBefore(actualDate)){
+					dayRepository.delete(day);
+				} else if (day.getDate().isEqual(actualDate)) {
 					day.setDayActuality(DayActuality.TODAY);
 					dayRepository.save(day);
 				}
-				
 			}
 		} catch ( Exception ex) {
-			System.out.println(ex.getMessage());
+			throw  ex;
 		}
 		
 	}
 	/*
 	 * every hour checks if day has today`s date, and removes passed events
 	 */
-	@Transactional
-	//@Scheduled(cron="0/5 * * * * *")
+	//@Transactional
+	//@Scheduled(cron="0/30 * * * * *")
 	@Scheduled(cron="0 0 * * * *")
 	public void updateTimeActuality() {
 		try {
-			Time currentTime = new Time(Calendar.getInstance().getTime().getTime());		
-			List <Day> days = dayRepository.findAll();
-			for(Day day : days) {
-				day.getEvents().removeIf(event -> event.getTime().compareTo(currentTime.toLocalTime()) <= 1);
-			}
+			dayRepository.findDayByDate(LocalDate.now()).ifPresent(day -> day.getEvents().removeIf(event -> event.getTime().isBefore(LocalTime.now())));
 		} catch ( Exception ex) {
-			System.out.println(ex.toString());
+			throw ex;
 		}
 	}
 
@@ -116,7 +110,7 @@ public class DayServiceImpl implements DayService {
 
 	@Override
 	public Event addEvent(Event event) {
-		Day day = findById(event.getDayId());
+		var day = findById(event.getDayId());
 		day.addEvent(event);
 		dayRepository.save(day);
 		return day.getEvents().get(day.getEvents().size()-1);

@@ -16,7 +16,7 @@ public class Mapper {
 	@Autowired
 	DayService dayService;
 	public DayDto toDto(Day day) {
-		DayDto dto = new DayDto();
+		var dto = new DayDto();
 		dto.setDate(day.getDate());
 		dto.setName(day.getName());
 		dto.setId(day.getId());
@@ -26,7 +26,7 @@ public class Mapper {
 	}
 	
 	public Day DtoToDay(DayDto dto) {
-		Day day = new Day();
+		var day = new Day();
 		day.setDate(dto.getDate());
 		day.setName(dto.getName());
 		day.setDayActuality(dayService.checkActuality(day.getDate()));

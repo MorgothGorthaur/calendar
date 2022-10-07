@@ -7,8 +7,9 @@ import com.example.routine.Model.Day;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface DayRepository extends JpaRepository<Day,Long> {
-    List<Day> findDayByDate(LocalDate date);
+    Optional<Day> findDayByDate(LocalDate date);
 
 }
