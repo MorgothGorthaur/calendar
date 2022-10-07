@@ -10,7 +10,9 @@ import javax.validation.Valid;
 import com.example.routine.Repository.DayRepository;
 import com.example.routine.Repository.EventRepository;
 import com.example.routine.exception.DayNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,12 +33,11 @@ import com.example.routine.Model.Event;
 @RestController
 @RequestMapping("/routine")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class RoutineRestController {
-    @Autowired
+
     private DayRepository dayRepository;
-    @Autowired
     private EventRepository eventRepository;
-    @Autowired
     private Mapper mapper;
 
     @GetMapping
@@ -87,9 +88,6 @@ public class RoutineRestController {
 
     @PatchMapping("/events")
     public ResponseEntity<@Valid Event> changeEvent(@Valid @RequestBody Event event) {
-        System.out.println(event);
-        var day = eventRepository.save(event);
-        System.out.println(event);
-        return ResponseEntity.ok(day);
+        return ResponseEntity.ok(eventRepository.save(event));
     }
 }

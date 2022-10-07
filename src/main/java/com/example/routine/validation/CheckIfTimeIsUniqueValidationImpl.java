@@ -6,6 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.example.routine.Repository.DayRepository;
 import com.example.routine.exception.DayNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +15,10 @@ import com.example.routine.Model.Event;
 /*
  * check if event time is unick for this day
  */
+@AllArgsConstructor
 @Component
 public class CheckIfTimeIsUniqueValidationImpl implements ConstraintValidator <CheckIfTimeIsUniqueValidation , Event>{
-	@Autowired
+
 	private DayRepository dayRepository;
 	
 

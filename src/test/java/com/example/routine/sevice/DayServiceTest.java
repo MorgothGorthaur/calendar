@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -30,11 +29,7 @@ import com.example.routine.Model.Day;
 import com.example.routine.Model.DayActuality;
 import com.example.routine.Model.Event;
 import com.example.routine.Repository.DayRepository;
-import com.example.routine.Service.DayServiceImpl;
 import com.example.routine.exception.DayNotFoundException;
-import com.example.routine.exception.EventNotFoundException;
-
-
 
 
 @ExtendWith(MockitoExtension.class)

@@ -19,17 +19,17 @@ import lombok.Setter;
  *  Day class without list of events
  */
 @CheckIfDateIsUniqueValidation
-@Getter @Setter
+@Getter
+@Setter
 @EqualsAndHashCode
 public class DayDto {
-	@NotNull(message = "name must be no null")
-	@Size(min=2, max=30, message = "name must have size between 2 and 30 literals")
-	private String name;
-	@NotNull(message = "date must be seted!")
-	@CheckIfDateIsActualValidation
-
-	private LocalDate date;
-	private Long id;
-	private DayActuality dayActuality;
+    @NotNull(message = "name must be no null")
+    @Size(min = 2, max = 30, message = "name must have size between 2 and 30 literals")
+    private String name;
+    @NotNull(message = "date must be seted!")
+    @CheckIfDateIsActualValidation
+    private LocalDate date;
+    private Long id;
+    private DayActuality dayActuality;
 
 }
