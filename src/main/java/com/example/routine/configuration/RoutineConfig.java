@@ -8,9 +8,11 @@ import org.hibernate.validator.HibernateValidator;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
 
 @Configuration
+@EnableScheduling
 public class RoutineConfig {
 	/*
 	 * https://www.javafixing.com/2021/10/fixed-autowired-gives-null-value-in.html

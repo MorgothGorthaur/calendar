@@ -22,8 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.routine.DTO.DayDto;
 import com.example.routine.DTO.Mapper;
-import com.example.routine.Service.DayService;
-import com.example.routine.Service.EventService;
 import com.example.routine.exception.DayNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest

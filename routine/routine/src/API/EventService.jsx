@@ -1,4 +1,5 @@
 export default class EventService {
+
   static async getAll(id){
     try{
       const response = await fetch('http://localhost:8080/routine/' + id);
@@ -21,6 +22,7 @@ export default class EventService {
     alert(data)
     return data;
   }
+
   static async changeEvent(id, time, description,dayId) {
     if (time){
       time = time+":00"
@@ -38,6 +40,8 @@ export default class EventService {
       return "ok"
     }
   }
+
+
   static async addNewEvent(dayId, time, description){
     if (time){
       time = time+":00"

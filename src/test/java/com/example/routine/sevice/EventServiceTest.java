@@ -13,7 +13,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -24,7 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.routine.Model.Event;
 import com.example.routine.Repository.EventRepository;
-import com.example.routine.Service.EventServiceImpl;
 import com.example.routine.exception.EventNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
@@ -65,7 +63,7 @@ public class EventServiceTest {
 		Event event = new Event();
 		event.setId((long)1);
 		event.setDescription("description");
-		event.setDate(nextHour);
+		event.setTime(nextHour);
 		when(eventRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(event));
 		Event findedEvent = underTest.findById(event.getId());
 		assertEquals(event, findedEvent);
@@ -75,7 +73,7 @@ public class EventServiceTest {
 		Event event = new Event();
 		event.setId((long)1);
 		event.setDescription("description");
-		event.setDate(nextHour);
+		event.setTime(nextHour);
 		when(eventRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(event));
 		underTest.updateEvent(event);
 		verify(eventRepository).save(event);

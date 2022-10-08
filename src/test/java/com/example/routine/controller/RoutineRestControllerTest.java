@@ -35,8 +35,6 @@ import com.example.routine.DTO.Mapper;
 import com.example.routine.Model.Day;
 import com.example.routine.Model.DayActuality;
 import com.example.routine.Model.Event;
-import com.example.routine.Service.DayService;
-import com.example.routine.Service.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(RoutineRestController.class)
 public class RoutineRestControllerTest {
@@ -47,8 +45,7 @@ public class RoutineRestControllerTest {
 	private MockMvc mockMvc;
 	@MockBean
 	private DayService dayService;
-	@MockBean
-	private EventService eventService;
+
 	@MockBean
 	private Mapper mapper;
 	@MockBean
@@ -108,7 +105,7 @@ public class RoutineRestControllerTest {
 	@Test
 	public void getDayById() throws Exception {
 		Event event = new Event();
-		event.setDate(nextHour);
+		event.setTime(nextHour);
 		event.setDescription("description");
 		event.setDayId((long)1);
 		Day day = new Day();
@@ -170,7 +167,7 @@ public class RoutineRestControllerTest {
 	public void addEventTest() throws Exception {
 		Event event = new Event();
 		event.setId((long)1);
-		event.setDate(nextTwoHour);
+		event.setTime(nextTwoHour);
 		event.setDescription("description");
 		event.setDayId((long) 1);
 		Mockito.when(dayService.addEvent(ArgumentMatchers.any())).thenReturn(event);
@@ -196,7 +193,7 @@ public class RoutineRestControllerTest {
 	@Test
 	public void changeEvent() throws Exception {
 		Event event = new Event();
-		event.setDate(nextTwoHour);
+		event.setTime(nextTwoHour);
 		event.setDescription("new description");
 		event.setId((long)1);
 		event.setDayId((long)1);
