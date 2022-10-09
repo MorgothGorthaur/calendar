@@ -15,15 +15,15 @@ public class TimeActualityManager {
     @Scheduled(cron="${timeActualityManagerCronExpression}")
     private void updateTimeActuality(){
         try {
-            var day = dayRepository.findDayByDate(LocalDate.now()).orElse(null);
-            if(day != null && day.getEvents() != null){
-                for(var event : day.getEvents()){
-                    if( event.getTime().isBefore(LocalTime.now())){
-                        day.removeEvent(event);
-                        dayRepository.save(day);
-                    }
-                }
-            }
+//            var day = dayRepository.findDayByDate(LocalDate.now()).orElse(null);
+//            if(day != null && day.getEvents() != null){
+//                for(var event : day.getEvents()){
+//                    if( event.getTime().isBefore(LocalTime.now())){
+//                        day.removeEvent(event);
+//                        dayRepository.save(day);
+//                    }
+//                }
+//            }
         } catch ( Exception ex) {
             throw ex;
         }

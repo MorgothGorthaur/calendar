@@ -36,8 +36,8 @@ public class Day {
 
     @Column(name = "day_name")
     private String name;
-    @OneToMany(mappedBy = "dayId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Event> events = new ArrayList<>();
+//    @OneToMany(mappedBy = "dayId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    private List<Event> events = new ArrayList<>();
     @Column(name = "day_actuality")
     private DayActuality dayActuality;
 
@@ -50,14 +50,14 @@ public class Day {
     }
 
 
-    public void addEvent(Event event) {
-        events.add(event);
-        event.setDayId(id);
-    }
-
-    public void removeEvent(Event event) {
-        events.remove(event);
-        event.setDayId(null);
-    }
+//    public void addEvent(Event event) {
+//        events.add(event);
+//        event.setDayId(id);
+//    }
+//
+//    public void removeEvent(Event event) {
+//        events.remove(event);
+//        event.setDayId(null);
+//    }
 
 }

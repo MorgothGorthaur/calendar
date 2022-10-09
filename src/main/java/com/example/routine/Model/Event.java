@@ -1,16 +1,12 @@
 package com.example.routine.Model;
 
 
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Objects;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -35,13 +31,19 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "events_time")
-    @NotNull(message = "time must be setted!")
-    private LocalTime time;
-    private Long dayId;
+    @Column(name = "start_time")
+    @NotNull(message = "date and time must be setted!")
+    private LocalDateTime startTime;
+
+    @Column(name = "end_time")
+    @NotNull(message = "date and time must be setted!")
+    private LocalDateTime endTime;
+
     @Column(name = "description")
     @NotNull(message = "description must be no null")
     @Size(min = 2, max = 30, message = "description must have size between 2 and 30 literals")
     public String description;
 
+    @ManyToMany(mappedBy = "events")
+    private List<Participant> participants;
 }

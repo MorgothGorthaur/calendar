@@ -23,10 +23,10 @@ public class CheckIfTimeIsActualValidationImpl implements ConstraintValidator <C
 	@Override
 	public boolean isValid(Event event, ConstraintValidatorContext context) {
 		try {
-			var day = dayRepository.findById(event.getDayId()).orElseThrow(() -> new DayNotFoundException(event.getDayId()));
-			if(day.getDayActuality().equals(DayActuality.TODAY)){
-				return event.getTime().equals(LocalTime.now()) || event.getTime().isAfter(LocalTime.now());
-			}
+//			var day = dayRepository.findById(event.getDayId()).orElseThrow(() -> new DayNotFoundException(event.getDayId()));
+//			if(day.getDayActuality().equals(DayActuality.TODAY)){
+//				return event.getTime().equals(LocalTime.now()) || event.getTime().isAfter(LocalTime.now());
+//			}
 			return true;
 		} catch ( Exception ex) {
 			return false;
