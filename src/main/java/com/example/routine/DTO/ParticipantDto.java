@@ -13,6 +13,7 @@ public class ParticipantDto {
     private String lastName;
     public Participant toParticipant(){
         var participant = new Participant();
+        participant.setId(id);
         participant.setFirstName(firstName);
         participant.setLastName(lastName);
         participant.setStatus(ParticipantStatus.ACTIVE);

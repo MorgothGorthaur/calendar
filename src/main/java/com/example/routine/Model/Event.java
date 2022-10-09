@@ -42,8 +42,9 @@ public class Event {
     @Column(name = "description")
     @NotNull(message = "description must be no null")
     @Size(min = 2, max = 30, message = "description must have size between 2 and 30 literals")
-    public String description;
+    private String description;
 
     @ManyToMany(mappedBy = "events")
     private List<Participant> participants;
+
 }

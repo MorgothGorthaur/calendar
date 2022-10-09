@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,5 +32,12 @@ public class Participant {
     @ManyToMany
     private List<Event> events;
     private ParticipantStatus status;
+
+    public void addEvent(Event event){
+        if(events == null){
+            events = new ArrayList<>();
+        }
+        events.add(event);
+    }
 
 }
