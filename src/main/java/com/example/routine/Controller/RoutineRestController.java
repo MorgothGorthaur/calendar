@@ -7,26 +7,16 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 
-import com.example.routine.Repository.DayRepository;
+import com.example.routine.DTO.ParticipantDto;
+import com.example.routine.Model.Participant;
 import com.example.routine.Repository.EventRepository;
-import com.example.routine.exception.DayNotFoundException;
+import com.example.routine.Repository.ParticipantRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.example.routine.DTO.DayDto;
-import com.example.routine.DTO.Mapper;
-import com.example.routine.Model.Day;
+
 import com.example.routine.Model.Event;
 
 
@@ -36,11 +26,21 @@ import com.example.routine.Model.Event;
 @AllArgsConstructor
 public class RoutineRestController {
 
-    private DayRepository dayRepository;
     private EventRepository eventRepository;
-    private Mapper mapper;
-
+    private ParticipantRepository  particioantRepository;
+    private ModelMapper modelMapper;
     @GetMapping
+    public ResponseEntity<List<ParticipantDto>> findAll(){
+        return ResponseEntity.ok(particioantRepository.findAll().stream().map(participant -> modelMapper.map(participant, ParticipantDto.class)).collect(Collectors.toList()));
+    }
+
+    @PostMapping
+    public ResponseEntity<Participant> addParticipant(@Valid @RequestBody ParticipantDto participantDto){
+        var participant = participantDto.toParticipant();
+        return ResponseEntity.ok(particioantRepository.save(participant));
+    }
+
+    /*@GetMapping
     public ResponseEntity<List<DayDto>> findAll() {
         return ResponseEntity.ok(dayRepository.findAll().stream().map(mapper::toDto).collect(Collectors.toList()));
     }
@@ -74,7 +74,7 @@ public class RoutineRestController {
         dayRepository.deleteById(dayId);
         return ResponseEntity.ok("deleted!");
     }
-
+*/
     @PostMapping("/events")
     public ResponseEntity<Event> addEvent(@Valid @RequestBody Event event) {
         return ResponseEntity.ok(eventRepository.save(event));

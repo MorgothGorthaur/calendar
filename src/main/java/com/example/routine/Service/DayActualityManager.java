@@ -1,6 +1,5 @@
 package com.example.routine.Service;
 
-import com.example.routine.Model.DayActuality;
 import com.example.routine.Repository.DayRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;

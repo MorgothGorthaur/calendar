@@ -30,10 +30,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.example.routine.Controller.RoutineRestController;
-import com.example.routine.DTO.DayDto;
-import com.example.routine.DTO.Mapper;
 import com.example.routine.Model.Day;
-import com.example.routine.Model.DayActuality;
 import com.example.routine.Model.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(RoutineRestController.class)

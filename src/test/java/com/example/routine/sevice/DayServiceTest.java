@@ -25,8 +25,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
-import com.example.routine.Model.Day;
-import com.example.routine.Model.DayActuality;
 import com.example.routine.Model.Event;
 import com.example.routine.Repository.DayRepository;
 import com.example.routine.exception.DayNotFoundException;

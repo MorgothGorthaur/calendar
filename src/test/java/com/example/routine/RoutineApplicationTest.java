@@ -32,9 +32,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 
 import com.example.routine.Controller.RoutineRestController;
-import com.example.routine.DTO.DayDto;
-import com.example.routine.Model.Day;
-import com.example.routine.Model.DayActuality;
 import com.example.routine.Model.Event;
 import com.example.routine.Repository.DayRepository;
 import com.example.routine.Repository.EventRepository;

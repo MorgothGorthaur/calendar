@@ -30,6 +30,6 @@ public class Participant {
     private String lastName;
     @ManyToMany
     private List<Event> events;
-
+    private ParticipantStatus status;
 
 }
