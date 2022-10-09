@@ -29,7 +29,6 @@ public class CheckIfTimeIsUniqueValidationImpl implements ConstraintValidator <C
 //			var day = dayRepository.findById(event.getDayId()).orElseThrow(() -> new DayNotFoundException(event.getDayId()));
 //			return !day.getEvents().contains(event);
 			return true;
-
 		} catch (Exception ex) {
 			throw ex;
 		}
