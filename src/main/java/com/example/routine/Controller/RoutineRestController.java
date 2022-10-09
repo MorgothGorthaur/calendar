@@ -8,9 +8,12 @@ import javax.validation.Valid;
 
 
 import com.example.routine.DTO.ParticipantDto;
+import com.example.routine.DTO.ParticipantFullDto;
 import com.example.routine.Model.Participant;
+import com.example.routine.Model.ParticipantStatus;
 import com.example.routine.Repository.EventRepository;
 import com.example.routine.Repository.ParticipantRepository;
+import com.example.routine.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -27,54 +30,41 @@ import com.example.routine.Model.Event;
 public class RoutineRestController {
 
     private EventRepository eventRepository;
-    private ParticipantRepository  particioantRepository;
+    private ParticipantRepository particioantRepository;
     private ModelMapper modelMapper;
+
     @GetMapping
-    public ResponseEntity<List<ParticipantDto>> findAll(){
-        return ResponseEntity.ok(particioantRepository.findAll().stream().map(participant -> modelMapper.map(participant, ParticipantDto.class)).collect(Collectors.toList()));
+    public ResponseEntity<List<ParticipantDto>> findAll() {
+        return ResponseEntity.ok(particioantRepository.findParticipantByStatus(ParticipantStatus.ACTIVE).stream().map(participant -> modelMapper.map(participant, ParticipantDto.class)).collect(Collectors.toList()));
     }
 
     @PostMapping
-    public ResponseEntity<Participant> addParticipant(@Valid @RequestBody ParticipantDto participantDto){
+    public ResponseEntity<ParticipantDto> addParticipant(@Valid @RequestBody ParticipantDto participantDto) {
         var participant = participantDto.toParticipant();
-        return ResponseEntity.ok(particioantRepository.save(participant));
+        return ResponseEntity.ok(modelMapper.map(particioantRepository.save(participant), ParticipantDto.class));
     }
 
-    /*@GetMapping
-    public ResponseEntity<List<DayDto>> findAll() {
-        return ResponseEntity.ok(dayRepository.findAll().stream().map(mapper::toDto).collect(Collectors.toList()));
+    @GetMapping("/{participantId}")
+    public ResponseEntity<ParticipantFullDto> getWithEvents(@PathVariable Long participantId) {
+        var participant = particioantRepository.findByIdAndStatus(participantId, ParticipantStatus.ACTIVE).orElseThrow(() -> new ParticipantNotFoundException(participantId));
+        return ResponseEntity.ok(modelMapper.map(participant, ParticipantFullDto.class));
     }
 
-    @PostMapping
-    public ResponseEntity<Day> addDay(@Valid @RequestBody DayDto dayDto) {
-        var day = mapper.DtoToDay(dayDto);
-        return ResponseEntity.ok(dayRepository.save(day));
+    @DeleteMapping("/{participantId}")
+    public ResponseEntity<String> deleteParticipant(@PathVariable Long participantId){
+        var participant = particioantRepository.findByIdAndStatus(participantId, ParticipantStatus.ACTIVE).orElseThrow(() -> new ParticipantNotFoundException(participantId));
+        participant.setStatus(ParticipantStatus.REMOVED);
+        particioantRepository.save(participant);
+        return ResponseEntity.ok("deleted");
     }
-
-    @GetMapping("/{dayId}")
-    public ResponseEntity<Day> getDayWithEvents(@PathVariable Long dayId) {
-        var day = dayRepository.findById(dayId).orElseThrow(() -> new DayNotFoundException(dayId));
-        return ResponseEntity.ok(day);
-    }
-
     @PatchMapping()
-    public ResponseEntity<DayDto> changeDay(@Valid @RequestBody DayDto dayDto) {
-        var old = dayRepository.findById(dayDto.getId()).orElseThrow(() -> new DayNotFoundException(dayDto.getId()));
-        var day = mapper.DtoToDay(dayDto);
-        old.setDayActuality(day.getDayActuality());
-        old.setName(day.getName());
-        old.setDate(day.getDate());
-        old.setDayActuality(day.getDayActuality());
-        dayRepository.save(old);
-        return ResponseEntity.ok(dayDto);
+    public ResponseEntity<ParticipantDto> changeParticipant(@Valid @RequestBody ParticipantDto participantDto){
+        var participant = particioantRepository.findByIdAndStatus(participantDto.getId(), ParticipantStatus.ACTIVE).orElseThrow(()-> new ParticipantNotFoundException(participantDto.getId()));
+        participant.setLastName(participantDto.getLastName());
+        participant.setFirstName(participantDto.getFirstName());
+        particioantRepository.save(participant);
+        return ResponseEntity.ok(participantDto);
     }
-
-    @DeleteMapping("/{dayId}")
-    public ResponseEntity<String> daleteDay(@PathVariable Long dayId) {
-        dayRepository.deleteById(dayId);
-        return ResponseEntity.ok("deleted!");
-    }
-*/
     @PostMapping("/events")
     public ResponseEntity<Event> addEvent(@Valid @RequestBody Event event) {
         return ResponseEntity.ok(eventRepository.save(event));
