@@ -44,4 +44,19 @@ export default class ParticipantService {
       alert(e);
     }
   }
+
+  static async change(id, firstName, lastName){
+    try {
+      const requestOptions = {
+        method: 'PATCH',
+        headers: { 'Content-Type' : 'application/json'},
+        body: JSON.stringify({id, firstName, lastName})
+      };
+      const response = await fetch ('http://localhost:8080/routine', requestOptions);
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      alert(e);
+    }
+  }
 }

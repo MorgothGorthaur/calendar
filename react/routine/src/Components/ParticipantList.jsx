@@ -23,14 +23,15 @@ const ParticipanList = () => {
     setParticipants([...participants, participant]);
     setModal(false);
   };
+
+  const changeParticipant = (participant) => {
+    setParticipants([...participants.filter(p => p.id !== participant.id), participant]);
+  }
   return(
     <div>
       {participants.map(participant =>
         <div>
-          <ParticipantItem participant = {participant} key = {participant.id}/>
-          <div>
-            <Button variant = "danger" onClick = {() => removeParticipant(participant.id)}> remove </Button>
-          </div>
+          <ParticipantItem participant = {participant} key = {participant.id} remove = {removeParticipant} change = {changeParticipant}/>
         </div>
       )}
       <div>

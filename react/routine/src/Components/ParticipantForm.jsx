@@ -5,17 +5,27 @@ import Input from '../UI/Input/Input'
 const ParticipantForm = ({createOrUpdate,participant}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const addNewParticipant = () => {
-
-  };
   const updateNewParticipant = (e) => {
+    e.preventDefault();
+    const data = ParticipantService.change(participant.id, firstName, lastName).then(data => {
+      createOrUpdate(data);
+    })
+  };
+  const addNewParticipant = (e) => {
     e.preventDefault();
     const data = ParticipantService.save(firstName, lastName).then(data => {
       createOrUpdate(data);
     })
   };
+
+  useEffect ( () => {
+    if(participant){
+      setFirstName(participant.firstName);
+      setLastName(participant.lastName);
+    }
+  },[participant]);
   return (
-    <Form onSubmit = {participant ? addNewParticipant : updateNewParticipant}>
+    <Form onSubmit = {participant ? updateNewParticipant : addNewParticipant}>
       <Input type = "text" placeholder = "first name" value = {firstName} onChange = {e => setFirstName(e.target.value)}/>
       <Input type = "text" placeholder = "second name" value = {lastName} onChange = {e => setLastName(e.target.value)}/>
       <Button type = "submit" > {participant ? "update" : "create"} </Button>
