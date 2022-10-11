@@ -38,6 +38,7 @@ public class RoutineRestController {
 
     @PostMapping
     public ResponseEntity<ParticipantDto> addParticipant(@Valid @RequestBody ParticipantDto participantDto) {
+        System.out.println(participantDto);
         var participant = participantDto.toParticipant();
         return ResponseEntity.ok(modelMapper.map(participantRepository.save(participant), ParticipantDto.class));
     }
