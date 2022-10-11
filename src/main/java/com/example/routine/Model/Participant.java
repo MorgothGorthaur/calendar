@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -29,13 +30,13 @@ public class Participant {
     @NotNull(message = "last name mst be setted!")
     @Size(min = 2, max = 10)
     private String lastName;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Event> events;
     private ParticipantStatus status;
 
     public void addEvent(Event event){
         if(events == null){
-            events = new ArrayList<>();
+            events = new LinkedList<>();
         }
         events.add(event);
     }
