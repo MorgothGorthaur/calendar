@@ -9,7 +9,7 @@ const EventList = ({participantId}) => {
   const[modal, setModal] = useState(false);
   async function fetchEvent(){
     const response = await ParticipantService.getFull(participantId);
-    setEvents(response.events);
+    setEvents(response);
   };
 
   useEffect ( () => {

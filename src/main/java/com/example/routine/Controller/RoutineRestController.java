@@ -1,5 +1,6 @@
 package com.example.routine.Controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class RoutineRestController {
     @GetMapping
     public ResponseEntity<List<ParticipantDto>> findAll() {
         return ResponseEntity.ok(participantRepository.findParticipantByStatus(ParticipantStatus.ACTIVE).stream().
-                map(participant -> modelMapper.map(participant, ParticipantDto.class)).collect(Collectors.toList()));
+                map(participant -> modelMapper.map(participant, ParticipantDto.class)).toList());
     }
 
     @PostMapping
@@ -43,10 +44,11 @@ public class RoutineRestController {
     }
 
     @GetMapping("/{participantId}")
-    public ResponseEntity<ParticipantFullDto> getWithEvents(@PathVariable Long participantId) {
+    public ResponseEntity<List<EventDto>> getWithEvents(@PathVariable Long participantId) {
         var participant = participantRepository.findByIdAndStatus(participantId, ParticipantStatus.ACTIVE).
                 orElseThrow(() -> new ParticipantNotFoundException(participantId));
-        return ResponseEntity.ok(modelMapper.map(participant, ParticipantFullDto.class));
+        var events = participant.getEvents().stream().filter(event -> event.getEndTime().isAfter(LocalDateTime.now())).toList();
+        return ResponseEntity.ok(events.stream().map(event -> modelMapper.map(event, EventDto.class)).toList());
     }
 
     @DeleteMapping("/{participantId}")
