@@ -26,7 +26,7 @@ public class Participant {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Event> events;
     private ParticipantStatus status;
 
@@ -37,8 +37,10 @@ public class Participant {
         events.add(event);
     }
     public void removeEvent(Event event){
-        events.remove(event);
-        event.getParticipants().remove(this);
+        if(events != null) {
+            events.remove(event);
+            event.getParticipants().remove(this);
+        }
     }
 
 }
