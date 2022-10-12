@@ -5,6 +5,7 @@ import com.example.routine.validation.CheckIfEndTimeIsAfterStartTime;
 import com.example.routine.validation.CheckIfTimeIsActualValidation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @CheckIfEndTimeIsAfterStartTime
 @Getter @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class EventDto {
     private Long id;
     @NotNull(message = "date and time must be setted!")

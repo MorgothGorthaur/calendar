@@ -2,10 +2,7 @@ package com.example.routine.DTO;
 
 import com.example.routine.Model.Participant;
 import com.example.routine.Model.ParticipantStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
@@ -14,6 +11,7 @@ import javax.validation.constraints.Size;
 @Getter @Setter
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 public class ParticipantDto {
     private Long id;
     @NotNull(message = "first name mst be setted!")
