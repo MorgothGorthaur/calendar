@@ -76,8 +76,7 @@ public class RoutineRestController {
         eventService.checkIfEventUniq(event);
         var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
         participant.addEvent(event);
-        var p = participantRepository.save(participant);
-        var events = p.getEvents();
+        var events = participantRepository.save(participant).getEvents();
         return ResponseEntity.ok(modelMapper.map(events.get(events.size() -1), EventDto.class));
     }
     @PatchMapping("/events")
@@ -89,12 +88,13 @@ public class RoutineRestController {
         return ResponseEntity.ok(modelMapper.map(eventRepository.save(event), EventDto.class));
     }
     @DeleteMapping("/{participantId}/events/{eventId}")
-    public void deleteEvent(@PathVariable Long participantId, @PathVariable Long eventId) {
+    public ResponseEntity<String> deleteEvent(@PathVariable Long participantId, @PathVariable Long eventId) {
         var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
         //var events = participant.getEvents().stream().filter(event -> !event.getId().equals(eventId)).toList();
         var event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
         participant.removeEvent(event);
         participantRepository.save(participant);
+        return ResponseEntity.ok("deleted");
     }
 
 }

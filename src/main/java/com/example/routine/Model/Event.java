@@ -2,6 +2,7 @@ package com.example.routine.Model;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode
 @ToString
+
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

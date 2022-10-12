@@ -31,7 +31,7 @@ public class Participant {
     private ParticipantStatus status;
 
     public void addEvent(Event event){
-        if(events == null){
+        if(events == null) {
             events = new LinkedList<>();
         }
         events.add(event);

@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter
 @ToString
+@AllArgsConstructor
 public class ParticipantDto {
     private Long id;
     @NotNull(message = "first name mst be setted!")

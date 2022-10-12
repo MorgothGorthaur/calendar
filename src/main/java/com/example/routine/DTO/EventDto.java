@@ -3,8 +3,10 @@ package com.example.routine.DTO;
 import com.example.routine.Model.Event;
 import com.example.routine.validation.CheckIfEndTimeIsAfterStartTime;
 import com.example.routine.validation.CheckIfTimeIsActualValidation;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 @CheckIfTimeIsActualValidation
 @CheckIfEndTimeIsAfterStartTime
 @Getter @Setter
+@AllArgsConstructor
 public class EventDto {
     private Long id;
     @NotNull(message = "date and time must be setted!")
