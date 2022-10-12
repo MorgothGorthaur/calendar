@@ -1,6 +1,9 @@
 package com.example.routine.DTO;
 
 import com.example.routine.Model.Event;
+import com.example.routine.validation.CheckIfEndTimeIsAfterStartTime;
+import com.example.routine.validation.CheckIfTimeIsActualValidation;
+import com.example.routine.validation.CheckIfTimeIsUniqueValidation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +12,8 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+@CheckIfTimeIsActualValidation
+@CheckIfEndTimeIsAfterStartTime
 @Getter @Setter
 public class EventDto {
     private Long id;

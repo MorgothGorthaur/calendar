@@ -20,8 +20,6 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "events")
-@CheckIfTimeIsUniqueValidation
-@CheckIfTimeIsActualValidation
 @Getter
 @Setter
 @EqualsAndHashCode

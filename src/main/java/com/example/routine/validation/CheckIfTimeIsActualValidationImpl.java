@@ -6,22 +6,21 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 
-
-import com.example.routine.Model.Event;
+import com.example.routine.DTO.EventDto;
 
 /*
  * prevent non-actual events from being set for today
  */
 
-public class CheckIfTimeIsActualValidationImpl implements ConstraintValidator <CheckIfTimeIsActualValidation, Event>{
+public class CheckIfTimeIsActualValidationImpl implements ConstraintValidator <CheckIfTimeIsActualValidation, EventDto>{
 
 
 	@Override
-	public boolean isValid(Event event, ConstraintValidatorContext context) {
+	public boolean isValid(EventDto event, ConstraintValidatorContext context) {
 		try {
 			return event.getStartTime().equals(LocalDateTime.now()) || event.getStartTime().isBefore(LocalDateTime.now());
 		} catch ( Exception ex) {
-			return false;
+			throw ex;
 		}
 	}
 
