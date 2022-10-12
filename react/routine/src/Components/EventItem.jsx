@@ -12,17 +12,17 @@ const EventItem = ({id, event, remove, change}) => {
       <div>
         <h1>{event.description}</h1>
         {show ? (
-          <div>
-            <h1> {event.startTime}  </h1>
-            <h1> {event.endTime} </h1>
+          <div className = "participant_item" style = {{textAlign: 'right'}} >
+            <h3> {event.startTime}  </h3>
+            <h3> {event.endTime} </h3>
             <Button variant = "dark" onClick = {() => setShow(false)}> close </Button>
             <Button variant = "primary" onClick = {() => setModal(true)}> change </Button>
             <Modal show = {modal} onHide = {setModal} > <EventForm id = {id} event = {event} createOrUpdate = {update}/> </Modal>
           </div>
         ):(
-          <div>
-            <Button variant = "danger" onClick = {() => remove(event.id)}> remove </Button>
+          <div style = {{textAlign: 'center'}}>
             <Button variant = "primary" onClick = {() => setShow(true)}> open </Button>
+            <Button variant = "danger" onClick = {() => remove(event.id)}> remove </Button>
           </div>
         )}
       </div>

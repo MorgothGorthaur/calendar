@@ -33,7 +33,7 @@ const EventList = ({participantId}) => {
   return (
     <div>
       {events.length ? (
-        <div>
+        <div className = "participant_list">
           {events.map(event =>
               <div>
                 <EventItem event = {event} remove = {removeEvent} change = {changeEvent} />
@@ -44,7 +44,7 @@ const EventList = ({participantId}) => {
       ):(
         <h1> not found! </h1>
       )}
-      <div>
+      <div style = {{textAlign: 'center'}}>
         <Button variant = "primary" onClick = {() => setModal(true)}> add </Button>
         <Modal show = {modal} onHide = {setModal}> <EventForm createOrUpdate = {addEvent} id = {participantId}/> </Modal>
       </div>

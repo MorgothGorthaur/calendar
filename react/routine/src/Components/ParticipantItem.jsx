@@ -10,7 +10,7 @@ const ParticipantItem = ({participant, remove, change}) => {
     change(data);
   };
   return (
-    <div>
+    <div className = "participant_item">
       <h1> {participant.firstName} </h1>
       <h1> {participant.lastName} </h1>
       <div>
@@ -19,7 +19,7 @@ const ParticipantItem = ({participant, remove, change}) => {
             <div>
               <EventList participantId = {participant.id} />
             </div>
-            <div>
+            <div  style = {{textAlign: 'right'}}>
               <Button variant = "dark" onClick = {() => setShow(false)}> close </Button>
               <Button variant = "primary" onClick = {() => setModal(true)}> change </Button>
               <Modal show = {modal} onHide = {setModal}> <ParticipantForm participant = {participant} createOrUpdate = {update}/></Modal>
@@ -28,9 +28,9 @@ const ParticipantItem = ({participant, remove, change}) => {
 
           </div>
         ):(
-          <div>
-            <Button variant = "danger" onClick = {() => remove(participant.id)}> remove </Button>
+          <div  style = {{textAlign: 'center'}}>
             <Button variant = "primary" onClick = {() => setShow(true)}> open </Button>
+            <Button variant = "danger" onClick = {() => remove(participant.id)}> remove </Button>
           </div>
         )}
       </div>

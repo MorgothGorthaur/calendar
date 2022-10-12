@@ -27,7 +27,7 @@ const ParticipantForm = ({createOrUpdate,participant}) => {
     }
   },[participant]);
   return (
-    <Form onSubmit = {participant ? updateNewParticipant : addNewParticipant}>
+    <Form className = "form" onSubmit = {participant ? updateNewParticipant : addNewParticipant}>
       <Input type = "text" placeholder = "first name" value = {firstName} onChange = {e => setFirstName(e.target.value)}/>
       <Input type = "text" placeholder = "second name" value = {lastName} onChange = {e => setLastName(e.target.value)}/>
       <Button type = "submit" > {participant ? "update" : "create"} </Button>

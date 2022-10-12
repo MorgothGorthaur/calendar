@@ -28,13 +28,13 @@ const ParticipanList = () => {
     setParticipants([...participants.filter(p => p.id !== participant.id), participant]);
   }
   return(
-    <div>
+    <div className = "list">
       {participants.map(participant =>
-        <div>
+        <div className = "participant_list">
           <ParticipantItem participant = {participant} key = {participant.id} remove = {removeParticipant} change = {changeParticipant}/>
         </div>
       )}
-      <div>
+      <div style = {{textAlign: 'right'}}>
         <Button variant = "primary" onClick = {() => setModal(true)}> add </Button>
         <Modal show = {modal} onHide = {setModal}> <ParticipantForm createOrUpdate = {addParticipant}/> </Modal>
       </div>

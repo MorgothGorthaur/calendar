@@ -33,7 +33,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.example.routine.Controller.RoutineRestController;
 import com.example.routine.Model.Event;
-import com.example.routine.Repository.DayRepository;
 import com.example.routine.Repository.EventRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -88,8 +87,8 @@ public class RoutineApplicationTest {
 				.andExpect(jsonPath("$[0].name", equalTo("day")))
 				.andExpect(jsonPath("$[0].dayActuality", equalTo("TODAY")))
 				.andExpect(jsonPath("$[0].date", equalTo(today.toString())));
-        
-                		
+
+
 	}
 	@Test
 	public void addDayTest() throws Exception {
@@ -117,7 +116,7 @@ public class RoutineApplicationTest {
 		.andExpect(jsonPath("events[0].description", equalTo("description")))
 		.andExpect(jsonPath("events[0].time", equalTo(nextHour.toString())));
 	}
-	
+
 	@Test
 	public void changeDay() throws Exception {
 		Long id = dayRepository.findAll().get(0).getId();
@@ -154,7 +153,7 @@ public class RoutineApplicationTest {
 				.andExpect(jsonPath("description", equalTo("description")))
 				.andExpect(jsonPath("time", equalTo(nextTwoHour.toString())));
 	}
-	
+
 	@Test
 	public void deleteEventTest() throws Exception {
 		Long id = eventRepository.findAll().get(0).getId();
@@ -181,19 +180,19 @@ public class RoutineApplicationTest {
 	}
 	@Test
 	public void  handleEntityNotFoundExTest() throws Exception {
-		
+
 		this.mockMvc.perform(get("/routine/1"))
 			.andExpect(status().isNotFound())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("debugMessage", equalTo("Day is not found, id=1")));
-							
+
 	}
 	@Test
 	public void handleInvalidArgument() throws Exception {
 		DayDto dayDto = new DayDto();
 		dayDto.setDate(today);
 		dayDto.setName("day");
-		
+
 		this.mockMvc.perform(post("/routine")
 	            .contentType(MediaType.APPLICATION_JSON)
             	.content(objectMapper.writeValueAsString(dayDto)))
@@ -212,17 +211,17 @@ public class RoutineApplicationTest {
 				.andExpect(jsonPath("message", equalTo("Malformed JSON Request")));
 				//.andDo(print());
 	}
-	
+
 	@Test
 	public void MethodArgumentTypeMismatchExceptionTest() throws Exception {
-		
+
 		this.mockMvc.perform(get("/routine/ddd"))
 			.andExpect(status().isBadRequest())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("message", equalTo("The parameter 'dayId' of value 'ddd' could not be converted to type 'Long'")));
 
 	}
-	
+
 	@Test
 	@Disabled
 	public void handleNoHandlerFoundExceptionTest() throws Exception {

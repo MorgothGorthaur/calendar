@@ -33,7 +33,7 @@ const EventForm = ({createOrUpdate, event,id}) => {
   },[event]);
 
   return (
-    <Form onSubmit = {event ? updateNewEvent : addNewEvent}>
+    <Form className = "form" onSubmit = {event ? updateNewEvent : addNewEvent}>
         <Input type = "text" placeholder = "description" value = {description} onChange = {e => setDescription(e.target.value)}/>
         <Input type = "datetime-local" placeholder = "first time" value = {startTime} onChange = {e => setStartTime(e.target.value)}/>
         <Input type = "datetime-local" placeholder = "second time" value = {endTime} onChange = {e => setEndTime(e.target.value)}/>
