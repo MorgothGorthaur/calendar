@@ -1,17 +1,11 @@
 package com.example.routine.Model;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-import com.example.routine.validation.CheckIfTimeIsActualValidation;
-import com.example.routine.validation.CheckIfTimeIsUniqueValidation;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

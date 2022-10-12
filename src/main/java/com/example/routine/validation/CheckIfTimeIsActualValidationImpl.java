@@ -18,7 +18,7 @@ public class CheckIfTimeIsActualValidationImpl implements ConstraintValidator <C
 	@Override
 	public boolean isValid(EventDto event, ConstraintValidatorContext context) {
 		try {
-			return event.getStartTime().equals(LocalDateTime.now()) || event.getStartTime().isBefore(LocalDateTime.now());
+			return event.getStartTime().equals(LocalDateTime.now()) || event.getStartTime().isAfter(LocalDateTime.now());
 		} catch ( Exception ex) {
 			throw ex;
 		}

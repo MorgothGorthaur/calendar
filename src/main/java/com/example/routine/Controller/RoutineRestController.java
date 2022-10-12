@@ -2,17 +2,16 @@ package com.example.routine.Controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 
 import com.example.routine.DTO.EventDto;
 import com.example.routine.DTO.ParticipantDto;
-import com.example.routine.DTO.ParticipantFullDto;
 import com.example.routine.Model.ParticipantStatus;
 import com.example.routine.Repository.EventRepository;
 import com.example.routine.Repository.ParticipantRepository;
+import com.example.routine.Service.EventService;
 import com.example.routine.exception.EventNotFoundException;
 import com.example.routine.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
@@ -30,7 +29,7 @@ public class RoutineRestController {
     private EventRepository eventRepository;
     private ParticipantRepository participantRepository;
     private ModelMapper modelMapper;
-
+    private EventService eventService;
     @GetMapping
     public ResponseEntity<List<ParticipantDto>> findAll() {
         return ResponseEntity.ok(participantRepository.findParticipantByStatus(ParticipantStatus.ACTIVE).stream().
@@ -74,12 +73,12 @@ public class RoutineRestController {
     @PostMapping("/{participantId}/events")
     public ResponseEntity<EventDto> addEvent(@PathVariable Long participantId, @Valid @RequestBody EventDto eventDto) {
         var event = eventDto.toEvent();
+        eventService.checkIfEventUniq(event);
         var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
         participant.addEvent(event);
         var p = participantRepository.save(participant);
         var events = p.getEvents();
         return ResponseEntity.ok(modelMapper.map(events.get(events.size() -1), EventDto.class));
-
     }
     @PatchMapping("/events")
     public ResponseEntity<@Valid EventDto> changeEvent(@Valid @RequestBody EventDto eventDto) {
