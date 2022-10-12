@@ -30,7 +30,7 @@ public class Participant {
     @NotNull(message = "last name mst be setted!")
     @Size(min = 2, max = 10)
     private String lastName;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
     private ParticipantStatus status;
 
@@ -39,6 +39,10 @@ public class Participant {
             events = new LinkedList<>();
         }
         events.add(event);
+    }
+    public void removeEvent(Event event){
+        events.remove(event);
+        event.getParticipants().remove(this);
     }
 
 }

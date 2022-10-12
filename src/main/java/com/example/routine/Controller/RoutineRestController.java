@@ -38,7 +38,6 @@ public class RoutineRestController {
 
     @PostMapping
     public ResponseEntity<ParticipantDto> addParticipant(@Valid @RequestBody ParticipantDto participantDto) {
-        System.out.println(participantDto);
         var participant = participantDto.toParticipant();
         return ResponseEntity.ok(modelMapper.map(participantRepository.save(participant), ParticipantDto.class));
     }
@@ -91,7 +90,9 @@ public class RoutineRestController {
     @DeleteMapping("/{participantId}/events/{eventId}")
     public void deleteEvent(@PathVariable Long participantId, @PathVariable Long eventId) {
         var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
-        participant.setEvents(participant.getEvents().stream().filter(event -> !event.getId().equals(eventId)).toList());
+        //var events = participant.getEvents().stream().filter(event -> !event.getId().equals(eventId)).toList();
+        var event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
+        participant.removeEvent(event);
         participantRepository.save(participant);
     }
 

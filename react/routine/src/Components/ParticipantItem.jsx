@@ -17,7 +17,7 @@ const ParticipantItem = ({participant, remove, change}) => {
         {show ?(
           <div>
             <div>
-              <EventList id = {participant.id} />
+              <EventList participantId = {participant.id} />
             </div>
             <div>
               <Button variant = "dark" onClick = {() => setShow(false)}> close </Button>
