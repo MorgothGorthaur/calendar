@@ -1,35 +1,26 @@
 package com.example.routine.validation;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.example.routine.Repository.DayRepository;
-import com.example.routine.exception.DayNotFoundException;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.routine.Model.DayActuality;
-import com.example.routine.Model.Event;
+import com.example.routine.DTO.EventDto;
 
 /*
  * prevent non-actual events from being set for today
  */
-@AllArgsConstructor
-public class CheckIfTimeIsActualValidationImpl implements ConstraintValidator <CheckIfTimeIsActualValidation, Event>{
 
-	private DayRepository dayRepository;
+public class CheckIfTimeIsActualValidationImpl implements ConstraintValidator <CheckIfTimeIsActualValidation, EventDto>{
+
+
 	@Override
-	public boolean isValid(Event event, ConstraintValidatorContext context) {
+	public boolean isValid(EventDto event, ConstraintValidatorContext context) {
 		try {
-			var day = dayRepository.findById(event.getDayId()).orElseThrow(() -> new DayNotFoundException(event.getDayId()));
-			if(day.getDayActuality().equals(DayActuality.TODAY)){
-				return event.getTime().equals(LocalTime.now()) || event.getTime().isAfter(LocalTime.now());
-			}
-			return true;
+			return event.getStartTime().equals(LocalDateTime.now()) || event.getStartTime().isAfter(LocalDateTime.now());
 		} catch ( Exception ex) {
-			return false;
+			throw ex;
 		}
 	}
 

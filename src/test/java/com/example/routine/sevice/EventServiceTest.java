@@ -7,10 +7,15 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.sql.Array;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
+import com.example.routine.Service.EventServiceImpl;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,12 +31,12 @@ import com.example.routine.Repository.EventRepository;
 import com.example.routine.exception.EventNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
+
 public class EventServiceTest {
 	@Mock
 	private EventRepository eventRepository;
 	private AutoCloseable autoCloseable;
 	private EventServiceImpl underTest;
-	private Time nextHour = new Time(Calendar.getInstance().getTime().getTime() + 60*60);
 	@BeforeEach
 	void setUp() {
 		autoCloseable = MockitoAnnotations.openMocks(this);
@@ -43,40 +48,23 @@ public class EventServiceTest {
 		autoCloseable.close();
 	}
 	@Test
-	public void deleteByIdTest() {
-		Long id = (long) 1;	
-		doNothing().when(eventRepository).deleteById(id);
-		underTest.deleteById(id);
-		verify(eventRepository).deleteById(id);
-	}
-	@Test
-	public void deleteByIdWithExceptionTest() {
-		Long id = (long) 1;
-		
-		doThrow(new EventNotFoundException(id)).when(eventRepository).deleteById(id);
+	public void test(){
+		//given
+		var event = new Event();
+		event.setStartTime(LocalDateTime.now());
+		event.setEndTime(LocalDateTime.now());
+		event.setDescription("descr");
+		var resEvent = new Event();
+		resEvent.setId(1L);
+		resEvent.setStartTime(event.getStartTime());
+		resEvent.setEndTime(event.getEndTime());
+		resEvent.setDescription("descr");
 		//when
+		when(eventRepository.findAll()).thenReturn(List.of(resEvent));
+		underTest.checkIfEventUniq(event);
 		//then
-		assertThatThrownBy(() -> underTest.deleteById(id)).isInstanceOf(EventNotFoundException.class).hasMessageContaining("Event is not found, id=" + id);
+		assertEquals(event, resEvent);
 	}
-	@Test
-	public void findByIdTest() {
-		Event event = new Event();
-		event.setId((long)1);
-		event.setDescription("description");
-		event.setTime(nextHour);
-		when(eventRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(event));
-		Event findedEvent = underTest.findById(event.getId());
-		assertEquals(event, findedEvent);
-	}
-	@Test
-	public void updateEventTest() {
-		Event event = new Event();
-		event.setId((long)1);
-		event.setDescription("description");
-		event.setTime(nextHour);
-		when(eventRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(event));
-		underTest.updateEvent(event);
-		verify(eventRepository).save(event);
-	}
+
 	
 }

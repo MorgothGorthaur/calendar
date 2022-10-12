@@ -3,6 +3,7 @@ package com.example.routine.Controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.routine.exception.ParticipantNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,14 +15,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.example.routine.Model.ApiError;
-import com.example.routine.exception.DayNotFoundException;
 import com.example.routine.exception.EventNotFoundException;
 @RestControllerAdvice
 public class RestExceptionHandler {
 	/*
 	 * handle exceptions on Service - layer
 	 */
-	@ExceptionHandler({DayNotFoundException.class, EventNotFoundException.class})
+	@ExceptionHandler({ParticipantNotFoundException.class, EventNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundEx(RuntimeException ex, WebRequest request) {
       ApiError apiError = new ApiError("entity not found exception", ex.getMessage());
       return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
