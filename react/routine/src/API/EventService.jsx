@@ -25,7 +25,7 @@ export default class EventService {
       const data = await response.json();
       return data;
     } catch (e){
-      return "ok"
+      alert(e)
     }
   }
 
@@ -41,7 +41,7 @@ export default class EventService {
       const data = await response.json();
       return data;
     } catch (e){
-      return "ok"
+      alert(e)
     }
   }
 }

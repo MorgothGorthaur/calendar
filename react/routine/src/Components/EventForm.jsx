@@ -11,16 +11,19 @@ const EventForm = ({createOrUpdate, event,id}) => {
   const updateNewEvent = (e) => {
     e.preventDefault();
     const data = EventService.change(event.id, description, startTime, endTime).then(data => {
-      createOrUpdate(data);
+      validation(data);
     })
   };
   const addNewEvent = (e) => {
     e.preventDefault();
     const data = EventService.save(id,description, startTime, endTime).then(data => {
-      createOrUpdate(data);
+      validation(data);
     })
   };
 
+  const validation = (data) => {
+    data.errors ? alert(data.errors) : createOrUpdate(data);
+  }
   useEffect ( () => {
     if(event){
       setDescription(event.description);

@@ -8,16 +8,18 @@ const ParticipantForm = ({createOrUpdate,participant}) => {
   const updateNewParticipant = (e) => {
     e.preventDefault();
     const data = ParticipantService.change(participant.id, firstName, lastName).then(data => {
-      createOrUpdate(data);
+      validation(data);
     })
   };
   const addNewParticipant = (e) => {
     e.preventDefault();
     const data = ParticipantService.save(firstName, lastName).then(data => {
-      createOrUpdate(data);
+      validation(data);
     })
   };
-
+  const validation = (data) => {
+    data.errors ? alert(data.errors) : createOrUpdate(data);
+  }
   useEffect ( () => {
     if(participant){
       setFirstName(participant.firstName);

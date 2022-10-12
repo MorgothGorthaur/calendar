@@ -32,16 +32,12 @@ public class Event {
     private Long id;
 
     @Column(name = "start_time")
-    @NotNull(message = "date and time must be setted!")
     private LocalDateTime startTime;
 
     @Column(name = "end_time")
-    @NotNull(message = "date and time must be setted!")
     private LocalDateTime endTime;
 
     @Column(name = "description")
-    @NotNull(message = "description must be no null")
-    @Size(min = 2, max = 30, message = "description must have size between 2 and 30 literals")
     private String description;
 
     @ManyToMany(mappedBy = "events")

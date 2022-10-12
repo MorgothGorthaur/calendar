@@ -7,11 +7,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @Getter @Setter
 @ToString
 public class ParticipantDto {
     private Long id;
+    @NotNull(message = "first name mst be setted!")
+    @Size(min = 2, max = 10)
     private String firstName;
+
+    @NotNull(message = "last name mst be setted!")
+    @Size(min = 2, max = 10)
     private String lastName;
     public Participant toParticipant(){
         var participant = new Participant();
