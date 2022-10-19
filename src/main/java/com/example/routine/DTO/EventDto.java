@@ -32,6 +32,7 @@ public class EventDto {
         event.setDescription(getDescription());
         event.setStartTime(getStartTime());
         event.setEndTime(getEndTime());
+        event.setId(id);
         return event;
     }
 }

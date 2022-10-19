@@ -89,14 +89,12 @@ public class RoutineRestController {
                 .orElseThrow(() -> new ParticipantNotFoundException(participantId));
         participant.setEvents(participant.getEvents().stream().filter(event -> !event.getId().equals(eventDto.getId())).toList());
         var event = eventDto.toEvent();
-        event.setId(eventDto.getId());
         eventService.checkIfEventUniq(event);
         if(participant.getEvents().contains(event)){
             throw new ParticipantAlreadyContainsEvent();
         }
         participant.addEvent(event);
         var events = participantRepository.save(participant).getEvents().stream().filter(e -> e.equals(event)).toList();
-
         return ResponseEntity.ok(modelMapper.map(events.get(0),EventDto.class));
 
     }
