@@ -26,7 +26,7 @@ public class Participant {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
     private ParticipantStatus status;
 

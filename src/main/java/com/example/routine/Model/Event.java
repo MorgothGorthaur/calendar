@@ -34,7 +34,7 @@ public class Event {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "events")
+    @ManyToMany(mappedBy = "events", fetch = FetchType.LAZY)
     private List<Participant> participants;
 
     @Override
