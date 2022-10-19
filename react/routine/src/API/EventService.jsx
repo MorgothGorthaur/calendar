@@ -14,14 +14,14 @@ export default class EventService {
     }
   };
 
-  static async change(id,description, startTime, endTime) {
+  static async change(participantId, id,description, startTime, endTime) {
     try {
       const requestOptions = {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({id,startTime, endTime,  description})
       }
-      const response = await fetch('http://localhost:8080/routine/events', requestOptions);
+      const response = await fetch('http://localhost:8080/routine/' + participantId + '/events', requestOptions);
       const data = await response.json();
       return data;
     } catch (e){

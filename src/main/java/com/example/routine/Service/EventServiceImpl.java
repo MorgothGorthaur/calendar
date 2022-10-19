@@ -11,9 +11,9 @@ public class EventServiceImpl implements EventService{
     private EventRepository eventRepository;
     @Override
     public void checkIfEventUniq(Event event) {
-        var events = eventRepository.findAll();
+        var events = eventRepository.findAll().stream().filter(e -> e.getParticipants() != null).toList();
         for(var ev : events){
-            if(ev.getEndTime().equals(event.getEndTime()) && ev.getDescription().equals(event.getDescription()) && ev.getStartTime().equals(event.getStartTime())){
+            if(ev.equals(event)){
                 event.setId(ev.getId());
             }
         }

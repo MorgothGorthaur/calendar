@@ -3,6 +3,7 @@ package com.example.routine.Controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.routine.exception.ParticipantAlreadyContainsEvent;
 import com.example.routine.exception.ParticipantNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class RestExceptionHandler {
 	/*
 	 * handle exceptions on Service - layer
 	 */
-	@ExceptionHandler({ParticipantNotFoundException.class, EventNotFoundException.class})
+	@ExceptionHandler({ParticipantNotFoundException.class, EventNotFoundException.class, ParticipantAlreadyContainsEvent.class})
     protected ResponseEntity<Object> handleEntityNotFoundEx(RuntimeException ex, WebRequest request) {
       ApiError apiError = new ApiError("entity not found exception", ex.getMessage());
       return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);

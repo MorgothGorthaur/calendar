@@ -4,6 +4,7 @@ package com.example.routine.Model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.*;
 
@@ -17,7 +18,6 @@ import lombok.ToString;
 @Table(name = "events")
 @Getter
 @Setter
-@EqualsAndHashCode
 @ToString
 
 public class Event {
@@ -37,4 +37,16 @@ public class Event {
     @ManyToMany(mappedBy = "events")
     private List<Participant> participants;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(startTime, event.startTime) && Objects.equals(endTime, event.endTime) && Objects.equals(description, event.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startTime, endTime, description);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.routine.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -24,5 +25,7 @@ public class ApiError {
     public ApiError(String message, String debugMessage) {
         this.message = message;
         this.debugMessage = debugMessage;
+        errors = new ArrayList<>();
+        errors.add(debugMessage);
     }
 }

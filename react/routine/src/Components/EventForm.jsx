@@ -10,7 +10,7 @@ const EventForm = ({createOrUpdate, event,id}) => {
 
   const updateNewEvent = (e) => {
     e.preventDefault();
-    const data = EventService.change(event.id, description, startTime, endTime).then(data => {
+    const data = EventService.change(id, event.id, description, startTime, endTime).then(data => {
       validation(data);
     })
   };

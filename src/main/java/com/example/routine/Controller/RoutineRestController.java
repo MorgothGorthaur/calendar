@@ -13,6 +13,7 @@ import com.example.routine.Repository.EventRepository;
 import com.example.routine.Repository.ParticipantRepository;
 import com.example.routine.Service.EventService;
 import com.example.routine.exception.EventNotFoundException;
+import com.example.routine.exception.ParticipantAlreadyContainsEvent;
 import com.example.routine.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -75,17 +76,29 @@ public class RoutineRestController {
         var event = eventDto.toEvent();
         eventService.checkIfEventUniq(event);
         var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
+        if(participant.getEvents().contains(event)){
+            throw new ParticipantAlreadyContainsEvent();
+        }
         participant.addEvent(event);
         var events = participantRepository.save(participant).getEvents();
         return ResponseEntity.ok(modelMapper.map(events.get(events.size() -1), EventDto.class));
     }
-    @PatchMapping("/events")
-    public ResponseEntity<@Valid EventDto> changeEvent(@Valid @RequestBody EventDto eventDto) {
-        var event = eventRepository.findById(eventDto.getId()).orElseThrow(() -> new EventNotFoundException(eventDto.getId()));
-        event.setDescription(eventDto.getDescription());
-        event.setStartTime(eventDto.getStartTime());
-        event.setEndTime(eventDto.getEndTime());
-        return ResponseEntity.ok(modelMapper.map(eventRepository.save(event), EventDto.class));
+    @PatchMapping("/{participantId}/events")
+    public ResponseEntity<@Valid EventDto> changeEvent(@PathVariable Long participantId, @Valid @RequestBody EventDto eventDto) {
+        var participant = participantRepository.findByIdAndStatus(participantId, ParticipantStatus.ACTIVE)
+                .orElseThrow(() -> new ParticipantNotFoundException(participantId));
+        participant.setEvents(participant.getEvents().stream().filter(event -> !event.getId().equals(eventDto.getId())).toList());
+        var event = eventDto.toEvent();
+        event.setId(eventDto.getId());
+        eventService.checkIfEventUniq(event);
+        if(participant.getEvents().contains(event)){
+            throw new ParticipantAlreadyContainsEvent();
+        }
+        participant.addEvent(event);
+        var events = participantRepository.save(participant).getEvents().stream().filter(e -> e.equals(event)).toList();
+
+        return ResponseEntity.ok(modelMapper.map(events.get(0),EventDto.class));
+
     }
     @DeleteMapping("/{participantId}/events/{eventId}")
     public ResponseEntity<String> deleteEvent(@PathVariable Long participantId, @PathVariable Long eventId) {

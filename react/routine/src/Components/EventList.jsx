@@ -28,7 +28,7 @@ const EventList = ({participantId}) => {
   };
 
   const changeEvent = (event) => {
-    setEvents([...events.filter(e => e.id !== event.id), event]);
+    fetchEvent();
   }
   return (
     <div>
@@ -36,7 +36,7 @@ const EventList = ({participantId}) => {
         <div className = "participant_list">
           {events.map(event =>
               <div>
-                <EventItem event = {event} remove = {removeEvent} change = {changeEvent} />
+                <EventItem id = {participantId} event = {event} remove = {removeEvent} change = {changeEvent} />
               </div>
           )}
 

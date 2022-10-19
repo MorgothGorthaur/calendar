@@ -31,9 +31,9 @@ public class Participant {
     private ParticipantStatus status;
 
     public void addEvent(Event event){
-        if(events == null) {
-            events = new LinkedList<>();
-        }
+        var tmp = events;
+        events = new LinkedList<>();
+        events.addAll(tmp);
         events.add(event);
     }
     public void removeEvent(Event event){
