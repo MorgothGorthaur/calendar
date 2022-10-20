@@ -4,16 +4,22 @@ import EventItem from './EventItem';
 import EventForm from './EventForm';
 import EventService from '../API/EventService';
 import {Button, Modal} from 'react-bootstrap';
+import Loader from '../UI/Loader/Loader';
 const EventList = ({participantId}) => {
   const[events, setEvents] = useState([]);
   const[modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   async function fetchEvent(){
     const response = await ParticipantService.getFull(participantId);
     setEvents(response);
   };
 
   useEffect ( () => {
-    fetchEvent();
+    setLoading(true);
+    setTimeout ( () => {
+      fetchEvent();
+      setLoading(false);
+    }, 1000);
   },1000);
 
   const removeEvent = (id) => {
@@ -32,22 +38,30 @@ const EventList = ({participantId}) => {
   }
   return (
     <div>
-      {events.length ? (
-        <div className = "participant_list">
-          {events.map(event =>
-              <div>
-                <EventItem id = {participantId} event = {event} remove = {removeEvent} change = {changeEvent} />
-              </div>
-          )}
-
-        </div>
+      {loading ? (
+          <div style = {{display: 'flex', justifyContent: 'center'}}>
+            <Loader />
+          </div>
       ):(
-        <h1> not found! </h1>
-      )}
-      <div style = {{textAlign: 'center'}}>
-        <Button variant = "primary" onClick = {() => setModal(true)}> add </Button>
-        <Modal show = {modal} onHide = {setModal}> <EventForm createOrUpdate = {addEvent} id = {participantId}/> </Modal>
-      </div>
+        <div>
+          {events.length ? (
+            <div className = "participant_list">
+              {events.map(event =>
+                  <div>
+                    <EventItem id = {participantId} event = {event} remove = {removeEvent} change = {changeEvent} />
+                  </div>
+              )}
+
+            </div>
+          ):(
+            <h1> not found! </h1>
+          )}
+          <div style = {{textAlign: 'center'}}>
+            <Button variant = "primary" onClick = {() => setModal(true)}> add </Button>
+            <Modal show = {modal} onHide = {setModal}> <EventForm createOrUpdate = {addEvent} id = {participantId}/> </Modal>
+          </div>
+        </div>
+        )}
     </div>
   )
 }
