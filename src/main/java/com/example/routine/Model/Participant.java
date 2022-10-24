@@ -31,10 +31,15 @@ public class Participant {
     private ParticipantStatus status;
 
     public void addEvent(Event event){
-        var tmp = events;
-        events = new LinkedList<>();
-        events.addAll(tmp);
-        events.add(event);
+        if(events != null) {
+            var tmp = events;
+            events = new LinkedList<>();
+            events.addAll(tmp);
+            events.add(event);
+        } else {
+            events = new LinkedList<>();
+            events.add(event);
+        }
     }
     public void removeEvent(Event event){
         if(events != null) {

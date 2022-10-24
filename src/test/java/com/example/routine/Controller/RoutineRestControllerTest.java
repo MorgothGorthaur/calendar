@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -196,11 +197,14 @@ class RoutineRestControllerTest {
         event.setDescription("descr");
         event.setStartTime(now.plusDays(1));
         event.setEndTime(now.plusDays(2));
+        var participant = new Participant();
+        participant.setEvents(List.of(event));
         var dto = new EventDto(event.getId(), event.getStartTime(), event.getEndTime(), event.getDescription());
-        when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
-        when(eventRepository.save(event)).thenReturn(event);
+        when(participantRepository.findByIdAndStatus(1L, ParticipantStatus.ACTIVE)).thenReturn(Optional.of(participant));
+        doNothing().when(eventService).checkIfEventUniq(event);
+        when(participantRepository.save(participant)).thenReturn(participant);
         when(modelMapper.map(event, EventDto.class)).thenReturn(dto);
-        this.mock.perform(patch("/routine/events")
+        this.mock.perform(patch("/routine/1/events")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())

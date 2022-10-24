@@ -76,7 +76,7 @@ public class RoutineRestController {
         var event = eventDto.toEvent();
         eventService.checkIfEventUniq(event);
         var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
-        if(participant.getEvents().contains(event)){
+        if(participant.getEvents() != null && participant.getEvents().contains(event)){
             throw new ParticipantAlreadyContainsEvent();
         }
         participant.addEvent(event);
