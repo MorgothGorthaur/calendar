@@ -2,8 +2,7 @@ export default class ParticipantService {
   static async getAll() {
     try {
       const response = await fetch('http://localhost:8080/routine');
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch(e) {
       alert(e);
     }
@@ -12,8 +11,7 @@ export default class ParticipantService {
   static async getFull(id) {
     try {
       const response = await fetch('http://localhost:8080/routine/' + id);
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (e) {
       alert(e);
     }
@@ -24,7 +22,7 @@ export default class ParticipantService {
         const requestOptions = {
           method: 'DELETE',
         };
-        const response = await fetch ('http://localhost:8080/routine/' + id, requestOptions);
+        await fetch ('http://localhost:8080/routine/' + id, requestOptions);
     } catch (e) {
       alert(e);
     }
@@ -38,8 +36,7 @@ export default class ParticipantService {
         body: JSON.stringify({firstName, lastName})
       };
       const response = await fetch ('http://localhost:8080/routine', requestOptions);
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (e) {
       alert(e);
     }
@@ -53,8 +50,7 @@ export default class ParticipantService {
         body: JSON.stringify({id, firstName, lastName})
       };
       const response = await fetch ('http://localhost:8080/routine', requestOptions);
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (e) {
       alert(e);
     }

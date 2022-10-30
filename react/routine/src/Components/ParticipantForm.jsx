@@ -7,13 +7,13 @@ const ParticipantForm = ({createOrUpdate,participant}) => {
   const [lastName, setLastName] = useState('');
   const updateNewParticipant = (e) => {
     e.preventDefault();
-    const data = ParticipantService.change(participant.id, firstName, lastName).then(data => {
+    ParticipantService.change(participant.id, firstName, lastName).then(data => {
       validation(data);
     })
   };
   const addNewParticipant = (e) => {
     e.preventDefault();
-    const data = ParticipantService.save(firstName, lastName).then(data => {
+    ParticipantService.save(firstName, lastName).then(data => {
       validation(data);
     })
   };

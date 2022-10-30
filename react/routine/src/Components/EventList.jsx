@@ -20,7 +20,7 @@ const EventList = ({participantId}) => {
       fetchEvent();
       setLoading(false);
     }, 1000);
-  },1000);
+  },[]);
 
   const removeEvent = (id) => {
     EventService.remove(participantId, id);

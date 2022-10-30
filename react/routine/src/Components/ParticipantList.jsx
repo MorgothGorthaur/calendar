@@ -14,7 +14,7 @@ const ParticipanList = () => {
       fetchParticipant();
       setLoading(false);
     }, 1000);
-  },1000);
+  },[]);
   async function fetchParticipant(){
     const response = await ParticipantService.getAll();
     setParticipants(response);

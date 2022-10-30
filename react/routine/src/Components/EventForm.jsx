@@ -10,13 +10,13 @@ const EventForm = ({createOrUpdate, event,id}) => {
 
   const updateNewEvent = (e) => {
     e.preventDefault();
-    const data = EventService.change(id, event.id, description, startTime, endTime).then(data => {
+    EventService.change(id, event.id, description, startTime, endTime).then(data => {
       validation(data);
     })
   };
   const addNewEvent = (e) => {
     e.preventDefault();
-    const data = EventService.save(id,description, startTime, endTime).then(data => {
+    EventService.save(id,description, startTime, endTime).then(data => {
       validation(data);
     })
   };

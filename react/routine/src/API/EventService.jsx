@@ -6,10 +6,8 @@ export default class EventService {
       const requestOptions = {
           method: 'DELETE',
       };
-
-      const response = await fetch('http://localhost:8080/routine/' + participantId + '/events/' + id, requestOptions);
-
-    } catch(e) {
+      await fetch('http://localhost:8080/routine/' + participantId + '/events/' + id, requestOptions);
+      } catch(e) {
       alert(e);
     }
   };
@@ -22,8 +20,7 @@ export default class EventService {
           body: JSON.stringify({id,startTime, endTime,  description})
       }
       const response = await fetch('http://localhost:8080/routine/' + participantId + '/events', requestOptions);
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (e){
       alert(e)
     }
@@ -38,8 +35,7 @@ export default class EventService {
           body: JSON.stringify({description, startTime, endTime})
       }
       const response = await fetch('http://localhost:8080/routine/' + id + '/events', requestOptions);
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (e){
       alert(e)
     }

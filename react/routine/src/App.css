@@ -4,11 +4,7 @@
 }
 
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+
 
 .App-header {
   background-color: #282c34;
@@ -56,10 +52,7 @@
   word-wrap: break-word;
   max-width: 500px;
   margin: auto;
-  padding-left: 25px;
-  padding-right: 25px;
-  padding-top: 25px;
-  padding-bottom: 25px;
+  padding: 25px;
 
 }
 .element-enter {
@@ -78,10 +71,7 @@
 }
 
 .form {
-  padding-left: 25px;
-  padding-right: 25px;
-  padding-top: 25px;
-  padding-bottom: 25px;
+  padding: 25px;
 }
 
 
