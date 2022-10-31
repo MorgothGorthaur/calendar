@@ -170,9 +170,8 @@ class RoutineRestControllerTest {
         event.setStartTime(now.plusDays(1));
         event.setEndTime(now.plusDays(2));
         var dto = new EventDto(event.getId(), event.getStartTime(), event.getEndTime(), event.getDescription());
-        doNothing().when(authorService).checkIfEventUniq(event);
+        when(authorService.addEvent(participant, event)).thenReturn(List.of(event));
         when(participantRepository.findById(1L)).thenReturn(Optional.of(participant));
-        when(participantRepository.save(participant)).thenReturn(participant);
         when(modelMapper.map(event, EventDto.class)).thenReturn(dto);
         this.mock.perform(post("/routine/1/events")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -196,8 +195,7 @@ class RoutineRestControllerTest {
         participant.setEvents(List.of(event));
         var dto = new EventDto(event.getId(), event.getStartTime(), event.getEndTime(), event.getDescription());
         when(participantRepository.findByIdAndStatus(1L, ParticipantStatus.ACTIVE)).thenReturn(Optional.of(participant));
-        doNothing().when(authorService).checkIfEventUniq(event);
-        when(participantRepository.save(participant)).thenReturn(participant);
+        when(authorService.addEvent(participant, dto.toEvent())).thenReturn(List.of(event));
         when(modelMapper.map(event, EventDto.class)).thenReturn(dto);
         this.mock.perform(patch("/routine/1/events")
                         .contentType(MediaType.APPLICATION_JSON)

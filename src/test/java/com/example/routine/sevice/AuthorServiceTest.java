@@ -2,6 +2,7 @@ package com.example.routine.sevice;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,7 +10,11 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.routine.Model.Participant;
+import com.example.routine.Model.ParticipantStatus;
+import com.example.routine.Repository.ParticipantRepository;
 import com.example.routine.Service.AuthorServiceImpl;
+import com.example.routine.exception.ParticipantAlreadyContainsEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,12 +32,14 @@ import com.example.routine.Repository.EventRepository;
 public class AuthorServiceTest {
 	@Mock
 	private EventRepository eventRepository;
+	@Mock
+	private ParticipantRepository participantRepository;
 	private AutoCloseable autoCloseable;
 	private AuthorServiceImpl underTest;
 	@BeforeEach
 	void setUp() {
 		autoCloseable = MockitoAnnotations.openMocks(this);
-		underTest = new AuthorServiceImpl(eventRepository);
+		underTest = new AuthorServiceImpl(eventRepository, participantRepository);
 		
 	}
 	@AfterEach
@@ -40,23 +47,46 @@ public class AuthorServiceTest {
 		autoCloseable.close();
 	}
 	@Test
-	public void test(){
-		//given
+	public void addEvent_shouldReturnException(){
+		var participant = new Participant();
+		participant.setId(1L);
+		participant.setFirstName("Victor");
+		participant.setLastName("Tarasov");
+		participant.setStatus(ParticipantStatus.ACTIVE);
 		var event = new Event();
-		event.setStartTime(LocalDateTime.now());
-		event.setEndTime(LocalDateTime.now());
+		event.setId(1L);
 		event.setDescription("descr");
-		var resEvent = new Event();
-		resEvent.setId(1L);
-		resEvent.setStartTime(event.getStartTime());
-		resEvent.setEndTime(event.getEndTime());
-		resEvent.setDescription("descr");
-		//when
-		when(eventRepository.findAll()).thenReturn(List.of(resEvent));
-		underTest.checkIfEventUniq(event);
-		//then
-		assertEquals(event, resEvent);
+		participant.setEvents(List.of(event));
+		var exception = assertThrows(ParticipantAlreadyContainsEvent.class, () -> {
+			underTest.addEvent(participant, event);
+		});
+		assertEquals(exception.getMessage(), "participant already contains event!");
 	}
 
+	@Test
+	public void addEvent_shouldReturnListOfEvents(){
+		var participant = new Participant();
+		participant.setId(1L);
+		participant.setFirstName("Victor");
+		participant.setLastName("Tarasov");
+		participant.setStatus(ParticipantStatus.ACTIVE);
+		var event = new Event();
+		event.setId(1L);
+		event.setDescription("descr");
+		var participantWithEvent = new Participant();
+		participantWithEvent.setId(1L);
+		participantWithEvent.setFirstName("Victor");
+		participantWithEvent.setLastName("Tarasov");
+		participantWithEvent.setStatus(ParticipantStatus.ACTIVE);
+		participantWithEvent.addEvent(event);
+		event.setParticipants(List.of(participantWithEvent));
+		when(participantRepository.save(participant)).thenReturn(participantWithEvent);
+		when(eventRepository.findAll()).thenReturn(List.of(event));
+
+		var events = underTest.addEvent(participant,event);
+		assertEquals(events, List.of(event));
+		assertEquals(events.get(0).getParticipants(), List.of(participantWithEvent));
+
+	}
 	
 }
