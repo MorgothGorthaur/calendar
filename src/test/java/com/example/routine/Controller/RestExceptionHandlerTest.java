@@ -1,14 +1,12 @@
 package com.example.routine.Controller;
 
 
-import com.example.routine.DTO.EventDto;
 import com.example.routine.DTO.ParticipantDto;
 import com.example.routine.Model.ParticipantStatus;
 import com.example.routine.Repository.EventRepository;
 import com.example.routine.Repository.ParticipantRepository;
-import com.example.routine.Service.EventService;
+import com.example.routine.Service.AuthorService;
 import com.example.routine.exception.ParticipantNotFoundException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
@@ -39,7 +36,7 @@ class RestExceptionHandlerTest {
     @MockBean
     private ModelMapper modelMapper;
     @MockBean
-    private EventService eventService;
+    private AuthorService authorService;
     @Autowired
     ObjectMapper objectMapper;
     @Autowired

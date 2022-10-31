@@ -8,16 +8,12 @@ import com.example.routine.Model.Participant;
 import com.example.routine.Model.ParticipantStatus;
 import com.example.routine.Repository.EventRepository;
 import com.example.routine.Repository.ParticipantRepository;
-import com.example.routine.Service.EventService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.routine.Service.AuthorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +48,7 @@ class RoutineRestControllerTest {
     @MockBean
     private ModelMapper modelMapper;
     @MockBean
-    private EventService eventService;
+    private AuthorService authorService;
     @Autowired
     ObjectMapper objectMapper;
     @Autowired
@@ -175,7 +170,7 @@ class RoutineRestControllerTest {
         event.setStartTime(now.plusDays(1));
         event.setEndTime(now.plusDays(2));
         var dto = new EventDto(event.getId(), event.getStartTime(), event.getEndTime(), event.getDescription());
-        doNothing().when(eventService).checkIfEventUniq(event);
+        doNothing().when(authorService).checkIfEventUniq(event);
         when(participantRepository.findById(1L)).thenReturn(Optional.of(participant));
         when(participantRepository.save(participant)).thenReturn(participant);
         when(modelMapper.map(event, EventDto.class)).thenReturn(dto);
@@ -201,7 +196,7 @@ class RoutineRestControllerTest {
         participant.setEvents(List.of(event));
         var dto = new EventDto(event.getId(), event.getStartTime(), event.getEndTime(), event.getDescription());
         when(participantRepository.findByIdAndStatus(1L, ParticipantStatus.ACTIVE)).thenReturn(Optional.of(participant));
-        doNothing().when(eventService).checkIfEventUniq(event);
+        doNothing().when(authorService).checkIfEventUniq(event);
         when(participantRepository.save(participant)).thenReturn(participant);
         when(modelMapper.map(event, EventDto.class)).thenReturn(dto);
         this.mock.perform(patch("/routine/1/events")

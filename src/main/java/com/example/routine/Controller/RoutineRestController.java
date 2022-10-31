@@ -11,13 +11,11 @@ import com.example.routine.DTO.ParticipantDto;
 import com.example.routine.Model.ParticipantStatus;
 import com.example.routine.Repository.EventRepository;
 import com.example.routine.Repository.ParticipantRepository;
-import com.example.routine.Service.EventService;
+import com.example.routine.Service.AuthorService;
 import com.example.routine.exception.EventNotFoundException;
-import com.example.routine.exception.ParticipantAlreadyContainsEvent;
 import com.example.routine.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,7 +28,7 @@ public class RoutineRestController {
     private EventRepository eventRepository;
     private ParticipantRepository participantRepository;
     private ModelMapper modelMapper;
-    private EventService eventService;
+    private AuthorService authorService;
     @GetMapping
     public List<ParticipantDto> findAll() {
         return participantRepository.findParticipantByStatus(ParticipantStatus.ACTIVE).stream().
@@ -76,7 +74,7 @@ public class RoutineRestController {
 
         var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
         var event = eventDto.toEvent();
-        var events = eventService.addEvent(participant, event);
+        var events = authorService.addEvent(participant, event);
         return modelMapper.map(events.get(events.size() -1), EventDto.class);
     }
     @PatchMapping("/{participantId}/events")
@@ -85,7 +83,7 @@ public class RoutineRestController {
                 .orElseThrow(() -> new ParticipantNotFoundException(participantId));
         participant.setEvents(participant.getEvents().stream().filter(event -> !event.getId().equals(eventDto.getId())).toList());
         var event = eventDto.toEvent();
-        var events = eventService.addEvent(participant, event);
+        var events = authorService.addEvent(participant, event);
         return modelMapper.map(events.get(0),EventDto.class);
 
     }

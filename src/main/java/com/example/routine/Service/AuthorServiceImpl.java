@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class EventServiceImpl implements EventService{
+public class AuthorServiceImpl implements AuthorService {
     private EventRepository eventRepository;
     private ParticipantRepository participantRepository;
 
