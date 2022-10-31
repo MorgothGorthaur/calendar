@@ -76,12 +76,7 @@ public class RoutineRestController {
 
         var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
         var event = eventDto.toEvent();
-        eventService.checkIfEventUniq(event);
-        if(participant.getEvents() != null && participant.getEvents().contains(event)){
-            throw new ParticipantAlreadyContainsEvent();
-        }
-        participant.addEvent(event);
-        var events = participantRepository.save(participant).getEvents();
+        var events = eventService.addEvent(participant, event);
         return modelMapper.map(events.get(events.size() -1), EventDto.class);
     }
     @PatchMapping("/{participantId}/events")
@@ -90,12 +85,7 @@ public class RoutineRestController {
                 .orElseThrow(() -> new ParticipantNotFoundException(participantId));
         participant.setEvents(participant.getEvents().stream().filter(event -> !event.getId().equals(eventDto.getId())).toList());
         var event = eventDto.toEvent();
-        eventService.checkIfEventUniq(event);
-        if(participant.getEvents().contains(event)){
-            throw new ParticipantAlreadyContainsEvent();
-        }
-        participant.addEvent(event);
-        var events = participantRepository.save(participant).getEvents().stream().filter(e -> e.equals(event)).toList();
+        var events = eventService.addEvent(participant, event);
         return modelMapper.map(events.get(0),EventDto.class);
 
     }
