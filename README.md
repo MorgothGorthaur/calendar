@@ -14,8 +14,14 @@ The same Event may have multiple participants, so removing an event for one of t
 <h2>Used Technologies:</h2>
  <div>
  Back-end: Spring Boot(Spring Web, Spring Data JPA, Validation), MariaDB, Mockito, Lombok.
+  </div>
+  <div>
  Front-end: ReactJS.
- Server Build: Maven.
+ </div>
+ <div>
+  Server Build: Maven.
+  </div>
+  <div>
  Client Build: npm.
  </div>
 <h2>Run:</h2> 
