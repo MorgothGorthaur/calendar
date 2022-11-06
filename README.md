@@ -27,12 +27,12 @@ The same Event may have multiple participants, so removing an event for one of t
 <h2>Run:</h2> 
   <h3>first way:</h3>
   <div>
-    go to the project directory.
-    run: ./mvnw clean package
-    then: java -jar calendar-0.0.1-SNAPSHOT.jar
-    go to the *project directory*/react/calendar
-    run: npm install
-    then: npm start
+    <div>go to the project directory.
+      <div>run: ./mvnw clean package</div>
+      <div>then: java -jar calendar-0.0.1-SNAPSHOT.jar</div>
+      <div>go to the *project directory*/react/calendar</div>
+      <div>run: npm install</div>
+      <div>then: npm start</div>
   </div>
   <h3>second way:</h3>
     <div>
