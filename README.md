@@ -2,7 +2,9 @@
 <h2>Description:</h2>
   <div>
   Calendar is a simple RESTful Java Spring Boot application to delegate events to participants.
-Spring Data JPA is used to access data. The program implements two entities - Participant and Event with ManyToMany biderectional relationship.
+  </div>
+  <div>
+  Spring Data JPA is used to access data. The program implements two entities - Participant and Event with ManyToMany biderectional relationship.
 The Participant entity has the following fields: first name, second name , status (Enum with fields Active and Removed) and the list of Events.
 The Event entity has fields: start time, end time and the list of Participants.
 The program allows you to get the list of participants (with Active status) and add/remove/modify them.
