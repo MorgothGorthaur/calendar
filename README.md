@@ -36,10 +36,10 @@ The same Event may have multiple participants, so removing an event for one of t
   </div>
   <h3>second way:</h3>
     <div>
-    <>go to the project directory.</>
-    <>run: docker build -t spring-calendar .</>
-    <>then: docker run  -p 8080:8080 -t spring-calendar</>
-    <>go to the *project directory*/react/calendar</>
-    <>run: docker build -t react-calendar .</>
-    <>then: docker run -p 5001:3000 -t react-calendar</>
+    <div>go to the project directory.</div>
+    <div>run: docker build -t spring-calendar .</div>
+    <div>then: docker run  -p 8080:8080 -t spring-calendar</div>
+    <div>go to the *project directory*/react/calendar</div>
+    <div>run: docker build -t react-calendar .</div>
+    <div>then: docker run -p 5001:3000 -t react-calendar</div>
     </div>
