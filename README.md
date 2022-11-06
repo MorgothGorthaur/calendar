@@ -1,5 +1,5 @@
 # calendar
-###Description:
+<h2>Description:</h2>
   <h3>Calendar is a simple RESTful Java Spring Boot application to delegate events to participants.
 Spring Data JPA is used to access data. The program implements two entities - Participant and Event with ManyToMany biderectional relationship.
 The Participant entity has the following fields: first name, second name , status (Enum with fields Active and Removed) and the list of Events.
@@ -22,10 +22,10 @@ The same Event may have multiple participants, so removing an event for one of t
     <h3>go to the *project directory*/react/calendar</h3>
     <h3>run: npm install</h3>
     <h3>then: npm start</h3>
-  second way:
-    go to the project directory.
-    run: docker build -t spring-calendar .
-    then: docker run  -p 8080:8080 -t spring-calendar
-    go to the *project directory*/react/calendar
-    run: docker build -t react-calendar .
-    then: docker run -p 5001:3000 -t react-calendar
+  <h3>second way:</h3>
+    <h3>go to the project directory.</h3>
+    <h3>run: docker build -t spring-calendar .</h3>
+    <h3>then: docker run  -p 8080:8080 -t spring-calendar</h3>
+    <h3>go to the *project directory*/react/calendar</h3>
+    <h3>run: docker build -t react-calendar .</h3>
+    <h3>then: docker run -p 5001:3000 -t react-calendar</h3>
