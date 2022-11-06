@@ -7,7 +7,7 @@ The Event entity has fields: start time, end time and the list of Participants.
 The program allows you to get the list of participants (with Active status) and add/remove/modify them.
 You can also get a list of events (those with actual dates) for each participant and add/modify/delete them.
 The same Event may have multiple participants, so removing an event for one of them does not remove for the others.
-Used Technologies:
+<h2>Used Technologies:</h2>
  Back-end: Spring Boot(Spring Web, Spring Data JPA, Validation), MariaDB, Mockito, Lombok.
  Front-end: ReactJS.
  Server Build: Maven.
