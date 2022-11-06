@@ -12,9 +12,7 @@ Used Technologies:
  Front-end: ReactJS.
  Server Build: Maven.
  Client Build: npm.
-Run:
-  run:
-  
+Run: 
   first way:
     go to the project directory.
     run: ./mvnw clean package
