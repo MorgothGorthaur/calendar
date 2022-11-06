@@ -1,12 +1,13 @@
 # calendar
-Description:
-  Calendar is a simple RESTful Java Spring Boot application to delegate events to participants.
+<h2>Description:</h2>
+  <h1>Calendar is a simple RESTful Java Spring Boot application to delegate events to participants.
 Spring Data JPA is used to access data. The program implements two entities - Participant and Event with ManyToMany biderectional relationship.
 The Participant entity has the following fields: first name, second name , status (Enum with fields Active and Removed) and the list of Events.
 The Event entity has fields: start time, end time and the list of Participants.
 The program allows you to get the list of participants (with Active status) and add/remove/modify them.
 You can also get a list of events (those with actual dates) for each participant and add/modify/delete them.
 The same Event may have multiple participants, so removing an event for one of them does not remove for the others.
+</h1>
 <h2>Used Technologies:</h2>
  Back-end: Spring Boot(Spring Web, Spring Data JPA, Validation), MariaDB, Mockito, Lombok.
  Front-end: ReactJS.
