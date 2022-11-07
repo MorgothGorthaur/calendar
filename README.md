@@ -44,7 +44,5 @@ The same Event may have multiple participants, so removing an event for one of t
     <div>then: docker run -p 5001:3000 -t react-calendar</div>
     </div>
     
-    <div>
-      You also need to provide acces to your MariaDB database. 
-      You must set your database url, password and username to *project directory*/src/main/resources/application.properties file
-    </div>
+  <div>You also need to provide acces to your MariaDB database. </div>
+  <div>You must set your database url, password and username to *project directory*/src/main/resources/application.properties file</div>
