@@ -26,6 +26,7 @@ The same Event may have multiple participants, so removing an event for one of t
  </div>
  <h2> Requirements:</h2>
  <div> Java 17 </div>
+ <div> MariaDB </div>
  <div> Maven </div>
 <h2>Run:</h2> 
   <h3>first way:</h3>
