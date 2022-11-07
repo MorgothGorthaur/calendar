@@ -8,7 +8,7 @@
 The Participant entity has the following fields: first name, second name , status (Enum with fields Active and Removed) and the list of Events.
 The Event entity has fields: start time, end time and the list of Participants.
 The program allows you to get the list of participants (with Active status) and add/remove/modify them.
-You can also get a list of events (those with actual dates) for each participant and add/modify/delete them.
+You can also get a list of events (those with actual dates) for each participant and add/modify/remove them.
 The same Event may have multiple participants, so removing an event for one of them does not remove for the others.
 </div>
 <h2>Used Technologies:</h2>
