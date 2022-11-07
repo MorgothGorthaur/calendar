@@ -28,7 +28,7 @@ The same Event may have multiple participants, so removing an event for one of t
   <h3>first way:</h3>
   <div>
     <div>go to the project directory.
-      <div>run: ./mvnw clean package</div>
+      <div>run: mvn clean package</div>
       <div>then: java -jar target/calendar-0.0.1-SNAPSHOT.jar</div>
       <div>go to the *project directory*/react/calendar</div>
       <div>run: npm install</div>
@@ -37,6 +37,7 @@ The same Event may have multiple participants, so removing an event for one of t
   <h3>second way:</h3>
     <div>
     <div>go to the project directory.</div>
+    <div>then run: mvn clean package</div>
     <div>run: docker build -t spring-calendar .</div>
     <div>then: docker run  -p 8080:8080 -t spring-calendar</div>
     <div>go to the *project directory*/react/calendar</div>
