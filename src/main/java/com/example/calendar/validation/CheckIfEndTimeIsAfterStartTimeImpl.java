@@ -9,10 +9,6 @@ import javax.validation.ConstraintValidatorContext;
 public class CheckIfEndTimeIsAfterStartTimeImpl implements ConstraintValidator<CheckIfEndTimeIsAfterStartTime, EventDto> {
     @Override
     public boolean isValid(EventDto event, ConstraintValidatorContext context) {
-        try {
-            return event.getEndTime().isAfter(event.getStartTime());
-        } catch (Exception ex){
-            throw ex;
-        }
+        return event.getStartTime() != null && event.getEndTime() != null && event.getEndTime().isAfter(event.getStartTime());
     }
 }

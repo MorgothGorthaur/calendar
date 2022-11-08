@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
 import com.example.calendar.exception.ParticipantNotFoundException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -35,7 +36,7 @@ public class RestExceptionHandler {
 	public ResponseEntity<Object> handleInvalidArgument(MethodArgumentNotValidException ex) {
 
 		List <String> errors = ex.getBindingResult().getAllErrors().stream()
-				.map(error -> error.getDefaultMessage().toString()).collect(Collectors.toList());
+				.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
 		 ApiError apiError = new ApiError("validation error",ex.getMessage(), errors); 
 		 return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
 	}
