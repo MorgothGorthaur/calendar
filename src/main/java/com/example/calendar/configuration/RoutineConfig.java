@@ -13,19 +13,6 @@ import org.springframework.validation.beanvalidation.SpringConstraintValidatorFa
 import org.modelmapper.ModelMapper;
 @Configuration
 public class RoutineConfig {
-	/*
-	 * https://www.javafixing.com/2021/10/fixed-autowired-gives-null-value-in.html
-	 * 
-	 * 
-	 */
-	@Bean
-	public Validator validator(AutowireCapableBeanFactory beanFactory) {
-	    ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class).configure()
-	            .constraintValidatorFactory(new SpringConstraintValidatorFactory(beanFactory))
-	            .buildValidatorFactory();
-
-	    return validatorFactory.getValidator();
-	}
 	@Bean
 	public ModelMapper getMapper() {
 		return new ModelMapper();
