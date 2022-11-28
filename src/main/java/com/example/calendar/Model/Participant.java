@@ -4,10 +4,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "participants")
@@ -15,7 +19,7 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class Participant {
+public class Participant implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +33,9 @@ public class Participant {
 
     @Column(name = "user_role")
     private  UserRole role;
+
+    private String password;
+    private String email;
 
     public void addEvent(Event event){
         if(events != null) {
@@ -48,4 +55,38 @@ public class Participant {
         }
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Set.of(getRole());
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return getStatus().equals(ParticipantStatus.ACTIVE);
+    }
 }
