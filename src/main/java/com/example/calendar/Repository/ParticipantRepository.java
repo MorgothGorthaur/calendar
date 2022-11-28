@@ -11,4 +11,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
     List<Participant> findParticipantByStatus(ParticipantStatus status);
 
     Optional<Participant> findByIdAndStatus(Long id, ParticipantStatus status);
+
+    Optional<Participant> findByEmail(String email);
 }
