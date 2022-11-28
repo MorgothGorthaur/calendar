@@ -27,6 +27,9 @@ public class Participant {
     private List<Event> events;
     private ParticipantStatus status;
 
+    @Column(name = "user_role")
+    private  UserRole role;
+
     public void addEvent(Event event){
         if(events != null) {
             var tmp = events;
