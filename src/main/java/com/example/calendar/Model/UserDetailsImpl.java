@@ -1,11 +1,12 @@
 package com.example.calendar.Model;
 
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
-
+@AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
     private Participant participant;
     @Override
