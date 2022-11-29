@@ -19,11 +19,5 @@ public class ParticipantDto {
     @NotNull(message = "last name mst be setted!")
     @Size(min = 2, max = 10)
     private String lastName;
-    public Participant toParticipant(){
-        var participant = new Participant();
-        participant.setFirstName(firstName);
-        participant.setLastName(lastName);
-        participant.setStatus(ParticipantStatus.ACTIVE);
-        return participant;
-    }
+
 }

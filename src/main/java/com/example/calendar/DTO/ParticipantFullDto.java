@@ -14,8 +14,7 @@ import java.util.List;
 public class ParticipantFullDto extends ParticipantDto {
     private String password;
     private String email;
-
-    @Override
+    
     public Participant toParticipant() {
         var participant = new Participant();
         participant.setFirstName(getFirstName());
