@@ -12,7 +12,7 @@ import java.util.List;
 import com.example.calendar.Model.Participant;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.ParticipantRepository;
-import com.example.calendar.Service.AuthorServiceImpl;
+import com.example.calendar.Service.ParticipantServiceImpl;
 import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,17 +28,17 @@ import com.example.calendar.Repository.EventRepository;
 
 @ExtendWith(MockitoExtension.class)
 
-public class AuthorServiceTest {
+public class ParticipantServiceTest {
 	@Mock
 	private EventRepository eventRepository;
 	@Mock
 	private ParticipantRepository participantRepository;
 	private AutoCloseable autoCloseable;
-	private AuthorServiceImpl underTest;
+	private ParticipantServiceImpl underTest;
 	@BeforeEach
 	void setUp() {
 		autoCloseable = MockitoAnnotations.openMocks(this);
-		underTest = new AuthorServiceImpl(eventRepository, participantRepository);
+		underTest = new ParticipantServiceImpl(eventRepository, participantRepository);
 		
 	}
 	@AfterEach

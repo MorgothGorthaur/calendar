@@ -8,7 +8,7 @@ import com.example.calendar.Model.Participant;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
-import com.example.calendar.Service.AuthorService;
+import com.example.calendar.Service.ParticipantService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ class RoutineRestControllerTest {
     @MockBean
     private ModelMapper modelMapper;
     @MockBean
-    private AuthorService authorService;
+    private ParticipantService participantService;
     @Autowired
     ObjectMapper objectMapper;
     @Autowired
@@ -169,7 +169,7 @@ class RoutineRestControllerTest {
         event.setStartTime(now.plusDays(1));
         event.setEndTime(now.plusDays(2));
         var dto = new EventDto(event.getId(), event.getStartTime(), event.getEndTime(), event.getDescription());
-        when(authorService.addEvent(participant, event)).thenReturn(List.of(event));
+        when(participantService.addEvent(participant, event)).thenReturn(List.of(event));
         when(participantRepository.findById(1L)).thenReturn(Optional.of(participant));
         when(modelMapper.map(event, EventDto.class)).thenReturn(dto);
         this.mock.perform(post("/routine/1/events")
@@ -194,7 +194,7 @@ class RoutineRestControllerTest {
         participant.setEvents(List.of(event));
         var dto = new EventDto(event.getId(), event.getStartTime(), event.getEndTime(), event.getDescription());
         when(participantRepository.findByIdAndStatus(1L, ParticipantStatus.ACTIVE)).thenReturn(Optional.of(participant));
-        when(authorService.addEvent(participant, dto.toEvent())).thenReturn(List.of(event));
+        when(participantService.addEvent(participant, dto.toEvent())).thenReturn(List.of(event));
         when(modelMapper.map(event, EventDto.class)).thenReturn(dto);
         this.mock.perform(patch("/routine/1/events")
                         .contentType(MediaType.APPLICATION_JSON)

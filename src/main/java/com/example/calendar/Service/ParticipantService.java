@@ -5,6 +5,6 @@ import com.example.calendar.Model.Participant;
 
 import java.util.List;
 
-public interface AuthorService {
+public interface ParticipantService {
     List<Event> addEvent(Participant participant, Event event);
 }

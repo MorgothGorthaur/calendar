@@ -1,7 +1,6 @@
 package com.example.calendar.Controller;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,14 +12,13 @@ import com.example.calendar.DTO.ParticipantFullDto;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
-import com.example.calendar.Service.AuthorService;
+import com.example.calendar.Service.ParticipantService;
 import com.example.calendar.exception.EventNotFoundException;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +32,7 @@ public class RoutineRestController {
     private EventRepository eventRepository;
     private ParticipantRepository participantRepository;
     private ModelMapper modelMapper;
-    private AuthorService authorService;
+    private ParticipantService participantService;
     private PasswordEncoder encoder;
 
     @GetMapping
@@ -71,6 +69,7 @@ public class RoutineRestController {
         SecurityContextHolder.getContext().setAuthentication(null);
         return "deleted";
     }
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping()
     public ParticipantDto changeParticipant(Principal principal, @Valid @RequestBody ParticipantFullDto dto) {
@@ -84,12 +83,14 @@ public class RoutineRestController {
         return dto;
     }
 
-    @PostMapping("/{participantId}/events")
-    public EventDto addEvent(@PathVariable Long participantId, @Valid @RequestBody EventDto eventDto) {
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/user/events")
+    public EventDto addEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
 
-        var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
+        var participant = participantRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         var event = eventDto.toEvent();
-        var events = authorService.addEvent(participant, event);
+        var events = participantService.addEvent(participant, event);
         return modelMapper.map(events.get(events.size() - 1), EventDto.class);
     }
 
@@ -99,7 +100,7 @@ public class RoutineRestController {
                 .orElseThrow(() -> new ParticipantNotFoundException(participantId));
         participant.setEvents(participant.getEvents().stream().filter(event -> !event.getId().equals(eventDto.getId())).toList());
         var event = eventDto.toEvent();
-        var events = authorService.addEvent(participant, event);
+        var events = participantService.addEvent(participant, event);
         return modelMapper.map(events.get(0), EventDto.class);
 
     }
