@@ -7,12 +7,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 @AllArgsConstructor
 @Getter @Setter
 public class ParticipantFullDto extends ParticipantDto {
+    @NotNull(message = "password name mst be setted!")
+    @Size(min = 2, max = 10)
     private String password;
+
+    @NotNull(message = "email name mst be setted!")
+    @Email
     private String email;
     
     public Participant toParticipant() {
