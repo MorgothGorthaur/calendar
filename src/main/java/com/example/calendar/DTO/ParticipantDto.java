@@ -12,7 +12,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ParticipantDto {
-    private Long id;
     @NotNull(message = "first name mst be setted!")
     @Size(min = 2, max = 10)
     private String firstName;
@@ -22,7 +21,6 @@ public class ParticipantDto {
     private String lastName;
     public Participant toParticipant(){
         var participant = new Participant();
-        participant.setId(id);
         participant.setFirstName(firstName);
         participant.setLastName(lastName);
         participant.setStatus(ParticipantStatus.ACTIVE);

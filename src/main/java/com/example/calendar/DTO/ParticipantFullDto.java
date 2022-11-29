@@ -18,7 +18,6 @@ public class ParticipantFullDto extends ParticipantDto {
     @Override
     public Participant toParticipant() {
         var participant = new Participant();
-        participant.setId(getId());
         participant.setFirstName(getFirstName());
         participant.setLastName(getLastName());
         participant.setStatus(ParticipantStatus.ACTIVE);
