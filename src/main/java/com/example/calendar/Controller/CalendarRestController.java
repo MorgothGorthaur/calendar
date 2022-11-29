@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/calendar")
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
-public class RoutineRestController {
+public class CalendarRestController {
 
     private EventRepository eventRepository;
     private ParticipantRepository participantRepository;
