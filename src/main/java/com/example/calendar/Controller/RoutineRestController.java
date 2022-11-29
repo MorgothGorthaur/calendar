@@ -106,9 +106,12 @@ public class RoutineRestController {
 
     }
 
-    @DeleteMapping("/{participantId}/events/{eventId}")
-    public String deleteEvent(@PathVariable Long participantId, @PathVariable Long eventId) {
-        var participant = participantRepository.findById(participantId).orElseThrow(() -> new ParticipantNotFoundException(participantId));
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("/user/events/{eventId}")
+    public String deleteEvent(Principal principal, @PathVariable Long eventId) {
+        var participant = participantRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         var event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
         participant.removeEvent(event);
         participantRepository.save(participant);
