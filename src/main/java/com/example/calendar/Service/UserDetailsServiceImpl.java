@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class JpaUerDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private ParticipantRepository participantRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
