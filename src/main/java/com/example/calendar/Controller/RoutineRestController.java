@@ -94,10 +94,11 @@ public class RoutineRestController {
         return modelMapper.map(events.get(events.size() - 1), EventDto.class);
     }
 
-    @PatchMapping("/{participantId}/events")
-    public EventDto changeEvent(@PathVariable Long participantId, @Valid @RequestBody EventDto eventDto) {
-        var participant = participantRepository.findByIdAndStatus(participantId, ParticipantStatus.ACTIVE)
-                .orElseThrow(() -> new ParticipantNotFoundException(participantId));
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PatchMapping("/user/events")
+    public EventDto changeEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
+        var participant = participantRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         participant.setEvents(participant.getEvents().stream().filter(event -> !event.getId().equals(eventDto.getId())).toList());
         var event = eventDto.toEvent();
         var events = participantService.addEvent(participant, event);
