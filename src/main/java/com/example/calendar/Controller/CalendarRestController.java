@@ -2,7 +2,9 @@ package com.example.calendar.Controller;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -97,11 +99,11 @@ public class CalendarRestController {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         var event = eventDto.toEvent();
-        if(participant.getEvents() != null && participant.getEvents().contains(event)){
+        if (participant.getEvents() != null && participant.getEvents().contains(event)) {
             throw new ParticipantAlreadyContainsEvent();
         }
         participant.addEvent(event);
-        return modelMapper.map(participant.getEvents().get(participant.getEvents().size() - 1), EventDto.class);
+        return modelMapper.map(participant.getEvents().getLast(), EventDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -109,13 +111,15 @@ public class CalendarRestController {
     public EventDto changeEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
-        participant.setEvents(participant.getEvents().stream().filter(event -> !event.getId().equals(eventDto.getId())).toList());
+        participant.setEvents(participant.getEvents().stream()
+                .filter(event -> !event.getId().equals(eventDto.getId()))
+                .collect(Collectors.toCollection(LinkedList::new)));
         var event = eventDto.toEvent();
-        if(participant.getEvents() != null && participant.getEvents().contains(event)){
+        if (participant.getEvents() != null && participant.getEvents().contains(event)) {
             throw new ParticipantAlreadyContainsEvent();
         }
         participant.addEvent(event);
-        return modelMapper.map(participant.getEvents().get(0), EventDto.class);
+        return modelMapper.map(participant.getEvents().getFirst(), EventDto.class);
 
     }
 
