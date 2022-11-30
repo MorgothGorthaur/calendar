@@ -17,8 +17,6 @@ import java.util.Set;
 @Table(name = "participants")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
