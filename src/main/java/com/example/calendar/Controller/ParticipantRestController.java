@@ -32,8 +32,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class ParticipantRestController {
-
-    private EventRepository eventRepository;
+    
     private ParticipantRepository participantRepository;
     private ModelMapper modelMapper;
     private PasswordEncoder encoder;
@@ -55,15 +54,6 @@ public class ParticipantRestController {
         return modelMapper.map(participantRepository.save(participant), ParticipantDto.class);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/events")
-    public List<EventDto> getWithEvents(Principal principal) {
-        System.out.println("???");
-        var participant = participantRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
-
-        return participant.getEvents().stream().filter(event -> event.getEndTime().isAfter(LocalDateTime.now())).map(event -> modelMapper.map(event, EventDto.class)).toList();
-    }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping
@@ -92,61 +82,5 @@ public class ParticipantRestController {
         return dto;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/events")
-    public EventDto addEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
-
-        var participant = participantRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
-        var event = eventDto.toEvent();
-        if (participant.getEvents() != null && participant.getEvents().contains(event)) {
-            throw new ParticipantAlreadyContainsEvent();
-        }
-        participant.addEvent(event);
-        participant = participantRepository.save(participant);
-        return modelMapper.map(new LinkedList<>(participant.getEvents()).getLast(), EventDto.class);
-    }
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/events/{eventId}")
-    public void addParticipant(Principal principal, @PathVariable Long eventId, @RequestBody String email){
-        var events = new LinkedList<>(eventRepository.checkIfParticipantContainsEvent(eventId, principal.getName()));
-        if(events.size() == 0){
-            throw new RuntimeException();
-        }
-        var participant = participantRepository.findByEmailAndStatus(email.strip(), ParticipantStatus.ACTIVE)
-                .orElseThrow(() -> new ParticipantNotFoundException(email));
-
-        participant.addEvent(events.getFirst());
-        participantRepository.save(participant);
-    }
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PatchMapping("/events")
-    public EventDto changeEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
-        var participant = participantRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
-        participant.setEvents(participant.getEvents().stream()
-                .filter(event -> !event.getId().equals(eventDto.getId()))
-                .collect(Collectors.toCollection(LinkedList::new)));
-        var event = eventDto.toEvent();
-        if (participant.getEvents() != null && participant.getEvents().contains(event)) {
-            throw new ParticipantAlreadyContainsEvent();
-        }
-        participant.addEvent(event);
-        participant = participantRepository.save(participant);
-        return modelMapper.map(new LinkedList<>(participant.getEvents()).getLast(), EventDto.class);
-
-    }
-
-
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping("/events/{eventId}")
-    public String deleteEvent(Principal principal, @PathVariable Long eventId) {
-        var participant = participantRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
-        var event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
-        participant.removeEvent(event);
-        participantRepository.save(participant);
-        return "deleted";
-    }
 
 }
