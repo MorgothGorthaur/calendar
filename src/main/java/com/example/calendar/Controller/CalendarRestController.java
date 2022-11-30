@@ -1,6 +1,7 @@
 package com.example.calendar.Controller;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -59,7 +60,7 @@ public class CalendarRestController {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
 
-        return participant.getEvents().stream().map(event -> modelMapper.map(event, EventDto.class)).toList();
+        return participant.getEvents().stream().filter(event -> event.getEndTime().isAfter(LocalDateTime.now())).map(event -> modelMapper.map(event, EventDto.class)).toList();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
