@@ -35,10 +35,10 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(CalendarRestController.class)
+@WebMvcTest(ParticipantRestController.class)
 @AutoConfigureMockMvc
 @ExtendWith({SpringExtension.class})
-class CalendarRestControllerTest {
+class ParticipantRestControllerTest {
     @MockBean
     private EventRepository eventRepository;
     @MockBean

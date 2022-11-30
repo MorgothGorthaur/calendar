@@ -7,13 +7,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
 
 
 import com.example.calendar.DTO.EventDto;
 import com.example.calendar.DTO.ParticipantDto;
 import com.example.calendar.DTO.ParticipantFullDto;
-import com.example.calendar.Model.Event;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
@@ -30,10 +28,10 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/calendar")
+@RequestMapping("/calendar/user")
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
-public class CalendarRestController {
+public class ParticipantRestController {
 
     private EventRepository eventRepository;
     private ParticipantRepository participantRepository;
@@ -58,7 +56,7 @@ public class CalendarRestController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/user/events")
+    @GetMapping("/events")
     public List<EventDto> getWithEvents(Principal principal) {
         System.out.println("???");
         var participant = participantRepository.findByEmail(principal.getName())
@@ -68,7 +66,7 @@ public class CalendarRestController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping("/user")
+    @DeleteMapping
     public String deleteParticipant(Principal principal) {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
@@ -79,7 +77,7 @@ public class CalendarRestController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PatchMapping("/user")
+    @PatchMapping
     public ParticipantDto changeParticipant(Principal principal, @Valid @RequestBody ParticipantFullDto dto) {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
@@ -95,7 +93,7 @@ public class CalendarRestController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/user/events")
+    @PostMapping("/events")
     public EventDto addEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
 
         var participant = participantRepository.findByEmail(principal.getName())
@@ -109,7 +107,7 @@ public class CalendarRestController {
         return modelMapper.map(new LinkedList<>(participant.getEvents()).getLast(), EventDto.class);
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/user/events/{eventId}")
+    @PostMapping("/events/{eventId}")
     public void addParticipant(Principal principal, @PathVariable Long eventId, @RequestBody String email){
         var events = new LinkedList<>(eventRepository.checkIfParticipantContainsEvent(eventId, principal.getName()));
         if(events.size() == 0){
@@ -122,7 +120,7 @@ public class CalendarRestController {
         participantRepository.save(participant);
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PatchMapping("/user/events")
+    @PatchMapping("/events")
     public EventDto changeEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
@@ -141,7 +139,7 @@ public class CalendarRestController {
 
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping("/user/events/{eventId}")
+    @DeleteMapping("/events/{eventId}")
     public String deleteEvent(Principal principal, @PathVariable Long eventId) {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));

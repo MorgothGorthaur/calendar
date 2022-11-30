@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(CalendarRestController.class)
+@WebMvcTest(ParticipantRestController.class)
 @AutoConfigureMockMvc
 @ExtendWith({SpringExtension.class})
 class RestExceptionHandlerTest {
