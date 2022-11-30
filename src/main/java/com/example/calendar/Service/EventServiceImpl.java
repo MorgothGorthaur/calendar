@@ -43,16 +43,12 @@ public class EventServiceImpl implements EventService {
     }
 
     private Event checkIfParticipantDoesntContainsEvent(Long eventId, String email) {
-        var events = new LinkedList<>(eventRepository.checkIfParticipantContainsEventWithId(eventId, email));
-        if (events.size() == 0) {
-            throw new ParticipantDoesntContainsThisEvent(eventId);
-        }
-        return events.getLast();
+        return eventRepository.checkIfParticipantContainsEventWithId(eventId, email).orElseThrow(() -> new ParticipantDoesntContainsThisEvent(eventId));
     }
 
     private void checkIfParticipantAlreadyContainsEvent(Event event, String email) {
-        var events = eventRepository.checkIfParticipantContainsEventWithSameTimeAndDescription(event.getStartTime(), event.getEndTime(), event.getDescription(), email);
-        if (events.size() != 0) {
+        var check = eventRepository.checkIfParticipantContainsEventWithSameTimeAndDescription(event.getStartTime(), event.getEndTime(), event.getDescription(), email);
+        if (check.isPresent() ) {
             throw new ParticipantAlreadyContainsEvent();
         }
     }
