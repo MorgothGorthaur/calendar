@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 
 import com.example.calendar.DTO.EventDto;
 import com.example.calendar.DTO.ParticipantDto;
 import com.example.calendar.DTO.ParticipantFullDto;
+import com.example.calendar.Model.Event;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
@@ -103,9 +105,22 @@ public class CalendarRestController {
             throw new ParticipantAlreadyContainsEvent();
         }
         participant.addEvent(event);
-        return modelMapper.map(participant.getEvents().getLast(), EventDto.class);
+        participant = participantRepository.save(participant);
+        return modelMapper.map(new LinkedList<>(participant.getEvents()).getLast(), EventDto.class);
     }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/user/events/{eventId}")
+    public void addParticipant(Principal principal, @PathVariable Long eventId, @RequestBody String email){
+        var events = new LinkedList<>(eventRepository.checkIfParticipantContainsEvent(eventId, principal.getName()));
+        if(events.size() == 0){
+            throw new RuntimeException();
+        }
+        var participant = participantRepository.findByEmailAndStatus(email.strip(), ParticipantStatus.ACTIVE)
+                .orElseThrow(() -> new ParticipantNotFoundException(email));
 
+        participant.addEvent(events.getFirst());
+        participantRepository.save(participant);
+    }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/user/events")
     public EventDto changeEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
@@ -119,7 +134,8 @@ public class CalendarRestController {
             throw new ParticipantAlreadyContainsEvent();
         }
         participant.addEvent(event);
-        return modelMapper.map(participant.getEvents().getFirst(), EventDto.class);
+        participant = participantRepository.save(participant);
+        return modelMapper.map(new LinkedList<>(participant.getEvents()).getLast(), EventDto.class);
 
     }
 

@@ -28,21 +28,28 @@ public class Participant {
     @Column(name = "last_name")
     private String lastName;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private LinkedList<Event> events;
+    private List<Event> events;
     private ParticipantStatus status;
 
     @Column(name = "user_role")
-    private UserRole role;
+    private  UserRole role;
 
     private String password;
     private String email;
 
-    public void addEvent(Event event) {
-        events.add(event);
+    public void addEvent(Event event){
+        if(events != null) {
+            var tmp = events;
+            events = new LinkedList<>();
+            events.addAll(tmp);
+            events.add(event);
+        } else {
+            events = new LinkedList<>();
+            events.add(event);
+        }
     }
-
-    public void removeEvent(Event event) {
-        if (events != null) {
+    public void removeEvent(Event event){
+        if(events != null) {
             events.remove(event);
             event.getParticipants().remove(this);
         }

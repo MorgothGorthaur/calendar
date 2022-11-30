@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
     List<Participant> findParticipantByStatus(ParticipantStatus status);
     Optional<Participant> findByEmail(String email);
+    Optional<Participant> findByEmailAndStatus(String email, ParticipantStatus status);
     @Query(value = "select p from Participant p where p.email = ?1 and p.id <> ?2")
     List<Participant> findParticipantsWithEqualEmailAndNonEqualId(String email, Long id);
 }
