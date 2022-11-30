@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 public class ParticipantRestController {
 
     private ParticipantRepository participantRepository;
-    private ModelMapper modelMapper;
     private PasswordEncoder encoder;
 
     @PreAuthorize("hasRole('ROLE_USER')")
