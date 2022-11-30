@@ -3,6 +3,7 @@ package com.example.calendar.Controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.calendar.exception.EmailNotUnique;
 import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -23,7 +24,7 @@ public class RestExceptionHandler {
 	/*
 	 * handle exceptions on Service - layer
 	 */
-	@ExceptionHandler({ParticipantNotFoundException.class, EventNotFoundException.class, ParticipantAlreadyContainsEvent.class})
+	@ExceptionHandler({ParticipantNotFoundException.class, EventNotFoundException.class, ParticipantAlreadyContainsEvent.class, EmailNotUnique.class})
     protected ResponseEntity<Object> handleEntityNotFoundEx(RuntimeException ex, WebRequest request) {
       ApiError apiError = new ApiError("entity not found exception", ex.getMessage());
       return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);

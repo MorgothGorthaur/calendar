@@ -13,6 +13,7 @@ import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
 import com.example.calendar.Service.ParticipantService;
+import com.example.calendar.exception.EmailNotUnique;
 import com.example.calendar.exception.EventNotFoundException;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
@@ -46,6 +47,9 @@ public class CalendarRestController {
     public ParticipantDto addParticipant(@Valid @RequestBody ParticipantFullDto dto) {
         var participant = dto.toParticipant();
         participant.setPassword(encoder.encode(participant.getPassword()));
+        if (participantRepository.findParticipantsWithEqualEmailAndNonEqualId(participant.getEmail(), 0L).size() != 0) {
+            throw new EmailNotUnique(participant.getEmail());
+        }
         return modelMapper.map(participantRepository.save(participant), ParticipantDto.class);
     }
 
@@ -71,14 +75,17 @@ public class CalendarRestController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PatchMapping()
+    @PatchMapping("/user")
     public ParticipantDto changeParticipant(Principal principal, @Valid @RequestBody ParticipantFullDto dto) {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         participant.setFirstName(dto.getFirstName());
         participant.setLastName(dto.getLastName());
         participant.setEmail(dto.getEmail());
-        participant.setPassword(dto.getPassword());
+        participant.setPassword(encoder.encode(dto.getPassword()));
+        if (participantRepository.findParticipantsWithEqualEmailAndNonEqualId(participant.getEmail(), participant.getId()).size() != 0) {
+            throw new EmailNotUnique(participant.getEmail());
+        }
         participantRepository.save(participant);
         return dto;
     }
