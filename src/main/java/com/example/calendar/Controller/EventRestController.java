@@ -32,7 +32,6 @@ public class EventRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public List<EventDto> getWithEvents(Principal principal) {
-        System.out.println("???");
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
 
