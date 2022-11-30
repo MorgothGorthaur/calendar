@@ -7,6 +7,7 @@ import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
 import com.example.calendar.exception.EventNotFoundException;
 import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
+import com.example.calendar.exception.ParticipantDoesntContainsThisEvent;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class EventServiceImpl implements EventService {
     private Event checkIfParticipantDoesntContainsEvent(Long eventId, String email) {
         var events = new LinkedList<>(eventRepository.checkIfParticipantContainsEventWithId(eventId, email));
         if (events.size() == 0) {
-            throw new RuntimeException();
+            throw new ParticipantDoesntContainsThisEvent(eventId);
         }
         return events.getLast();
     }

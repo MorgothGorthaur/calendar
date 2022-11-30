@@ -33,14 +33,12 @@ public class EventRestController {
     public List<EventDto> getWithEvents(Principal principal) {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
-
         return participant.getEvents().stream().filter(event -> event.getEndTime().isAfter(LocalDateTime.now())).map(event -> modelMapper.map(event, EventDto.class)).toList();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public EventDto addEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
-
         var event = eventService.addEvent(eventDto.toEvent(), principal.getName());
         return modelMapper.map(event, EventDto.class);
     }
@@ -56,7 +54,6 @@ public class EventRestController {
     public EventDto changeEvent(Principal principal, @Valid @RequestBody EventDto eventDto) {
         var event = eventService.changeEvent(eventDto.toEvent(), principal.getName());
         return modelMapper.map(event, EventDto.class);
-
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
