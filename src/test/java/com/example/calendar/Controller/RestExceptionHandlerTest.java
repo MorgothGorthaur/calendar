@@ -5,7 +5,6 @@ import com.example.calendar.DTO.ParticipantDto;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
-import com.example.calendar.Service.ParticipantService;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

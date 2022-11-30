@@ -12,7 +12,6 @@ import java.util.List;
 import com.example.calendar.Model.Participant;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.ParticipantRepository;
-import com.example.calendar.Service.ParticipantServiceImpl;
 import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

@@ -12,9 +12,9 @@ import com.example.calendar.DTO.ParticipantFullDto;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
-import com.example.calendar.Service.ParticipantService;
 import com.example.calendar.exception.EmailNotUnique;
 import com.example.calendar.exception.EventNotFoundException;
+import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -33,7 +33,6 @@ public class CalendarRestController {
     private EventRepository eventRepository;
     private ParticipantRepository participantRepository;
     private ModelMapper modelMapper;
-    private ParticipantService participantService;
     private PasswordEncoder encoder;
 
     @GetMapping
@@ -97,8 +96,11 @@ public class CalendarRestController {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         var event = eventDto.toEvent();
-        var events = participantService.addEvent(participant, event);
-        return modelMapper.map(events.get(events.size() - 1), EventDto.class);
+        if(participant.getEvents() != null && participant.getEvents().contains(event)){
+            throw new ParticipantAlreadyContainsEvent();
+        }
+        participant.addEvent(event);
+        return modelMapper.map(participant.getEvents().get(participant.getEvents().size() - 1), EventDto.class);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -108,8 +110,11 @@ public class CalendarRestController {
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         participant.setEvents(participant.getEvents().stream().filter(event -> !event.getId().equals(eventDto.getId())).toList());
         var event = eventDto.toEvent();
-        var events = participantService.addEvent(participant, event);
-        return modelMapper.map(events.get(0), EventDto.class);
+        if(participant.getEvents() != null && participant.getEvents().contains(event)){
+            throw new ParticipantAlreadyContainsEvent();
+        }
+        participant.addEvent(event);
+        return modelMapper.map(participant.getEvents().get(0), EventDto.class);
 
     }
 
