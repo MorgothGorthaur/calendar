@@ -1,6 +1,7 @@
 package com.example.calendar.Service;
 
 import com.example.calendar.Model.Event;
+import com.example.calendar.Model.Participant;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +64,12 @@ public class EventServiceImpl implements EventService {
         participant.addEvent(event);
         participant = participantRepository.save(participant);
         return new LinkedList<>(participant.getEvents()).getLast();
+    }
+
+    @Override
+    public List<Participant> getParticipant(Long eventId, String email) {
+        var event = checkIfParticipantDoesntContainsEvent(eventId, email);
+        return event.getParticipants();
     }
 
 

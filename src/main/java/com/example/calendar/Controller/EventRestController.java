@@ -73,10 +73,7 @@ public class EventRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/users/{eventId}")
     public List<ParticipantDto> getParticipants(Principal principal, @PathVariable Long eventId) {
-        var events = new LinkedList<>(eventRepository.checkIfParticipantContainsEventWithId(eventId, principal.getName()));
-        if (events.size() == 0) {
-            throw new RuntimeException();
-        }
-        return events.getFirst().getParticipants().stream().map(participant -> modelMapper.map(participant, ParticipantDto.class)).toList();
+        var participants = eventService.getParticipant(eventId, principal.getName());
+        return participants.stream().map(participant -> modelMapper.map(participant, ParticipantDto.class)).toList();
     }
 }
