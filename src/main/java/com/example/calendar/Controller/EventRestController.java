@@ -1,6 +1,8 @@
 package com.example.calendar.Controller;
 
 import com.example.calendar.DTO.EventDto;
+import com.example.calendar.DTO.ParticipantDto;
+import com.example.calendar.Model.Participant;
 import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
@@ -91,5 +93,16 @@ public class EventRestController {
         participant.removeEvent(event);
         participantRepository.save(participant);
         return "deleted";
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping ("/users/{eventId}")
+    public List<ParticipantDto> getParticipants(Principal principal, @PathVariable Long eventId){
+        var events = new LinkedList<>(eventRepository.checkIfParticipantContainsEvent(eventId, principal.getName()));
+        System.out.println(principal.getName());
+        if(events.size() == 0){
+            throw new RuntimeException();
+        }
+        return events.getFirst().getParticipants().stream().map(participant -> modelMapper.map(participant, ParticipantDto.class)).toList();
     }
 }
