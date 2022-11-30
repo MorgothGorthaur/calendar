@@ -10,7 +10,6 @@ import com.example.calendar.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,13 +24,13 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class EventRestController {
-    private EventRepository eventRepository;
     private ParticipantRepository participantRepository;
+    private EventRepository eventRepository;
     private ModelMapper modelMapper;
-    private PasswordEncoder encoder;
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public List<EventDto> getWithEvents(Principal principal) {
+        System.out.println("???");
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
 
