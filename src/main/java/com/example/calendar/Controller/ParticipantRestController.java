@@ -36,6 +36,18 @@ public class ParticipantRestController {
     private ParticipantRepository participantRepository;
     private PasswordEncoder encoder;
 
+    private ModelMapper modelMapper;
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping
+    public ParticipantDto getParticipant(Principal principal){
+        var participant = participantRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
+
+        return modelMapper.map(participant, ParticipantDto.class);
+    }
+
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping
     public String deleteParticipant(Principal principal) {

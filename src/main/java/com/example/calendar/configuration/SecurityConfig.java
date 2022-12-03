@@ -20,17 +20,18 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @AllArgsConstructor
 public class SecurityConfig {
     private UserDetailsService userDetailsService;
-    
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
+                .cors().and()
                 .csrf().disable()
                 .userDetailsService(userDetailsService)
                 .httpBasic(withDefaults())
-                .formLogin().disable()
+                .formLogin().and()
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/routine")
+                        .logoutSuccessUrl("/calendar")
                 );
         return http.build();
     }
