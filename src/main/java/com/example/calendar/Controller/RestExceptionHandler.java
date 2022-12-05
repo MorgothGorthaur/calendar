@@ -22,11 +22,17 @@ public class RestExceptionHandler {
 	/*
 	 * handle exceptions on Service - layer
 	 */
-	@ExceptionHandler({ParticipantNotFoundException.class, EventNotFoundException.class, ParticipantAlreadyContainsEvent.class, EmailNotUnique.class, ParticipantDoesntContainsThisEvent.class})
-    protected ResponseEntity<Object> handleEntityNotFoundEx(RuntimeException ex, WebRequest request) {
+	@ExceptionHandler({ParticipantNotFoundException.class, EventNotFoundException.class})
+    protected ResponseEntity<Object> handleEntityNotFoundEx(RuntimeException ex) {
       ApiError apiError = new ApiError("entity not found exception", ex.getMessage());
       return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
+
+	@ExceptionHandler({ ParticipantAlreadyContainsEvent.class, EmailNotUnique.class, ParticipantDoesntContainsThisEvent.class})
+	protected ResponseEntity<Object> handleDataNotAcceptableEx(RuntimeException ex) {
+		ApiError apiError = new ApiError("This data is not acceptable!", ex.getMessage());
+		return new ResponseEntity<>(apiError, HttpStatus.NOT_ACCEPTABLE);
+	}
 	/*
 	 * handle validation messages
 	 * 
