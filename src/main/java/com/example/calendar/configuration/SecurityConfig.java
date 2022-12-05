@@ -1,6 +1,7 @@
 package com.example.calendar.configuration;
 
 import com.example.calendar.configuration.filter.CustomAuthenticationFilter;
+import com.example.calendar.configuration.filter.CustomAuthorizationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -31,7 +33,8 @@ public class SecurityConfig {
                 .csrf().disable()
                 .userDetailsService(userDetailsService)
                 .httpBasic(withDefaults())
-                .addFilter(new CustomAuthenticationFilter(authenticationManagerBuilder.getOrBuild()));
+                .addFilter(new CustomAuthenticationFilter(authenticationManagerBuilder.getOrBuild()))
+                .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
