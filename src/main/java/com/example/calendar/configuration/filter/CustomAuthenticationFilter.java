@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @AllArgsConstructor
@@ -43,13 +44,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         var algorithm = Algorithm.HMAC256("secret".getBytes());
         var access = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                 .sign(algorithm);
         var refresh = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
@@ -63,7 +64,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.setStatus(401);
+        response.setStatus(FORBIDDEN.value());
+        response.setContentType(APPLICATION_JSON_VALUE);
+        response.setHeader("error", "bad password and/or email");
         new ObjectMapper().writeValue(response.getOutputStream(), "bad password and/or email");
     }
 }
