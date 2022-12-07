@@ -1,7 +1,7 @@
 export default class ParticipantService {
   static async getAll() {
     try {
-      const response = await fetch('http://localhost:8080/routine');
+      const response = await fetch('http://localhost:8080/calendar');
       return await response.json();
     } catch(e) {
       alert(e);

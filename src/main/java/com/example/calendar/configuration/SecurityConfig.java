@@ -47,7 +47,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource(){
         var configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(List.of("POST"));
+        configuration.setAllowedMethods(List.of("POST","GET", "PUT", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
