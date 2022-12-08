@@ -8,10 +8,20 @@ export default class ParticipantService {
     }
   }
 
-  static async getFull(id) {
+  static async getParticipant(access_token) {
     try {
-      const response = await fetch('http://localhost:8080/routine/' + id);
-      return await response.json();
+      const response = await fetch('http://localhost:8080/calendar/user', {
+   		   method: 'GET',
+			   mode: 'cors',
+		     headers:{
+			      'Authorization' : 'Bearer ' + access_token
+    		 }
+		   });
+       if( response. ok) {
+         return await response.json();
+       }
+       alert("you must authorize at first!")
+       return {hasError : true}
     } catch (e) {
       alert(e);
     }
@@ -28,14 +38,14 @@ export default class ParticipantService {
     }
   }
 
-  static async save(firstName, lastName){
+  static async save(firstName, lastName, email, password){
     try {
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type' : 'application/json'},
-        body: JSON.stringify({firstName, lastName})
+        body: JSON.stringify({firstName, lastName, email, password})
       };
-      const response = await fetch ('http://localhost:8080/routine', requestOptions);
+      const response = await fetch ('http://localhost:8080/calendar', requestOptions);
       return await response.json();
     } catch (e) {
       alert(e);

@@ -5,6 +5,7 @@ import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Model.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
@@ -13,8 +14,16 @@ import javax.validation.constraints.Size;
 
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
-public class ParticipantFullDto extends ParticipantDto {
+public class ParticipantFullDto {
+    @NotNull(message = "first name mst be setted!")
+    @Size(min = 2, max = 10)
+    private String firstName;
+
+    @NotNull(message = "last name mst be setted!")
+    @Size(min = 2, max = 10)
+    private String lastName;
     @NotNull(message = "password name mst be setted!")
     @Size(min = 2, max = 10)
     private String password;
@@ -25,8 +34,8 @@ public class ParticipantFullDto extends ParticipantDto {
     
     public Participant toParticipant() {
         var participant = new Participant();
-        participant.setFirstName(getFirstName());
-        participant.setLastName(getLastName());
+        participant.setFirstName(firstName);
+        participant.setLastName(lastName);
         participant.setStatus(ParticipantStatus.ACTIVE);
         participant.setPassword(password);
         participant.setEmail(email);

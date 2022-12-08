@@ -40,11 +40,11 @@ public class ParticipantRestController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
-    public ParticipantDto getParticipant(Principal principal){
+    public ParticipantFullDto getParticipant(Principal principal){
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
-
-        return modelMapper.map(participant, ParticipantDto.class);
+        participant.setPassword(null);
+        return modelMapper.map(participant, ParticipantFullDto.class);
     }
 
 
@@ -61,7 +61,7 @@ public class ParticipantRestController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping
-    public ParticipantDto changeParticipant(Principal principal, @Valid @RequestBody ParticipantFullDto dto) {
+    public ParticipantFullDto changeParticipant(Principal principal, @Valid @RequestBody ParticipantFullDto dto) {
         var participant = participantRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         participant.setFirstName(dto.getFirstName());
