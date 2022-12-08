@@ -34,15 +34,19 @@ public class SecurityConfig {
     private AuthenticationManagerBuilder authenticationManagerBuilder;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+        var customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBuilder.getOrBuild());
+        customAuthenticationFilter.setFilterProcessesUrl("/login");
         http
                 .cors(Customizer.withDefaults())
                 .csrf().disable()
                 .userDetailsService(userDetailsService)
                 .httpBasic(withDefaults())
-                .addFilter(new CustomAuthenticationFilter(authenticationManagerBuilder.getOrBuild()))
+                .addFilter(customAuthenticationFilter)
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+    
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         var configuration = new CorsConfiguration();
