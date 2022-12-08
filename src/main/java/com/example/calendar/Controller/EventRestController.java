@@ -2,6 +2,7 @@ package com.example.calendar.Controller;
 
 import com.example.calendar.DTO.EventDto;
 import com.example.calendar.DTO.ParticipantDto;
+import com.example.calendar.Model.ParticipantStatus;
 import com.example.calendar.Repository.EventRepository;
 import com.example.calendar.Repository.ParticipantRepository;
 import com.example.calendar.Service.EventService;
@@ -31,7 +32,7 @@ public class EventRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public List<EventDto> getWithEvents(Principal principal) {
-        var participant = participantRepository.findByEmail(principal.getName())
+        var participant = participantRepository.findByEmailAndStatus(principal.getName(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         return participant.getEvents().stream().filter(event -> event.getEndTime().isAfter(LocalDateTime.now())).map(event -> modelMapper.map(event, EventDto.class)).toList();
     }
@@ -59,7 +60,7 @@ public class EventRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/{eventId}")
     public String deleteEvent(Principal principal, @PathVariable Long eventId) {
-        var participant = participantRepository.findByEmail(principal.getName())
+        var participant = participantRepository.findByEmailAndStatus(principal.getName(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         var event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
         participant.removeEvent(event);

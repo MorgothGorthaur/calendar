@@ -56,7 +56,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event addEvent(Event event, String email) {
         checkIfParticipantAlreadyContainsEvent(event, email);
-        var participant = participantRepository.findByEmail(email)
+        var participant = participantRepository.findByEmailAndStatus(email, ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(email));
         participant.addEvent(event);
         participant = participantRepository.save(participant);

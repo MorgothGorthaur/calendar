@@ -41,7 +41,7 @@ public class ParticipantRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public ParticipantFullDto getParticipant(Principal principal){
-        var participant = participantRepository.findByEmail(principal.getName())
+        var participant = participantRepository.findByEmailAndStatus(principal.getName(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         participant.setPassword(null);
         return modelMapper.map(participant, ParticipantFullDto.class);
@@ -51,7 +51,7 @@ public class ParticipantRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping
     public String deleteParticipant(Principal principal) {
-        var participant = participantRepository.findByEmail(principal.getName())
+        var participant = participantRepository.findByEmailAndStatus(principal.getName(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         participant.setStatus(ParticipantStatus.REMOVED);
         participantRepository.save(participant);
@@ -62,7 +62,7 @@ public class ParticipantRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping
     public ParticipantFullDto changeParticipant(Principal principal, @Valid @RequestBody ParticipantFullDto dto) {
-        var participant = participantRepository.findByEmail(principal.getName())
+        var participant = participantRepository.findByEmailAndStatus(principal.getName(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         participant.setFirstName(dto.getFirstName());
         participant.setLastName(dto.getLastName());
