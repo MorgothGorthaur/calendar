@@ -27,15 +27,20 @@ export default class ParticipantService {
     }
   }
 
-  static async delete(id){
+  static async delete(tokens){
     try {
         const requestOptions = {
           method: 'DELETE',
+          mode: 'cors',
+          headers:{
+ 			      'Authorization' : 'Bearer ' + tokens.access_token
+          }
         };
-        await fetch ('http://localhost:8080/routine/' + id, requestOptions);
+        await fetch ('http://localhost:8080/calendar/user', requestOptions);
     } catch (e) {
       alert(e);
     }
+      window.location.reload(false);
   }
 
   static async save(firstName, lastName, email, password){

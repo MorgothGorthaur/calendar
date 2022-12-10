@@ -14,6 +14,9 @@ const Participant = ({tokens, setModal}) => {
       window.location.reload(false);
     }
   };
+  const remove = () => {
+    ParticipantService.delete(tokens);
+  };
   async function fetchParticipant () {
     const response = await ParticipantService.getParticipant(tokens.access_token);
     if(response.hasError){
@@ -27,6 +30,7 @@ const Participant = ({tokens, setModal}) => {
       <h1> {participant.lastName} </h1>
       <h1> {participant.email} </h1>
       <Button onClick = {() => setShow(true)} > change </Button>
+      <Button variant = "danger" onClick = {() => remove()} > delete </Button>
       <Modal show = {show} onHide = {setShow} > <ParticipantForm CreateOrUpdate = {change} participant = {participant} tokens = {tokens} /></Modal>
     </div>
   );
