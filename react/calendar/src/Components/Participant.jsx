@@ -5,6 +5,7 @@ import ParticipantForm from './ParticipantForm';
 const Participant = ({tokens, setModal}) => {
   const [participant, setParticipant] = useState('');
   const [show, setShow] = useState(false);
+  const [events, setEvents] = useState(false)
   useEffect ( () => {
     fetchParticipant ();
   },[]);
@@ -32,6 +33,15 @@ const Participant = ({tokens, setModal}) => {
       <Button onClick = {() => setShow(true)} > change </Button>
       <Button variant = "danger" onClick = {() => remove()} > delete </Button>
       <Modal show = {show} onHide = {setShow} > <ParticipantForm CreateOrUpdate = {change} participant = {participant} tokens = {tokens} /></Modal>
+      <Button onClick = {() => setEvents(true)}> events </Button>
+      {
+        events ?
+        (
+          <h1> there must be list of events! </h1>
+        ) : (
+          <br/>
+        )
+      }
     </div>
   );
 };
