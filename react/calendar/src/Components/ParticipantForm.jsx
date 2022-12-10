@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import ParticipantService from '../API/ParticipantService';
 import Input from '../UI/Input/Input';
 import {Button, Form} from 'react-bootstrap';
-const ParticipantForm = ({participant, CreateOrUpdate}) => {
+const ParticipantForm = ({participant, CreateOrUpdate, tokens}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,6 +17,9 @@ const ParticipantForm = ({participant, CreateOrUpdate}) => {
 
   const update = (e) => {
     e.preventDefault();
+    ParticipantService.change(firstName, lastName, email, password, tokens).then(data => {
+      validation(data);
+    });
   };
 
   const add = (e) => {
