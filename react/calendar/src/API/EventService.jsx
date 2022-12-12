@@ -1,25 +1,46 @@
 export default class EventService {
 
+  static async get(tokens) {
+      try {
+        const requestOptions = {
+          method: 'GET',
+          mode: 'cors',
+          headers:{
+             'Authorization' : 'Bearer ' + tokens.access_token
+          }
+        };
+        const response = await fetch ('http://localhost:8080/calendar/events', requestOptions);
+        return await response.json();
+      } catch (e) {
+        alert(e);
+      }
+  };
 
-  static async remove(participantId, id){
+  static async remove(tokens, id){
     try{
       const requestOptions = {
           method: 'DELETE',
+          mode: 'cors',
+          headers:{
+             'Authorization' : 'Bearer ' + tokens.access_token
+          }
       };
-      await fetch('http://localhost:8080/routine/' + participantId + '/events/' + id, requestOptions);
+      await fetch('http://localhost:8080/calendar/events/' + id, requestOptions);
       } catch(e) {
       alert(e);
     }
   };
 
-  static async change(participantId, id,description, startTime, endTime) {
+  static async change(tokens, id, description, startTime, endTime) {
     try {
       const requestOptions = {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({id,startTime, endTime,  description})
+          headers: { 'Content-Type': 'application/json',
+                     'Authorization' : 'Bearer ' + tokens.access_token
+          },
+          body: JSON.stringify({id, startTime, endTime,  description})
       }
-      const response = await fetch('http://localhost:8080/routine/' + participantId + '/events', requestOptions);
+      const response = await fetch('http://localhost:8080/calendar/events', requestOptions);
       return await response.json();
     } catch (e){
       alert(e)
@@ -27,14 +48,17 @@ export default class EventService {
   }
 
 
-  static async save(id,description, startTime, endTime){
+  static async save(tokens, description, startTime, endTime){
     try{
       const requestOptions = {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          mode: 'cors',
+          headers: { 'Content-Type': 'application/json',
+                     'Authorization' : 'Bearer ' + tokens.access_token
+          },
           body: JSON.stringify({description, startTime, endTime})
       }
-      const response = await fetch('http://localhost:8080/routine/' + id + '/events', requestOptions);
+      const response = await fetch('http://localhost:8080/calendar/events', requestOptions);
       return await response.json();
     } catch (e){
       alert(e)

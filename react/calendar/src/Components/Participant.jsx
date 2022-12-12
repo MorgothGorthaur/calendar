@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import ParticipantService from '../API/ParticipantService';
 import {Button, Modal} from 'react-bootstrap';
 import ParticipantForm from './ParticipantForm';
+import EventList from './EventList';
 const Participant = ({tokens, setModal}) => {
   const [participant, setParticipant] = useState('');
   const [show, setShow] = useState(false);
@@ -33,13 +34,18 @@ const Participant = ({tokens, setModal}) => {
       <Button onClick = {() => setShow(true)} > change </Button>
       <Button variant = "danger" onClick = {() => remove()} > delete </Button>
       <Modal show = {show} onHide = {setShow} > <ParticipantForm CreateOrUpdate = {change} participant = {participant} tokens = {tokens} /></Modal>
-      <Button onClick = {() => setEvents(true)}> events </Button>
       {
         events ?
         (
-          <h1> there must be list of events! </h1>
+          <>
+            <EventList tokens = {tokens} />
+            <Button onClick = {() => setEvents(false)}> close </Button>
+          </>
         ) : (
-          <br/>
+          <>
+            <Button onClick = {() => setEvents(true)}> events </Button>
+            <br/>
+          </>
         )
       }
     </div>
