@@ -39,7 +39,7 @@ const Participant = ({tokens, setModal}) => {
         (
           <>
             <EventList tokens = {tokens} />
-            <Button onClick = {() => setEvents(false)}> close </Button>
+            <Button variant = "dark" onClick = {() => setEvents(false)}> close </Button>
           </>
         ) : (
           <>
