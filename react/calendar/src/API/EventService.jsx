@@ -87,12 +87,14 @@ export default class EventService {
           headers: { 'Content-Type': 'application/json',
                      'Authorization' : 'Bearer ' + tokens.access_token
           },
-          body: JSON.stringify({email})
+          body: JSON.stringify({
+            "email" : email
+          })
       }
       const response = await fetch('http://localhost:8080/calendar/events/' + id, requestOptions);
       return await response.json();
     } catch (e){
-      alert(e)
+
     }
   }
 

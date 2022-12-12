@@ -1,5 +1,6 @@
 package com.example.calendar.Controller;
 
+import com.example.calendar.DTO.EmailDto;
 import com.example.calendar.DTO.EventDto;
 import com.example.calendar.DTO.ParticipantDto;
 import com.example.calendar.Model.ParticipantStatus;
@@ -46,8 +47,9 @@ public class EventRestController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/{eventId}")
-    public void addParticipant(Principal principal, @PathVariable Long eventId, @RequestBody String email) {
-        eventService.AddParticipant(eventId, principal.getName(), email);
+    public String addParticipant(Principal principal, @PathVariable Long eventId, @Valid @RequestBody EmailDto dto) {
+        eventService.AddParticipant(eventId, principal.getName(), dto.getEmail());
+        return "added!";
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

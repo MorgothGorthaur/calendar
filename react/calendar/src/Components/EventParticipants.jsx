@@ -13,9 +13,9 @@ const EventParticipants = ({tokens, id}) => {
       const response = await EventService.getParticipants(tokens, id);
       setParticipants(response);
   }
-  const update = () => {
-    setShow(false);
+  const update = (data) => {
     fetchParticipants();
+    setShow(false);
   }
   return (
     <div>

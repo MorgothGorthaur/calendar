@@ -27,7 +27,7 @@ public class EventServiceImpl implements EventService {
         var event = checkIfParticipantDoesntContainsEvent(eventId, ownerEmail);
         var participant = participantRepository.findByEmailAndStatus(participantEmail.strip(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(participantEmail.strip()));
-
+        checkIfParticipantAlreadyContainsEvent(event, participantEmail);
         participant.addEvent(event);
         participantRepository.save(participant);
     }
