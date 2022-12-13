@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import ParticipantService from '../API/ParticipantService';
 import {Button, Modal} from 'react-bootstrap';
 import ParticipantForm from './ParticipantForm';
+import LoginService from '../API/LoginService';
 import EventList from './EventList';
-const Participant = ({tokens, setModal}) => {
+const Participant = ({tokens, setTokens, setModal}) => {
   const [participant, setParticipant] = useState('');
   const [show, setShow] = useState(false);
   const [events, setEvents] = useState(false)
@@ -17,7 +18,19 @@ const Participant = ({tokens, setModal}) => {
     }
   };
   const remove = () => {
-    ParticipantService.delete(tokens);
+    ParticipantService.delete(tokens).then(data => {
+      console.log(data);
+      if(data.hasError) {
+        LoginService.refresh(tokens).then(data => {
+          if(data.hasError){
+            alert("you must relogin")
+          } else {
+            setTokens(data, tokens.refresh_token);
+            ParticipantService.delete(data);
+          };
+        });
+      };
+    });
   };
   async function fetchParticipant () {
     const response = await ParticipantService.getParticipant(tokens.access_token);

@@ -18,4 +18,23 @@ export default class LoginService {
     }
 
   }
+
+  static async refresh(tokens) {
+    try {
+      const response = await fetch('http://localhost:8080/calendar/refresh', {
+         method: 'GET',
+         mode: 'cors',
+         headers:{
+          'Authorization' : 'Bearer ' + tokens.refresh_token
+         }
+       });
+       if(response.ok){
+         return await response.json();
+       } else {
+         return{hasError : true}
+       }
+    } catch (e) {
+      alert(e);
+    }
+  }
 }

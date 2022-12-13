@@ -36,7 +36,10 @@ export default class ParticipantService {
  			      'Authorization' : 'Bearer ' + tokens.access_token
           }
         };
-        await fetch ('http://localhost:8080/calendar/user', requestOptions);
+        const response = await fetch ('http://localhost:8080/calendar/user', requestOptions);
+        if (response.status !== 200) {
+          return{hasError : true}
+        }
     } catch (e) {
       alert(e);
     }

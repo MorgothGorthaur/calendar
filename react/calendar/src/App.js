@@ -20,7 +20,7 @@ function App() {
         <Login setTokens = {setTokens} setModal = {setLogin}/>
       </Modal>
       <Modal show = {modal} onHide = {setModal}>
-        <Participant tokens = {tokens} setModal = {setModal} />
+        <Participant tokens = {tokens} setTokens = {setTokens} setModal = {setModal} />
       </Modal>
     </div>
   );
