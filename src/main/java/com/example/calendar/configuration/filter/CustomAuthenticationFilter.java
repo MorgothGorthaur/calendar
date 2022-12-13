@@ -66,7 +66,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         response.setStatus(FORBIDDEN.value());
         response.setContentType(APPLICATION_JSON_VALUE);
-        response.setHeader("error", "bad password and/or email");
-        new ObjectMapper().writeValue(response.getOutputStream(), "bad password and/or email");
+        var errors = new HashMap<String, String>();
+        errors.put("errors", "bad password and/or email");
+        new ObjectMapper().writeValue(response.getOutputStream(), errors);
     }
 }
