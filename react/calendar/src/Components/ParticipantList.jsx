@@ -28,7 +28,7 @@ const ParticipantList = () => {
           )}
         </div>
       ) : (
-        <h1> length not found! </h1>
+        <h1> participants not found! </h1>
       )}
       <Button onClick = {() => setModal(true)}> add </Button>
       <Modal show = {modal} onHide = {setModal}> <ParticipantForm CreateOrUpdate = {add}/> </Modal>

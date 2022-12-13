@@ -52,7 +52,7 @@ const EventParticipants = ({tokens, setTokens, id}) => {
           <EmailForm tokens = {tokens} setTokens = {setTokens} id = {id} update = {update}/>
         ) : (
           <div>
-            <Button onClick = {() => setShow(true)}> add </Button>
+            <Button onClick = {() => setShow(true)}> add participant</Button>
             <br/>
           </div>
         )

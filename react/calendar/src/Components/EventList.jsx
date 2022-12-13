@@ -73,7 +73,7 @@ const EventList = ({tokens, setTokens}) => {
         </div>
       )
     }
-    <Button onClick = { () => setModal(true) }> add </Button>
+    <Button onClick = { () => setModal(true) }> add event</Button>
     <Modal show = {modal} onHide = {setModal} > <EventForm tokens = {tokens} setTokens = {setTokens} CreateOrUpdate = {add} /> </Modal>
     </div>
   );

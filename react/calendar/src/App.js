@@ -12,8 +12,10 @@ function App() {
   return (
     <div className="App">
       <header className = "App-header" >
-        <Button variant = "dark"  onClick = {() => setLogin(true)}> login </Button>
-        <Button variant = "dark"  onClick = {() => setModal(true)}> home </Button>
+        <div style = {{textAlign: 'right'}}>
+          <Button variant = "dark"  onClick = {() => {tokens ?(window.location.reload(false)):(setLogin(true))}}> {tokens ? ("log out") : ("log in")} </Button>
+          {tokens ? (<Button variant = "dark"  onClick = {() => setModal(true)}> home </Button>) : (<></>)}
+        </div>
       </header>
       <ParticipantList />
       <Modal show = {login} onHide = {setLogin}>

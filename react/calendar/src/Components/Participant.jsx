@@ -41,26 +41,30 @@ const Participant = ({tokens, setTokens, setModal}) => {
   };
   return (
     <div className = "participant_item">
-      <h1> {participant.firstName} </h1>
-      <h1> {participant.lastName} </h1>
-      <h1> {participant.email} </h1>
-      <Button onClick = {() => setShow(true)} > change </Button>
-      <Button variant = "danger" onClick = {() => remove()} > delete </Button>
-      <Modal show = {show} onHide = {setShow} > <ParticipantForm CreateOrUpdate = {change} participant = {participant} tokens = {tokens} setTokens = {setTokens} /></Modal>
-      {
-        events ?
-        (
-          <>
-            <EventList tokens = {tokens} setTokens = {setTokens} />
-            <Button variant = "dark" onClick = {() => setEvents(false)}> close </Button>
-          </>
-        ) : (
-          <>
-            <Button onClick = {() => setEvents(true)}> events </Button>
-            <br/>
-          </>
-        )
-      }
+      <div style = {{textAlign: 'left'}}>
+        <h1> {participant.firstName} </h1>
+        <h1> {participant.lastName} </h1>
+      </div>
+      <h3> {participant.email} </h3>
+      <div style = {{textAlign: 'center'}} >
+        <Modal show = {show} onHide = {setShow} > <ParticipantForm CreateOrUpdate = {change} participant = {participant} tokens = {tokens} setTokens = {setTokens} /></Modal>
+        {
+          events ?
+          (
+            <>
+              <EventList tokens = {tokens} setTokens = {setTokens} />
+              <Button variant = "dark" onClick = {() => setEvents(false)}> close </Button>
+            </>
+          ) : (
+            <>
+              <Button onClick = {() => setShow(true)} > change </Button>
+              <Button variant = "danger" onClick = {() => remove()} > delete </Button>
+              <Button onClick = {() => setEvents(true)}> events </Button>
+              <br/>
+            </>
+          )
+        }
+      </div>
     </div>
   );
 };
