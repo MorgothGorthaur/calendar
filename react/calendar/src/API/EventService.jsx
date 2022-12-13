@@ -25,7 +25,10 @@ export default class EventService {
              'Authorization' : 'Bearer ' + tokens.access_token
           }
       };
-      await fetch('http://localhost:8080/calendar/events/' + id, requestOptions);
+      const response = await fetch('http://localhost:8080/calendar/events/' + id, requestOptions);
+      if (response.status !== 200) {
+        return{hasError : true}
+      }
       } catch(e) {
       alert(e);
     }

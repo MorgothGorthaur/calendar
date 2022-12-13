@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import ParticipantService from '../API/ParticipantService';
 import Input from '../UI/Input/Input';
 import {Button, Form} from 'react-bootstrap';
-const ParticipantForm = ({participant, CreateOrUpdate, tokens}) => {
+import LoginService from '../API/LoginService';
+const ParticipantForm = ({participant, CreateOrUpdate, tokens, setTokens}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,7 +19,19 @@ const ParticipantForm = ({participant, CreateOrUpdate, tokens}) => {
   const update = (e) => {
     e.preventDefault();
     ParticipantService.change(firstName, lastName, email, password, tokens).then(data => {
-      validation(data);
+      if(data.error_message){
+        LoginService.refresh(tokens).then(refresh => {
+          if(refresh.hasError){
+            alert("you must relogin")
+          } else {
+            setTokens(refresh, tokens.refresh_token);
+            console.log(refresh);
+            ParticipantService.change(firstName, lastName, email, password, refresh).then(d => {validation(d);})
+          };
+        });
+     } else {
+        validation(data);
+      }
     });
   };
 

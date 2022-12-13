@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {Form, Button} from 'react-bootstrap';
 import Input from '../UI/Input/Input';
 import EventService from '../API/EventService';
-const EventForm = ({tokens, event, CreateOrUpdate}) => {
+import LoginService from '../API/LoginService';
+const EventForm = ({tokens, setTokens, event, CreateOrUpdate}) => {
   const [id, setId] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
@@ -10,14 +11,38 @@ const EventForm = ({tokens, event, CreateOrUpdate}) => {
   const update = (e) => {
     e.preventDefault();
     EventService.change(tokens, id, description, startTime, endTime).then(data => {
-      validation(data);
+      if(data.error_message) {
+        LoginService.refresh(tokens).then(refresh => {
+          if(refresh.hasError){
+            alert("you must relogin")
+          } else {
+            setTokens(refresh, tokens.refresh_token);
+            console.log(refresh);
+            EventService.change(refresh, id, description, startTime, endTime).then(d => {alert("D");  validation(d);})
+          };
+        });
+      } else {
+        validation(data);
+      }
     })
   };
 
   const add = (e) => {
     e.preventDefault();
     EventService.save(tokens, description, startTime, endTime).then(data => {
-      validation(data);
+      if(data.error_message) {
+        LoginService.refresh(tokens).then(refresh => {
+          if(refresh.hasError){
+            alert("you must relogin")
+          } else {
+            setTokens(refresh, tokens.refresh_token);
+            console.log(refresh);
+              EventService.save(refresh, description, startTime, endTime).then(d => {validation(d);})
+          };
+        });
+      } else {
+        validation(data);
+      }
     })
   };
 

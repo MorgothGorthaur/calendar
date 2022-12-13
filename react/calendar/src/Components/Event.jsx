@@ -2,7 +2,7 @@ import {Button, Modal} from 'react-bootstrap';
 import React, {useState} from 'react';
 import EventForm from './EventForm';
 import EventParticipants from './EventParticipants';
-const Event = ({tokens, event, change, remove}) => {
+const Event = ({tokens, setTokens, event, change, remove}) => {
   const [modal, setModal] = useState(false);
   const [participants, setParticipants] = useState(false);
   const update = (data) => {
@@ -16,11 +16,11 @@ const Event = ({tokens, event, change, remove}) => {
       <h1> {event.endTime} </h1>
       <Button onClick = {() => setModal(true)}> change </Button>
       <Button variant = "danger" onClick = {() => remove(event)}> remove </Button>
-      <Modal show = {modal} onHide = {setModal}> <EventForm tokens = {tokens} event = {event}  CreateOrUpdate = {update}/> </Modal>
+      <Modal show = {modal} onHide = {setModal}> <EventForm tokens = {tokens} setTokens = {setTokens} event = {event}  CreateOrUpdate = {update}/> </Modal>
       {
         participants ? (
           <div>
-            <EventParticipants tokens = {tokens} id = {event.id} />
+            <EventParticipants tokens = {tokens} setTokens = {setTokens} id = {event.id} />
             <Button variant = "dark" onClick = {() => setParticipants(false)}> close </Button>
           </div>
         ) : (

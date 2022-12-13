@@ -63,7 +63,7 @@ public class CalendarRestController {
                         .orElseThrow(() -> new ParticipantNotFoundException(username));
                 var access = JWT.create()
                         .withSubject(user.getEmail())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 1 * 60 * 1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", List.of(user.getRole().name()))
                         .sign(algorithm);

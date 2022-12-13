@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import EventService from '../API/EventService';
 import {Button, Modal} from 'react-bootstrap';
 import Event from './Event';
+import LoginService from '../API/LoginService';
 import EventForm from './EventForm';
-const EventList = ({tokens}) => {
+const EventList = ({tokens, setTokens}) => {
   const [events, setEvents] = useState([]);
   const [modal, setModal] = useState(false);
   useEffect( () => {
@@ -13,7 +14,19 @@ const EventList = ({tokens}) => {
 
   async function fetchEvents () {
     const response = await EventService.get(tokens);
-    setEvents(response);
+    if(response.error_message){
+      LoginService.refresh(tokens).then(refresh => {
+        if(refresh.hasError){
+          alert("you must relogin")
+        } else {
+          setTokens(refresh, tokens.refresh_token);
+          console.log(refresh);
+          EventService.get(refresh).then(d => {setEvents(d)});
+        };
+      });
+    } else {
+      setEvents(response);
+    }
   };
   const add = (event) => {
     setEvents([...events, event]);
@@ -25,7 +38,20 @@ const EventList = ({tokens}) => {
   };
 
   const remove = (event) => {
-    EventService.remove(tokens, event.id)
+    EventService.remove(tokens, event.id).then(data => {
+      if(data.hasError) {
+        alert("YARRR!")
+        LoginService.refresh(tokens).then(refresh => {
+          if(refresh.hasError){
+            alert("you must relogin")
+          } else {
+            setTokens(refresh, tokens.refresh_token);
+            console.log(refresh);
+            EventService.remove(refresh, event.id);
+          };
+        });
+      }
+    })
     setEvents([...events.filter(e => e.id !== event.id)])
   }
   return (
@@ -36,7 +62,7 @@ const EventList = ({tokens}) => {
           {
             events.map (event =>
               <div>
-                <Event tokens = {tokens} event = {event} change = {change} remove = {remove}/>
+                <Event tokens = {tokens} setTokens = {setTokens} event = {event} change = {change} remove = {remove}/>
               </div>
             )
           }
@@ -48,7 +74,7 @@ const EventList = ({tokens}) => {
       )
     }
     <Button onClick = { () => setModal(true) }> add </Button>
-    <Modal show = {modal} onHide = {setModal} > <EventForm tokens = {tokens} CreateOrUpdate = {add}/> </Modal>
+    <Modal show = {modal} onHide = {setModal} > <EventForm tokens = {tokens} setTokens = {setTokens} CreateOrUpdate = {add} /> </Modal>
     </div>
   );
 };

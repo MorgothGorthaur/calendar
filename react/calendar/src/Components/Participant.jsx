@@ -46,12 +46,12 @@ const Participant = ({tokens, setTokens, setModal}) => {
       <h1> {participant.email} </h1>
       <Button onClick = {() => setShow(true)} > change </Button>
       <Button variant = "danger" onClick = {() => remove()} > delete </Button>
-      <Modal show = {show} onHide = {setShow} > <ParticipantForm CreateOrUpdate = {change} participant = {participant} tokens = {tokens} /></Modal>
+      <Modal show = {show} onHide = {setShow} > <ParticipantForm CreateOrUpdate = {change} participant = {participant} tokens = {tokens} setTokens = {setTokens} /></Modal>
       {
         events ?
         (
           <>
-            <EventList tokens = {tokens} />
+            <EventList tokens = {tokens} setTokens = {setTokens} />
             <Button variant = "dark" onClick = {() => setEvents(false)}> close </Button>
           </>
         ) : (
