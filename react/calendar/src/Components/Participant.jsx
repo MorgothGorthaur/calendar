@@ -4,13 +4,18 @@ import {Button, Modal} from 'react-bootstrap';
 import ParticipantForm from './ParticipantForm';
 import LoginService from '../API/LoginService';
 import EventList from './EventList';
-
+import Loader from "../UI/Loader/Loader";
 const Participant = ({tokens, setTokens, setModal}) => {
     const [participant, setParticipant] = useState('');
     const [show, setShow] = useState(false);
-    const [events, setEvents] = useState(false)
+    const [events, setEvents] = useState(false);
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        fetchParticipant();
+        setLoading(true);
+        setTimeout(() => {
+            fetchParticipant();
+            setLoading(false);
+        }, 1000);
     }, []);
 
     const change = (data) => {
@@ -44,32 +49,40 @@ const Participant = ({tokens, setTokens, setModal}) => {
         setParticipant(response);
     };
     return (
-        <div className="participant_item">
-            <div style={{textAlign: 'left'}}>
-                <h1> {participant.firstName} </h1>
-                <h1> {participant.lastName} </h1>
-            </div>
-            <h3> {participant.email} </h3>
-            <div style={{textAlign: 'center'}}>
-                <Modal show={show} onHide={setShow}> <ParticipantForm CreateOrUpdate={change} participant={participant}
-                                                                      tokens={tokens} setTokens={setTokens}/></Modal>
-                {
-                    events ?
-                        (
-                            <>
-                                <EventList tokens={tokens} setTokens={setTokens}/>
-                                <Button variant="dark" onClick={() => setEvents(false)}> close </Button>
-                            </>
-                        ) : (
-                            <>
-                                <Button onClick={() => setShow(true)}> change </Button>
-                                <Button variant="danger" onClick={() => remove()}> delete </Button>
-                                <Button onClick={() => setEvents(true)}> events </Button>
-                                <br/>
-                            </>
-                        )
-                }
-            </div>
+        <div>
+            {loading ? (
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <Loader/>
+                </div>
+            ) : (
+                <div className="participant_item">
+                    <div style={{textAlign: 'left'}}>
+                        <h1> {participant.firstName} </h1>
+                        <h1> {participant.lastName} </h1>
+                    </div>
+                    <h3> {participant.email} </h3>
+                    <div style={{textAlign: 'center'}}>
+                        <Modal show={show} onHide={setShow}> <ParticipantForm CreateOrUpdate={change} participant={participant}
+                                                                              tokens={tokens} setTokens={setTokens}/></Modal>
+                        {
+                            events ?
+                                (
+                                    <>
+                                        <EventList tokens={tokens} setTokens={setTokens}/>
+                                        <Button variant="dark" onClick={() => setEvents(false)}> close </Button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Button onClick={() => setShow(true)}> change </Button>
+                                        <Button variant="danger" onClick={() => remove()}> delete </Button>
+                                        <Button onClick={() => setEvents(true)}> events </Button>
+                                        <br/>
+                                    </>
+                                )
+                        }
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

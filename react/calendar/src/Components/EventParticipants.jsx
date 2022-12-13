@@ -3,12 +3,17 @@ import EventService from '../API/EventService';
 import {Button} from 'react-bootstrap';
 import EmailForm from './EmailForm';
 import LoginService from '../API/LoginService';
-
+import Loader from '../UI/Loader/Loader';
 const EventParticipants = ({tokens, setTokens, id}) => {
     const [participants, setParticipants] = useState([]);
     const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        fetchParticipants();
+        setLoading(true);
+        setTimeout(() => {
+            fetchParticipants();
+            setLoading(false);
+        }, 1000);
     }, []);
 
     async function fetchParticipants() {
@@ -38,31 +43,39 @@ const EventParticipants = ({tokens, setTokens, id}) => {
     }
     return (
         <div>
-            {
-                participants.length !== 1 ? (
+            {loading ? (
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <Loader/>
+                </div>
+            ) : (
+                <div>
+                    {
+                        participants.length !== 1 ? (
+                            <div>
+                                {
+                                    participants.map(participant =>
+                                        <h1> {participant.firstName} </h1>
+                                    )
+                                }
+                            </div>
+                        ) : (
+                            <h1> this is only your event! </h1>
+                        )
+                    }
                     <div>
                         {
-                            participants.map(participant =>
-                                <h1> {participant.firstName} </h1>
+                            show ? (
+                                <EmailForm tokens={tokens} setTokens={setTokens} id={id} update={update}/>
+                            ) : (
+                                <div>
+                                    <Button onClick={() => setShow(true)}> add participant</Button>
+                                    <br/>
+                                </div>
                             )
                         }
                     </div>
-                ) : (
-                    <h1> this is only your event! </h1>
-                )
-            }
-            <div>
-                {
-                    show ? (
-                        <EmailForm tokens={tokens} setTokens={setTokens} id={id} update={update}/>
-                    ) : (
-                        <div>
-                            <Button onClick={() => setShow(true)}> add participant</Button>
-                            <br/>
-                        </div>
-                    )
-                }
-            </div>
+                </div>
+            )}
         </div>
     );
 };

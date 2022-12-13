@@ -4,13 +4,17 @@ import {Button, Modal} from 'react-bootstrap';
 import Event from './Event';
 import LoginService from '../API/LoginService';
 import EventForm from './EventForm';
-
+import Loader from '../UI/Loader/Loader';
 const EventList = ({tokens, setTokens}) => {
     const [events, setEvents] = useState([]);
     const [modal, setModal] = useState(false);
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        fetchEvents();
-        console.log(events);
+        setLoading(true);
+        setTimeout(() => {
+            fetchEvents();
+            setLoading(false);
+        }, 1000);
     }, []);
 
     async function fetchEvents() {
@@ -60,28 +64,36 @@ const EventList = ({tokens, setTokens}) => {
         setEvents([...events.filter(e => e.id !== event.id)])
     }
     return (
-        <div className="participant_list">
-            {
-                events.length ? (
-                    <div>
-                        {
-                            events.map(event =>
-                                <div>
-                                    <Event tokens={tokens} setTokens={setTokens} event={event} change={change}
-                                           remove={remove}/>
-                                </div>
-                            )
-                        }
-                    </div>
-                ) : (
-                    <div>
-                        <h1> events not found! </h1>
-                    </div>
-                )
-            }
-            <Button onClick={() => setModal(true)}> add event</Button>
-            <Modal show={modal} onHide={setModal}> <EventForm tokens={tokens} setTokens={setTokens}
-                                                              CreateOrUpdate={add}/> </Modal>
+        <div>
+            {loading ? (
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <Loader/>
+                </div>
+            ) : (
+                <div className="participant_list">
+                    {
+                        events.length ? (
+                            <div>
+                                {
+                                    events.map(event =>
+                                        <div>
+                                            <Event tokens={tokens} setTokens={setTokens} event={event} change={change}
+                                                   remove={remove}/>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        ) : (
+                            <div>
+                                <h1> events not found! </h1>
+                            </div>
+                        )
+                    }
+                    <Button onClick={() => setModal(true)}> add event</Button>
+                    <Modal show={modal} onHide={setModal}> <EventForm tokens={tokens} setTokens={setTokens}
+                                                                      CreateOrUpdate={add}/> </Modal>
+                </div>
+            )}
         </div>
     );
 };
