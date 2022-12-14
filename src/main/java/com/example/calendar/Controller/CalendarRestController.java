@@ -10,7 +10,9 @@ import com.example.calendar.exception.EmailNotUnique;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,11 +39,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/calendar")
 @CrossOrigin(origins = "*")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CalendarRestController {
-    private ParticipantRepository participantRepository;
-    private ModelMapper modelMapper;
-    private PasswordEncoder encoder;
+    private final ParticipantRepository participantRepository;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder encoder;
+
+    @Value("${jwt.secret.key}")
+    private String SECRET_KEY;
 
     @GetMapping
     public List<ParticipantDto> findAll() {
@@ -55,7 +60,7 @@ public class CalendarRestController {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 var refresh_token = authorizationHeader.substring("Bearer ".length());
-                var algorithm = Algorithm.HMAC256("secret".getBytes());
+                var algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
                 var verifier = JWT.require(algorithm).build();
                 var decoderJWT = verifier.verify(refresh_token);
                 var username = decoderJWT.getSubject();

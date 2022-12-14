@@ -2,7 +2,6 @@ package com.example.calendar.configuration.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.calendar.Model.Participant;
 import com.example.calendar.Model.UserDetailsImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +27,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     private AuthenticationManager authenticationManager;
 
+    private String SECRET_KEY;
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         var email = request.getParameter("email");
@@ -41,7 +41,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         var user = (UserDetailsImpl) authResult.getPrincipal();
-        var algorithm = Algorithm.HMAC256("secret".getBytes());
+        var algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
         var access = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
