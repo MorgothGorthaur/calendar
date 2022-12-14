@@ -20,7 +20,7 @@ const EmailForm = ({tokens, setTokens, id, update}) => {
                             validation(d);
                         })
                     }
-                    ;
+
                 });
             } else {
                 validation(data);

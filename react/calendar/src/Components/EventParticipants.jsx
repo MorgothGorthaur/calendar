@@ -30,7 +30,6 @@ const EventParticipants = ({tokens, setTokens, id}) => {
                     })
 
                 }
-                ;
             });
         } else {
             setParticipants(response);

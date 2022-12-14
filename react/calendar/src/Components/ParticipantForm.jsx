@@ -31,7 +31,6 @@ const ParticipantForm = ({participant, CreateOrUpdate, tokens, setTokens}) => {
                             validation(d);
                         })
                     }
-                    ;
                 });
             } else {
                 validation(data);

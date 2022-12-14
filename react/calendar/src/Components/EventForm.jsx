@@ -24,7 +24,6 @@ const EventForm = ({tokens, setTokens, event, CreateOrUpdate}) => {
                             validation(d);
                         })
                     }
-                    ;
                 });
             } else {
                 validation(data);

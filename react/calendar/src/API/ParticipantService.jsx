@@ -6,7 +6,7 @@ export default class ParticipantService {
         } catch (e) {
             alert(e);
         }
-    }
+    };
 
     static async getParticipant(access_token) {
         try {
@@ -25,7 +25,7 @@ export default class ParticipantService {
         } catch (e) {
             alert(e);
         }
-    }
+    };
 
     static async delete(tokens) {
         try {
@@ -44,7 +44,7 @@ export default class ParticipantService {
             alert(e);
         }
         window.location.reload(false);
-    }
+    };
 
     static async save(firstName, lastName, email, password) {
         try {
@@ -58,7 +58,7 @@ export default class ParticipantService {
         } catch (e) {
             alert(e);
         }
-    }
+    };
 
     static async change(firstName, lastName, email, password, tokens) {
         try {
@@ -75,5 +75,5 @@ export default class ParticipantService {
         } catch (e) {
             alert(e);
         }
-    }
+    };
 }
