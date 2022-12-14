@@ -36,7 +36,7 @@ const EventParticipants = ({tokens, setTokens, id}) => {
         }
     }
 
-    const update = (data) => {
+    const update = () => {
         fetchParticipants();
         setShow(false);
     }

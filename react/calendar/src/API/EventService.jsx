@@ -101,6 +101,8 @@ export default class EventService {
             const response = await fetch('http://localhost:8080/calendar/events/' + id, requestOptions);
             if(response.status !==200) {
                 return await response.json();
+            } else {
+                return response;
             }
         } catch (e) {
             alert(e);
