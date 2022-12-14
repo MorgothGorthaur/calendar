@@ -65,7 +65,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Participant> getParticipant(Long eventId, String email) {
         var event = checkIfParticipantDoesntContainsEvent(eventId, email);
-        //return event.getParticipants().stream().filter(participant -> !participant.getEmail().equals(email)).toList();
         return participantRepository.getParticipantsWithoutThisEmail(eventId, email);
     }
 }
