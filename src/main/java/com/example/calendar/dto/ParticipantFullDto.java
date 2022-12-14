@@ -1,8 +1,8 @@
-package com.example.calendar.DTO;
+package com.example.calendar.dto;
 
-import com.example.calendar.Model.Participant;
-import com.example.calendar.Model.ParticipantStatus;
-import com.example.calendar.Model.UserRole;
+import com.example.calendar.model.Participant;
+import com.example.calendar.model.ParticipantStatus;
+import com.example.calendar.model.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

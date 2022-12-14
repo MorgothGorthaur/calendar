@@ -1,4 +1,4 @@
-package com.example.calendar.Model;
+package com.example.calendar.model;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

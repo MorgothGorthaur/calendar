@@ -1,7 +1,7 @@
-package com.example.calendar.Repository;
+package com.example.calendar.repository;
 
-import com.example.calendar.Model.Participant;
-import com.example.calendar.Model.ParticipantStatus;
+import com.example.calendar.model.Participant;
+import com.example.calendar.model.ParticipantStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

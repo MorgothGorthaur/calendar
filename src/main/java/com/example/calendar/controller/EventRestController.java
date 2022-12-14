@@ -1,12 +1,12 @@
-package com.example.calendar.Controller;
+package com.example.calendar.controller;
 
-import com.example.calendar.DTO.EmailDto;
-import com.example.calendar.DTO.EventDto;
-import com.example.calendar.DTO.ParticipantDto;
-import com.example.calendar.Model.ParticipantStatus;
-import com.example.calendar.Repository.EventRepository;
-import com.example.calendar.Repository.ParticipantRepository;
-import com.example.calendar.Service.EventService;
+import com.example.calendar.dto.EmailDto;
+import com.example.calendar.dto.EventDto;
+import com.example.calendar.dto.ParticipantDto;
+import com.example.calendar.model.ParticipantStatus;
+import com.example.calendar.repository.EventRepository;
+import com.example.calendar.repository.ParticipantRepository;
+import com.example.calendar.service.EventService;
 import com.example.calendar.exception.EventNotFoundException;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController

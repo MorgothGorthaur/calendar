@@ -1,24 +1,17 @@
-package com.example.calendar.Controller;
+package com.example.calendar.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.calendar.DTO.ParticipantDto;
-import com.example.calendar.DTO.ParticipantFullDto;
-import com.example.calendar.Model.ParticipantStatus;
-import com.example.calendar.Repository.ParticipantRepository;
+import com.example.calendar.dto.ParticipantDto;
+import com.example.calendar.dto.ParticipantFullDto;
+import com.example.calendar.model.ParticipantStatus;
+import com.example.calendar.repository.ParticipantRepository;
 import com.example.calendar.exception.EmailNotUnique;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +21,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.calendar.Model;
+package com.example.calendar.model;
 
 public enum ParticipantStatus {
     ACTIVE,

@@ -1,6 +1,6 @@
-package com.example.calendar.DTO;
+package com.example.calendar.dto;
 
-import com.example.calendar.Model.Event;
+import com.example.calendar.model.Event;
 import com.example.calendar.validation.CheckIfEndTimeIsAfterStartTime;
 import com.example.calendar.validation.CheckIfTimeIsActualValidation;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
-package com.example.calendar.Service;
+package com.example.calendar.service;
 
-import com.example.calendar.Model.Event;
-import com.example.calendar.Model.Participant;
+import com.example.calendar.model.Event;
+import com.example.calendar.model.Participant;
 
 import java.util.List;
 

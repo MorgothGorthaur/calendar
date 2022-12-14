@@ -1,16 +1,13 @@
-package com.example.calendar.Model;
+package com.example.calendar.model;
 
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.*;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 
 @Entity

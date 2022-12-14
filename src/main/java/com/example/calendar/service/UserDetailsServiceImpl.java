@@ -1,7 +1,7 @@
-package com.example.calendar.Service;
+package com.example.calendar.service;
 
-import com.example.calendar.Model.UserDetailsImpl;
-import com.example.calendar.Repository.ParticipantRepository;
+import com.example.calendar.model.UserDetailsImpl;
+import com.example.calendar.repository.ParticipantRepository;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

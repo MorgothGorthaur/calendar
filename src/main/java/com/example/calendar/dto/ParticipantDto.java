@@ -1,7 +1,5 @@
-package com.example.calendar.DTO;
+package com.example.calendar.dto;
 
-import com.example.calendar.Model.Participant;
-import com.example.calendar.Model.ParticipantStatus;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

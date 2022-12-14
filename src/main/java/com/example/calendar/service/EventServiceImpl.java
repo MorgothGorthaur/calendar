@@ -1,10 +1,10 @@
-package com.example.calendar.Service;
+package com.example.calendar.service;
 
-import com.example.calendar.Model.Event;
-import com.example.calendar.Model.Participant;
-import com.example.calendar.Model.ParticipantStatus;
-import com.example.calendar.Repository.EventRepository;
-import com.example.calendar.Repository.ParticipantRepository;
+import com.example.calendar.model.Event;
+import com.example.calendar.model.Participant;
+import com.example.calendar.model.ParticipantStatus;
+import com.example.calendar.repository.EventRepository;
+import com.example.calendar.repository.ParticipantRepository;
 import com.example.calendar.exception.EventNotFoundException;
 import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
 import com.example.calendar.exception.ParticipantDoesntContainsThisEvent;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor

@@ -1,23 +1,14 @@
-package com.example.calendar.Controller;
+package com.example.calendar.controller;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 
-import com.example.calendar.DTO.EventDto;
-import com.example.calendar.DTO.ParticipantDto;
-import com.example.calendar.DTO.ParticipantFullDto;
-import com.example.calendar.Model.ParticipantStatus;
-import com.example.calendar.Repository.EventRepository;
-import com.example.calendar.Repository.ParticipantRepository;
+import com.example.calendar.dto.ParticipantFullDto;
+import com.example.calendar.model.ParticipantStatus;
+import com.example.calendar.repository.ParticipantRepository;
 import com.example.calendar.exception.EmailNotUnique;
-import com.example.calendar.exception.EventNotFoundException;
-import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
