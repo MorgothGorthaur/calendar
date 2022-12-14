@@ -25,10 +25,10 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class EventRestController {
-    private ParticipantRepository participantRepository;
-    private EventRepository eventRepository;
-    private ModelMapper modelMapper;
-    private EventService eventService;
+    private final ParticipantRepository participantRepository;
+    private final EventRepository eventRepository;
+    private final ModelMapper modelMapper;
+    private final EventService eventService;
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping

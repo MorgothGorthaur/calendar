@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EventServiceImpl implements EventService {
-    private EventRepository eventRepository;
-    private ParticipantRepository participantRepository;
+    private final EventRepository eventRepository;
+    private final ParticipantRepository participantRepository;
 
     @Override
     public void AddParticipant(Long eventId, String ownerEmail, String participantEmail) {
