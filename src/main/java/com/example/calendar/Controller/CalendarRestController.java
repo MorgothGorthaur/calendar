@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,6 +50,9 @@ public class CalendarRestController {
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;
 
+    @Value("${jwt.access_token.time}")
+    private Integer ACCESS_TOKEN_TIME;
+
     @GetMapping
     public List<ParticipantDto> findAll() {
         return participantRepository.findParticipantByStatus(ParticipantStatus.ACTIVE).stream().
@@ -59,6 +64,7 @@ public class CalendarRestController {
         var authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
+                var instant = Instant.now();
                 var refresh_token = authorizationHeader.substring("Bearer ".length());
                 var algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
                 var verifier = JWT.require(algorithm).build();
@@ -68,7 +74,7 @@ public class CalendarRestController {
                         .orElseThrow(() -> new ParticipantNotFoundException(username));
                 var access = JWT.create()
                         .withSubject(user.getEmail())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                        .withExpiresAt(instant.plus(ACCESS_TOKEN_TIME, ChronoUnit.MINUTES))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", List.of(user.getRole().name()))
                         .sign(algorithm);

@@ -37,9 +37,13 @@ public class SecurityConfig {
 
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;
+    @Value("${jwt.access_token.time}")
+    private Integer ACCESS_TOKEN_TIME;
+    @Value("${jwt.refresh_token.time}")
+    private Integer REFRESH_TOKEN_TIME;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        var customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBuilder.getOrBuild(), SECRET_KEY);
+        var customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBuilder.getOrBuild(), SECRET_KEY, ACCESS_TOKEN_TIME, REFRESH_TOKEN_TIME);
         customAuthenticationFilter.setFilterProcessesUrl("/login");
         http
                 .cors(Customizer.withDefaults())
