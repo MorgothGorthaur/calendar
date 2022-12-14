@@ -50,13 +50,12 @@ public class ParticipantRestController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping
-    public String deleteParticipant(Principal principal) {
+    public void deleteParticipant(Principal principal) {
         var participant = participantRepository.findByEmailAndStatus(principal.getName(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         participant.setStatus(ParticipantStatus.REMOVED);
         participantRepository.save(participant);
         SecurityContextHolder.getContext().setAuthentication(null);
-        return "deleted";
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
