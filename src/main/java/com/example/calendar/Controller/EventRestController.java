@@ -47,9 +47,8 @@ public class EventRestController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/{eventId}")
-    public String addParticipant(Principal principal, @PathVariable Long eventId, @Valid @RequestBody EmailDto dto) {
+    public void addParticipant(Principal principal, @PathVariable Long eventId, @Valid @RequestBody EmailDto dto) {
         eventService.AddParticipant(eventId, principal.getName(), dto.getEmail());
-        return "added!";
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -61,13 +60,12 @@ public class EventRestController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/{eventId}")
-    public String deleteEvent(Principal principal, @PathVariable Long eventId) {
+    public void deleteEvent(Principal principal, @PathVariable Long eventId) {
         var participant = participantRepository.findByEmailAndStatus(principal.getName(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
         var event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
         participant.removeEvent(event);
         participantRepository.save(participant);
-        return "deleted";
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
