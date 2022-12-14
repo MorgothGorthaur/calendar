@@ -5,6 +5,7 @@ import Event from './Event';
 import LoginService from '../API/LoginService';
 import EventForm from './EventForm';
 import Loader from '../UI/Loader/Loader';
+
 const EventList = ({tokens, setTokens}) => {
     const [events, setEvents] = useState([]);
     const [modal, setModal] = useState(false);
@@ -30,12 +31,12 @@ const EventList = ({tokens, setTokens}) => {
                         setEvents(d)
                     });
                 }
-                ;
             });
         } else {
             setEvents(response);
         }
-    };
+    }
+
     const add = (event) => {
         setEvents([...events, event]);
         setModal(false);

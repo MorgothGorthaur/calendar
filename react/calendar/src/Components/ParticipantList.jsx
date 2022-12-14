@@ -23,7 +23,7 @@ const ParticipantList = () => {
     async function fetchParticipants() {
         const response = await ParticipantService.getAll();
         setParticipants(response);
-    };
+    }
     return (
         <div>
             {loading ? (

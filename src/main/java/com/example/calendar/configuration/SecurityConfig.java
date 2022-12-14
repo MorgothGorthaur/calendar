@@ -3,6 +3,8 @@ package com.example.calendar.configuration;
 import com.example.calendar.configuration.filter.CustomAuthenticationFilter;
 import com.example.calendar.configuration.filter.CustomAuthorizationFilter;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,13 +30,20 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
-    private UserDetailsService userDetailsService;
-    private AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserDetailsService userDetailsService;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+
+    @Value("${jwt.secret.key}")
+    private String SECRET_KEY;
+    @Value("${jwt.access_token.time}")
+    private Integer ACCESS_TOKEN_TIME;
+    @Value("${jwt.refresh_token.time}")
+    private Integer REFRESH_TOKEN_TIME;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        var customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBuilder.getOrBuild());
+        var customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBuilder.getOrBuild(), SECRET_KEY, ACCESS_TOKEN_TIME, REFRESH_TOKEN_TIME);
         customAuthenticationFilter.setFilterProcessesUrl("/login");
         http
                 .cors(Customizer.withDefaults())

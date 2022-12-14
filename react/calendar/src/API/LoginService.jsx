@@ -17,7 +17,7 @@ export default class LoginService {
             alert(e);
         }
 
-    }
+    };
 
     static async refresh(tokens) {
         try {
@@ -36,5 +36,5 @@ export default class LoginService {
         } catch (e) {
             alert(e);
         }
-    }
+    };
 }

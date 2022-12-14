@@ -5,6 +5,7 @@ import ParticipantForm from './ParticipantForm';
 import LoginService from '../API/LoginService';
 import EventList from './EventList';
 import Loader from "../UI/Loader/Loader";
+
 const Participant = ({tokens, setTokens, setModal}) => {
     const [participant, setParticipant] = useState('');
     const [show, setShow] = useState(false);
@@ -34,10 +35,8 @@ const Participant = ({tokens, setTokens, setModal}) => {
                         setTokens(data, tokens.refresh_token);
                         ParticipantService.delete(data);
                     }
-                    ;
                 });
             }
-            ;
         });
     };
 
@@ -62,8 +61,10 @@ const Participant = ({tokens, setTokens, setModal}) => {
                     </div>
                     <h3> {participant.email} </h3>
                     <div style={{textAlign: 'center'}}>
-                        <Modal show={show} onHide={setShow}> <ParticipantForm CreateOrUpdate={change} participant={participant}
-                                                                              tokens={tokens} setTokens={setTokens}/></Modal>
+                        <Modal show={show} onHide={setShow}> <ParticipantForm CreateOrUpdate={change}
+                                                                              participant={participant}
+                                                                              tokens={tokens}
+                                                                              setTokens={setTokens}/></Modal>
                         {
                             events ?
                                 (

@@ -49,7 +49,7 @@ export default class EventService {
         } catch (e) {
             alert(e)
         }
-    }
+    };
 
 
     static async save(tokens, description, startTime, endTime) {
@@ -68,7 +68,7 @@ export default class EventService {
         } catch (e) {
             alert(e)
         }
-    }
+    };
 
     static async getParticipants(tokens, id) {
         try {
@@ -83,7 +83,7 @@ export default class EventService {
         } catch (e) {
             alert(e);
         }
-    }
+    };
 
     static async addParticipant(tokens, id, email) {
         try {
@@ -101,8 +101,8 @@ export default class EventService {
             const response = await fetch('http://localhost:8080/calendar/events/' + id, requestOptions);
             return await response.json();
         } catch (e) {
-
+            alert(e);
         }
-    }
+    };
 
 }

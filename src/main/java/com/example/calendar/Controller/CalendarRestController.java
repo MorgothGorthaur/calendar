@@ -10,7 +10,9 @@ import com.example.calendar.exception.EmailNotUnique;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,11 +41,17 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/calendar")
 @CrossOrigin(origins = "*")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CalendarRestController {
-    private ParticipantRepository participantRepository;
-    private ModelMapper modelMapper;
-    private PasswordEncoder encoder;
+    private final ParticipantRepository participantRepository;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder encoder;
+
+    @Value("${jwt.secret.key}")
+    private String SECRET_KEY;
+
+    @Value("${jwt.access_token.time}")
+    private Integer ACCESS_TOKEN_TIME;
 
     @GetMapping
     public List<ParticipantDto> findAll() {
@@ -54,8 +64,9 @@ public class CalendarRestController {
         var authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
+                var instant = Instant.now();
                 var refresh_token = authorizationHeader.substring("Bearer ".length());
-                var algorithm = Algorithm.HMAC256("secret".getBytes());
+                var algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
                 var verifier = JWT.require(algorithm).build();
                 var decoderJWT = verifier.verify(refresh_token);
                 var username = decoderJWT.getSubject();
@@ -63,7 +74,7 @@ public class CalendarRestController {
                         .orElseThrow(() -> new ParticipantNotFoundException(username));
                 var access = JWT.create()
                         .withSubject(user.getEmail())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                        .withExpiresAt(instant.plus(ACCESS_TOKEN_TIME, ChronoUnit.MINUTES))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", List.of(user.getRole().name()))
                         .sign(algorithm);
