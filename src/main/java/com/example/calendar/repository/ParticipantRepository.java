@@ -14,4 +14,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
     Optional<Participant> findByEmailAndStatus(String email, ParticipantStatus status);
     @Query(value = "select p from Participant p where p.email = ?1 and p.id <> ?2")
     List<Participant> findParticipantsWithEqualEmailAndNonEqualId(String email, Long id);
+
+    @Query(value = "select * from events join participants_events pe on events.id = pe.events_id and events.id = ?1 join participants p on p.id = pe.participants_id and p.email != ?2", nativeQuery = true)
+    List<Participant> getParticipantsWithoutThisEmail(Long id, String email);
 }

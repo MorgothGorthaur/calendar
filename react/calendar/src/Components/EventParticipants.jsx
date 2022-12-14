@@ -49,7 +49,7 @@ const EventParticipants = ({tokens, setTokens, id}) => {
             ) : (
                 <div>
                     {
-                        participants.length !== 1 ? (
+                        participants.length !== 0 ? (
                             <div>
                                 {
                                     participants.map(participant =>
