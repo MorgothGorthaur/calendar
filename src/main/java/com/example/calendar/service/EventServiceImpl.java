@@ -23,17 +23,18 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void AddParticipant(Long eventId, String ownerEmail, String participantEmail) {
-        var event = checkIfParticipantDoesntContainsEvent(eventId, ownerEmail);
+        var event = checkIfParticipantContainsEventById(eventId, ownerEmail);
         var participant = participantRepository.findByEmailAndStatus(participantEmail.strip(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(participantEmail.strip()));
-        checkIfParticipantAlreadyContainsEvent(event, participantEmail);
+        checkIfParticipantDoesntContainsEvent(event, participantEmail);
         participant.addEvent(event);
         participantRepository.save(participant);
     }
 
     @Override
     public Event changeEvent(Event event, String email) {
-        checkIfParticipantAlreadyContainsEvent(event, email);
+        checkIfParticipantDoesntContainsEvent(event, email);
+        checkIfParticipantContainsEventById(event.getId(), email);
         var changed = eventRepository.findById(event.getId()).orElseThrow(() -> new EventNotFoundException(event.getId()));
         changed.setStartTime(event.getStartTime());
         changed.setEndTime(event.getEndTime());
@@ -41,11 +42,11 @@ public class EventServiceImpl implements EventService {
         return eventRepository.save(event);
     }
 
-    private Event checkIfParticipantDoesntContainsEvent(Long eventId, String email) {
+    private Event checkIfParticipantContainsEventById(Long eventId, String email) {
         return eventRepository.checkIfParticipantContainsEventWithId(eventId, email).orElseThrow(() -> new ParticipantDoesntContainsThisEvent(eventId));
     }
 
-    private void checkIfParticipantAlreadyContainsEvent(Event event, String email) {
+    private void checkIfParticipantDoesntContainsEvent(Event event, String email) {
         var check = eventRepository.checkIfParticipantContainsEventWithSameTimeAndDescription(event.getStartTime(), event.getEndTime(), event.getDescription(), email);
         if (check.isPresent() ) {
             throw new ParticipantAlreadyContainsEvent();
@@ -54,7 +55,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event addEvent(Event event, String email) {
-        checkIfParticipantAlreadyContainsEvent(event, email);
+        checkIfParticipantDoesntContainsEvent(event, email);
         var participant = participantRepository.findByEmailAndStatus(email, ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(email));
         participant.addEvent(event);
@@ -64,7 +65,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Participant> getParticipant(Long eventId, String email) {
-        var event = checkIfParticipantDoesntContainsEvent(eventId, email);
+        var event = checkIfParticipantContainsEventById(eventId, email);
         return participantRepository.getParticipantsWithoutThisEmail(eventId, email);
     }
 }

@@ -38,6 +38,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -60,7 +61,6 @@ class RoutineApplicationTest {
     private ParticipantRestController participantRestController;
     @Autowired
     private RestExceptionHandler restExceptionHandler;
-
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -353,4 +353,97 @@ class RoutineApplicationTest {
         assertEquals(res.getResponse().getContentAsString(), "");
     }
 
+    @Test
+    public void changeEvent_shouldReturnExceptionParticipantDoesntContainsEvent() throws Exception {
+        //given
+        var email = "first@gmail.com";
+        var password = "112101";
+        var tokens = this.mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("password", password)
+                        .param("email", email))
+                .andReturn();
+        String access = JsonPath.parse(tokens.getResponse().getContentAsString()).read("access_token");
+        var id = eventRepository.findAll().get(0).getId();
+        var dto = new EventDto(id +1, LocalDateTime.now().plusDays(3), LocalDateTime.now().plusDays(4), "changed");
+        var errors = new String[] {"This data is not acceptable!", "participant doesn't contains event with id "+ dto.getId()};
+        this.mockMvc.perform(patch("/calendar/events")
+                        .header("Authorization", "Bearer " + access)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(jsonPath("errors", equalTo(List.of(errors))));
+    }
+    @Test
+    public void changeEvent_shouldReturnExceptionParticipantAlreadyContainsEvent() throws Exception {
+        //given
+        var email = "first@gmail.com";
+        var password = "112101";
+        var tokens = this.mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("password", password)
+                        .param("email", email))
+                .andReturn();
+        String access = JsonPath.parse(tokens.getResponse().getContentAsString()).read("access_token");
+        var event = eventRepository.findAll().get(0);
+        var errors = new String[] {"This data is not acceptable!", "participant already contains event!"};
+        var dto = new EventDto(event.getId(), event.getStartTime(), event.getEndTime(), event.getDescription());
+        this.mockMvc.perform(patch("/calendar/events")
+                        .header("Authorization", "Bearer " + access)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(jsonPath("errors", equalTo(List.of(errors))));
+    }
+
+    @Test
+    public void changeEvent_shouldReturnExceptionMethodArgumentNotValid() throws Exception {
+        //given
+        var email = "first@gmail.com";
+        var password = "112101";
+        var tokens = this.mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("password", password)
+                        .param("email", email))
+                .andReturn();
+        String access = JsonPath.parse(tokens.getResponse().getContentAsString()).read("access_token");
+        var event = eventRepository.findAll().get(0);
+        var dto = new EventDto(event.getId(), event.getEndTime(), event.getStartTime(), event.getDescription());
+        this.mockMvc.perform(patch("/calendar/events")
+                        .header("Authorization", "Bearer " + access)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(jsonPath("errors", equalTo(List.of("End Time must be after first time!"))));
+    }
+    @Test
+    public void addParticipant_shouldReturnExceptionHandleHttpMessageNotReadable() throws Exception {
+        //when
+        var dto = createParticipantFullDto("changed@gmail.com");
+        //then
+        this.mockMvc.perform(post("/calendar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("Fff"))
+                .andExpect(jsonPath("message", equalTo("Malformed JSON Request")));
+    }
+    @Test
+    public void deleteEvent_shouldReturnExceptionHandleMethodArgumentTypeMismatch() throws Exception {
+        //given
+        var email = "first@gmail.com";
+        var password = "112101";
+        var tokens = this.mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("password", password)
+                        .param("email", email))
+                .andReturn();
+        String access = JsonPath.parse(tokens.getResponse().getContentAsString()).read("access_token");
+
+        //then
+        this.mockMvc.perform(delete("/calendar/events/" + "fff")
+                        .header("Authorization", "Bearer " + access))
+                .andExpect(jsonPath("message", equalTo("The parameter 'eventId' of value 'fff' could not be converted to type 'Long'")));
+
+    }
+    @Test
+    void handleNoHandlerFoundException() throws Exception {
+        this.mockMvc.perform(get("/ddd"))
+                .andExpect(status().isNotFound());
+    }
 }
