@@ -6,7 +6,7 @@ import com.example.calendar.model.Participant;
 import java.util.List;
 
 public interface EventService {
-    void AddParticipant(Long eventId, String ownerEmail, String participantEmail);
+    void addParticipant(Long eventId, String ownerEmail, String participantEmail);
 
     Event changeEvent(Event event, String email);
 

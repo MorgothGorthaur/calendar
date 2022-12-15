@@ -22,7 +22,7 @@ public class EventServiceImpl implements EventService {
     private final ParticipantRepository participantRepository;
 
     @Override
-    public void AddParticipant(Long eventId, String ownerEmail, String participantEmail) {
+    public void addParticipant(Long eventId, String ownerEmail, String participantEmail) {
         var event = checkIfParticipantContainsEventById(eventId, ownerEmail);
         var participant = participantRepository.findByEmailAndStatus(participantEmail.strip(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(participantEmail.strip()));

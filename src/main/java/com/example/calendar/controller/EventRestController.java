@@ -47,7 +47,7 @@ public class EventRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/{eventId}")
     public void addParticipant(Principal principal, @PathVariable Long eventId, @Valid @RequestBody EmailDto dto) {
-        eventService.AddParticipant(eventId, principal.getName(), dto.getEmail());
+        eventService.addParticipant(eventId, principal.getName(), dto.getEmail());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
