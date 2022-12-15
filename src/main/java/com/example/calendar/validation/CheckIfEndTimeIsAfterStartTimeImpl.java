@@ -1,6 +1,6 @@
 package com.example.calendar.validation;
 
-import com.example.calendar.DTO.EventDto;
+import com.example.calendar.dto.EventDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

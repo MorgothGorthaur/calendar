@@ -6,8 +6,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 
-import com.example.calendar.DTO.EventDto;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import com.example.calendar.dto.EventDto;
 
 /*
  * prevent non-actual events from being set for today
