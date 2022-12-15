@@ -1,5 +1,6 @@
 package com.example.calendar.model;
 
+import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +31,11 @@ public class Participant {
 
     public void addEvent(Event event){
         if(events != null) {
-            events.add(event);
+            if(!events.contains(event)) {
+                events.add(event);
+            } else {
+                throw new ParticipantAlreadyContainsEvent();
+            }
         } else {
             events = new HashSet<>();
             events.add(event);
