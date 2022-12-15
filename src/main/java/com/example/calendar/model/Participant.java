@@ -1,6 +1,7 @@
 package com.example.calendar.model;
 
 import com.example.calendar.exception.ParticipantAlreadyContainsEvent;
+import com.example.calendar.exception.ParticipantDoesntContainsThisEvent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,14 +25,14 @@ public class Participant {
     private ParticipantStatus status;
 
     @Column(name = "user_role")
-    private  UserRole role;
+    private UserRole role;
 
     private String password;
     private String email;
 
-    public void addEvent(Event event){
-        if(events != null) {
-            if(!events.contains(event)) {
+    public void addEvent(Event event) {
+        if (events != null) {
+            if (!events.contains(event)) {
                 events.add(event);
             } else {
                 throw new ParticipantAlreadyContainsEvent();
@@ -41,10 +42,14 @@ public class Participant {
             events.add(event);
         }
     }
-    public void removeEvent(Event event){
-        if(events != null) {
+
+    public void removeEvent(Event event) {
+        if (events != null && events.contains(event)) {
             events.remove(event);
+        } else {
+            throw new ParticipantDoesntContainsThisEvent(event.getId());
         }
+
     }
 
 
