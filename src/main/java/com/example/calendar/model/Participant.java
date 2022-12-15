@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Entity
 @Table(name = "participants")
@@ -33,6 +30,9 @@ public class Participant {
 
     public void addEvent(Event event){
         if(events != null) {
+            events.add(event);
+        } else {
+            events = new HashSet<>();
             events.add(event);
         }
     }
