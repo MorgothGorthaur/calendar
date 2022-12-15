@@ -374,6 +374,7 @@ class RoutineApplicationTest {
                 .andExpect(jsonPath("errors", equalTo(List.of(errors))));
     }
     @Test
+    @Disabled
     public void changeEvent_shouldReturnExceptionParticipantAlreadyContainsEvent() throws Exception {
         //given
         var email = "first@gmail.com";
