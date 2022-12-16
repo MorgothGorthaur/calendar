@@ -22,7 +22,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             " join participants_events pe " +
             "on events.id = pe.events_id " +
             "join participants p" +
-            " on p.id = pe.participants_id and p.email = ?1", nativeQuery = true)
+            " on p.id = pe.participants_id and p.email = ?1 and p.status = 0", nativeQuery = true)
     List<Event> getEventsByEmail(String email);
 
 
