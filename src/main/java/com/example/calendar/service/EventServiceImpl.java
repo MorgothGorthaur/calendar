@@ -34,8 +34,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event changeEvent(Event event, String email) {
-        checkIfParticipantContainsEventById(event.getId(), email);
-        var changed = eventRepository.findById(event.getId()).orElseThrow(() -> new EventNotFoundException(event.getId()));
+        var events = eventRepository.checkIfParticipantContainsEqualEvents(email, event.getId(), event.getStartTime(), event.getEndTime(), event.getDescription());
+        if(events.size() > 1) {
+            throw new ParticipantAlreadyContainsEvent();
+        }
+        var changed = checkIfParticipantContainsEventById(event.getId(), email);
         changed.setStartTime(event.getStartTime());
         changed.setEndTime(event.getEndTime());
         changed.setDescription(event.getDescription());
