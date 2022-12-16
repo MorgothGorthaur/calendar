@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/calendar/user")
-@CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class ParticipantRestController {
 

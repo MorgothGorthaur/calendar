@@ -21,7 +21,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/calendar/events")
-@CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class EventRestController {
     private final ParticipantRepository participantRepository;

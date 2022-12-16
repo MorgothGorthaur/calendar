@@ -31,7 +31,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/calendar")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class CalendarRestController {
     private final ParticipantRepository participantRepository;
