@@ -3,6 +3,7 @@ package com.example.calendar.controller;
 import com.example.calendar.dto.EmailDto;
 import com.example.calendar.dto.EventDto;
 import com.example.calendar.dto.ParticipantDto;
+import com.example.calendar.exception.ParticipantDoesntContainsThisEvent;
 import com.example.calendar.model.ParticipantStatus;
 import com.example.calendar.repository.EventRepository;
 import com.example.calendar.repository.ParticipantRepository;
@@ -60,7 +61,8 @@ public class EventRestController {
     public void deleteEvent(Principal principal, @PathVariable Long eventId) {
         var participant = participantRepository.findByEmailAndStatus(principal.getName(), ParticipantStatus.ACTIVE)
                 .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
-        var event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
+        var event = eventRepository.checkIfParticipantContainsEventWithId(eventId, principal.getName())
+                        .orElseThrow(() -> new ParticipantDoesntContainsThisEvent(eventId));
         participant.removeEvent(event);
         participantRepository.save(participant);
     }
