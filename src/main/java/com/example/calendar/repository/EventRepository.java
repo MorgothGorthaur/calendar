@@ -15,7 +15,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             " join participants_events pe " +
             "on events.id = pe.events_id and events.id = ?1 " +
             "join participants p " +
-            "on p.id = pe.participants_id and p.email = ?2", nativeQuery = true)
+            "on p.id = pe.participants_id and p.email = ?2 and p.status = 0", nativeQuery = true)
     Optional<Event> checkIfParticipantContainsEventWithId(Long eventId, String email);
 
     @Query(value = "select * from events" +
