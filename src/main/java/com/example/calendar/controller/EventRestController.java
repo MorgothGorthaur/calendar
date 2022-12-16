@@ -32,9 +32,8 @@ public class EventRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public List<EventDto> getWithEvents(Principal principal) {
-        var participant = participantRepository.findByEmailAndStatus(principal.getName(), ParticipantStatus.ACTIVE)
-                .orElseThrow(() -> new ParticipantNotFoundException(principal.getName()));
-        return participant.getEvents().stream().filter(event -> event.getEndTime().isAfter(LocalDateTime.now())).map(event -> modelMapper.map(event, EventDto.class)).toList();
+        System.out.println("1");
+        return eventRepository.getEventsByEmail(principal.getName()).stream().filter(event -> event.getEndTime().isAfter(LocalDateTime.now())).map(event -> modelMapper.map(event, EventDto.class)).toList();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
