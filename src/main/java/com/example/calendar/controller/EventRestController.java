@@ -32,7 +32,6 @@ public class EventRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public List<EventDto> getWithEvents(Principal principal) {
-        System.out.println("1");
         return eventRepository.getEventsByEmail(principal.getName()).stream().filter(event -> event.getEndTime().isAfter(LocalDateTime.now())).map(event -> modelMapper.map(event, EventDto.class)).toList();
     }
 
