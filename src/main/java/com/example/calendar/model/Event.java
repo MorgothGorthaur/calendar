@@ -44,9 +44,9 @@ public class Event {
     @Override
     public int hashCode() {
         var hash = 7;
-        hash += 7 + 31 * (startTime != null ? startTime.hashCode() : 0);
-        hash += 7 + 31 * (endTime != null ? endTime.hashCode() : 0);
-        hash += 7 * 31 * (description != null ? description.hashCode() : 0);
+        hash = hash * 31 + (startTime != null ? startTime.hashCode() : 0);
+        hash = hash * 31 + (endTime != null ? endTime.hashCode() : 0);
+        hash = hash * 31 + (description != null ? description.hashCode() : 0);
         return hash;
     }
 }
