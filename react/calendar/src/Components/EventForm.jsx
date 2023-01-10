@@ -54,7 +54,7 @@ const EventForm = ({tokens, setTokens, event, CreateOrUpdate}) => {
     };
 
     const validation = (data) => {
-        data.errors ? alert(data.errors) : CreateOrUpdate(data);
+        data.debugMessage ? alert(data.debugMessage) : CreateOrUpdate(data);
     };
 
     useEffect(() => {
