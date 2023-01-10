@@ -1,6 +1,4 @@
 package com.example.calendar.controller;
-
-import com.example.calendar.dto.EmailDto;
 import com.example.calendar.dto.EventDto;
 import com.example.calendar.dto.ParticipantDto;
 import com.example.calendar.exception.ParticipantDoesntContainsThisEvent;
@@ -8,7 +6,6 @@ import com.example.calendar.model.ParticipantStatus;
 import com.example.calendar.repository.EventRepository;
 import com.example.calendar.repository.ParticipantRepository;
 import com.example.calendar.service.EventService;
-import com.example.calendar.exception.EventNotFoundException;
 import com.example.calendar.exception.ParticipantNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,7 +44,7 @@ public class EventRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/{eventId}")
     public void addParticipant(Principal principal, @PathVariable Long eventId, @Valid @RequestBody EmailDto dto) {
-        eventService.addParticipant(eventId, principal.getName(), dto.getEmail());
+        eventService.addParticipant(eventId, principal.getName(), dto.email);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -72,4 +71,6 @@ public class EventRestController {
         var participants = eventService.getParticipant(eventId, principal.getName());
         return participants.stream().map(participant -> modelMapper.map(participant, ParticipantDto.class)).toList();
     }
+
+    record EmailDto(@NotNull(message = "email name mst be setted!") @Email String email) {}
 }
