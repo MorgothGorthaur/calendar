@@ -1,6 +1,7 @@
 package com.example.calendar.controller;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.example.calendar.exception.*;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.example.calendar.model.ApiError;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
@@ -23,13 +23,13 @@ public class RestExceptionHandler {
 	 */
 	@ExceptionHandler({ParticipantNotFoundException.class, EventNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundEx(RuntimeException ex) {
-      ApiError apiError = new ApiError("entity not found exception", ex.getMessage());
+      ApiError apiError = new ApiError("entity not found exception", List.of(ex.getMessage()));
       return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
 	@ExceptionHandler({ ParticipantAlreadyContainsEvent.class, EmailNotUnique.class, ParticipantDoesntContainsThisEvent.class})
 	protected ResponseEntity<Object> handleDataNotAcceptableEx(RuntimeException ex) {
-		ApiError apiError = new ApiError("This data is not acceptable!", ex.getMessage());
+		ApiError apiError = new ApiError("This data is not acceptable!", List.of(ex.getMessage()));
 		return new ResponseEntity<>(apiError, HttpStatus.NOT_ACCEPTABLE);
 	}
 	/*
@@ -38,10 +38,9 @@ public class RestExceptionHandler {
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> handleInvalidArgument(MethodArgumentNotValidException ex) {
-
 		List <String> errors = ex.getBindingResult().getAllErrors().stream()
 				.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-		 ApiError apiError = new ApiError("validation error",ex.getMessage(), errors); 
+		 ApiError apiError = new ApiError("validation error", errors);
 		 return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
 	}
 	/*
@@ -49,7 +48,7 @@ public class RestExceptionHandler {
 	 */
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
-	    ApiError apiError = new ApiError("Malformed JSON Request", ex.getMessage());
+	    var apiError = new ApiError("Malformed JSON Request", List.of(Objects.requireNonNull(ex.getMessage())));
 	    return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
 	}
 	/*
@@ -57,8 +56,7 @@ public class RestExceptionHandler {
 	 */
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	protected ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex){
-		ApiError apiError = new ApiError();
-		apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName()));
+		var apiError = new ApiError("bad argument type", List.of(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName())));
 		return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
 	}
 	/*
@@ -66,7 +64,9 @@ public class RestExceptionHandler {
 	 */
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public  ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex){
-		ApiError apiError = new ApiError("No Handler Found", ex.getMessage());
+		var apiError = new ApiError("No Handler Found", List.of(ex.getMessage()));
 		return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
 	}
+
+	record ApiError(String message, List<String> debugMessage) {}
 }
