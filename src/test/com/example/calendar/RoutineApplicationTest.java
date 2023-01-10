@@ -6,7 +6,6 @@ import com.example.calendar.controller.CalendarRestController;
 import com.example.calendar.controller.EventRestController;
 import com.example.calendar.controller.ParticipantRestController;
 import com.example.calendar.controller.RestExceptionHandler;
-import com.example.calendar.dto.EmailDto;
 import com.example.calendar.dto.EventDto;
 import com.example.calendar.dto.ParticipantFullDto;
 import com.example.calendar.exception.ParticipantNotFoundException;
