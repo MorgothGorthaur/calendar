@@ -53,14 +53,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:test.properties")
 class RoutineApplicationTest {
     @Autowired
-    private CalendarRestController calendarRestController;
-    @Autowired
-    private EventRestController eventRestController;
-    @Autowired
-    private ParticipantRestController participantRestController;
-    @Autowired
-    private RestExceptionHandler restExceptionHandler;
-    @Autowired
     private ObjectMapper objectMapper;
     @Autowired
     private PasswordEncoder encoder;
@@ -72,10 +64,6 @@ class RoutineApplicationTest {
     private MockMvc mockMvc;
     @Test
     public void contextLoads() {
-        assertThat(calendarRestController).isNotNull();
-        assertThat(eventRestController).isNotNull();
-        assertThat(participantRestController).isNotNull();
-        assertThat(restExceptionHandler).isNotNull();
         assertThat(encoder).isNotNull();
         assertThat(objectMapper).isNotNull();
         assertThat(participantRepository).isNotNull();
@@ -128,7 +116,7 @@ class RoutineApplicationTest {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("password", password)
                         .param("email", email))
-                .andExpect(jsonPath("errors", equalTo("bad password and/or email")));
+                .andExpect(jsonPath("debugMessage", equalTo("bad password and/or email")));
     }
 
     @Test
@@ -274,6 +262,7 @@ class RoutineApplicationTest {
     @Test
     public void addParticipantToEvent() throws Exception {
         //given
+        record EmailDto(String email) {}
         var email = "first@gmail.com";
         var password = "112101";
         var tokens = this.mockMvc.perform(post("/login")
@@ -365,12 +354,11 @@ class RoutineApplicationTest {
         String access = JsonPath.parse(tokens.getResponse().getContentAsString()).read("access_token");
         var id = eventRepository.findAll().get(0).getId();
         var dto = new EventDto(id +1, LocalDateTime.now().plusDays(3), LocalDateTime.now().plusDays(4), "changed");
-        var errors = new String[] {"This data is not acceptable!", "participant doesn't contains event with id "+ dto.getId()};
         this.mockMvc.perform(patch("/calendar/events")
                         .header("Authorization", "Bearer " + access)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(jsonPath("errors", equalTo(List.of(errors))));
+                .andExpect(jsonPath("debugMessage", equalTo(List.of("participant doesn't contains event with id "+ dto.getId()))));
     }
     @Test
     @Disabled
@@ -391,7 +379,7 @@ class RoutineApplicationTest {
                         .header("Authorization", "Bearer " + access)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(jsonPath("errors", equalTo(List.of(errors))));
+                .andExpect(jsonPath("debugMessage", equalTo(List.of(errors))));
     }
 
     @Test
@@ -411,7 +399,7 @@ class RoutineApplicationTest {
                         .header("Authorization", "Bearer " + access)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(jsonPath("errors", equalTo(List.of("End Time must be after first time!"))));
+                .andExpect(jsonPath("debugMessage", equalTo(List.of("End Time must be after first time!"))));
     }
     @Test
     public void addParticipant_shouldReturnExceptionHandleHttpMessageNotReadable() throws Exception {
@@ -438,7 +426,7 @@ class RoutineApplicationTest {
         //then
         this.mockMvc.perform(delete("/calendar/events/" + "fff")
                         .header("Authorization", "Bearer " + access))
-                .andExpect(jsonPath("message", equalTo("The parameter 'eventId' of value 'fff' could not be converted to type 'Long'")));
+                .andExpect(jsonPath("debugMessage", equalTo(List.of("The parameter 'eventId' of value 'fff' could not be converted to type 'Long'"))));
 
     }
     @Test
